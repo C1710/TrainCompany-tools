@@ -2,7 +2,7 @@ import csv
 import re
 
 def import_route_data() -> dict[int, (bool, int)]:
-	with open("tools/Strecken.MID", encoding="c1252") as routes_f:
+	with open("tools/Strecken.MID", encoding="cp1252") as routes_f:
 		route_reader = csv.reader(routes_f, delimiter=',')
 		# (route ID, (electrification, Haupt/Nebenbahn))
 		routes = dict(((int(route[1]), (route[8] != "nicht elektrifiziert", convert_haupt_nebenbahn(route[8], route[13]))) for route in route_reader))
