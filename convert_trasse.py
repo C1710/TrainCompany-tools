@@ -2,27 +2,41 @@ import csv
 import json
 import sys
 import os
+from fix_positions import import_locations
+from route_data import import_route_data
 
 def convert(trasse: str):
 	with open(trasse, encoding="cp1252") as trasse_f:
 		trassen_reader = csv.reader(trasse_f, delimiter=';')
 		trassen_reader.__next__()
-		# Format: (distance from start, full name, RIL100, is stop)
-		waypoints = [(float(waypoint[0].replace(',', '.')), waypoint[1], waypoint[2], 'Kundenhalt' in waypoint[17]) for waypoint in trassen_reader]
+		# Format: (distance from start, full name, RIL100, is stop, route number)
+		waypoints = [(float(waypoint[0].replace(',', '.')), waypoint[1], waypoint[2], 'Kundenhalt' in waypoint[17], int(waypoint[4])) for waypoint in trassen_reader]
 	# Split the data into the part relevant for Station.json and Path.json
 	waypoints_station = [(waypoint[1], waypoint[2]) for waypoint in waypoints if waypoint[3]]
-	waypoints_paths = [(waypoint[0], waypoint[2], waypoint[3]) for waypoint in waypoints]
+	waypoints_paths = [(waypoint[0], waypoint[2], waypoint[3], waypoint[4]) for waypoint in waypoints]
 	extend_station(waypoints_station)
 	extend_path(waypoints_paths)
 
-def extend_station(waypoints: list[tuple[str, str]]):
+
+def group_from_category(station_category: int) -> int:
+	if station_category == 2:
+		return 0
+	if station_category == 3:
+		return 1
+	else:
+		return 2
+
+
+def extend_station(waypoints: list[tuple[str, str, int]]):
 	platform_data = import_platform_data()
+	position_data = import_locations()
+	category_data = import_station_categories()
 	stations = [{
-		"group": 2,
+		"group": group_from_category(category_data[ril100]),
 		"name": name,
 		"ril100": ril100,
-		"x": 0,
-		"y": 0,
+		"x": position_data[ril100][0] if ril100 in position_data else 424242,
+		"y": position_data[ril100][1] if ril100 in position_data else 424242,
 		"platformLength": (platform_data[ril100][1] if ril100 in platform_data else 0),
 		"platforms": (platform_data[ril100][0] if ril100 in platform_data else 0)
 	} for (name, ril100) in waypoints]
@@ -36,31 +50,55 @@ def extend_station(waypoints: list[tuple[str, str]]):
 	with open("Station.json", "w", encoding="utf-8", newline="\n") as output:
 		json.dump(data, output, ensure_ascii=False, indent="\t")
 
-def extend_path(waypoints: list[tuple[float, str, bool]]):
-	route = []
+
+def extend_path(waypoints: list[tuple[float, str, bool, int]]):
+	# (RIL100, length, is electrified, category)
+	route: list[tuple[str, int, bool, int]] = []
+	route_data: dict[int, (bool, int)] = import_route_data()
 	# The distance to the next stop (accumulated for all segments without one)
 	distance_to_stop = 0
 	total_distance = 0
-	for (km, ril100, is_stop) in waypoints:
+	# The Streckennr. we cover by this route
+	route_segments = []
+	for (km, ril100, is_stop, segment_no) in waypoints:
 		# Get the distance of the segment
 		segment = km - total_distance
 		total_distance = km
 		# Regardless of whether it is a stop, we will add it
 		distance_to_stop += segment
 		if is_stop:
-			route.append((ril100, int(distance_to_stop)))
+			segment_data = [route_data[segment_no] for segment_no in route_segments]
+			route_segments = []
+			electrified = all((electrified for (electrified, _) in segment_data))
+			# We want 2 > 0 > 1.
+			# A way to achieve this ordering is to invert the last bit.
+			# 2 - 10 -> 11 -> 3
+			# 0 - 00 -> 01 -> 1
+			# 1 - 01 -> 00 -> 0
+			route_category = max((category for (_, category) in segment_data), key=lambda cat: cat ^ 1)
+			route.append((ril100, int(distance_to_stop), electrified, route_category))
 			distance_to_stop = 0
+		route_segments.append(segment_no)
 	route_segments = [{
 		"start": ril_start,
 		"end": ril_end,
+		"electrified": electrified,
+		"group": category,
 		"length": segment_length,
 		"twistingFactor": 0
-	} for ((ril_start, _), (ril_end, segment_length)) in zip(route, route[1:])]
+	} for ((ril_start, _, _, _), (ril_end, segment_length, electrified, category)) in zip(route, route[1:])]
 	route_entry = {
-		"group": 0,
 		"maxSpeed": 0,
 		"objects": route_segments
 	}
+	# Move shared properties out of the segments
+	for (key, value) in route_segments[0].copy().items:
+		# We use a placeholder here. We don't want to delete that.
+		if key != "twistingFactor":
+			if all((segment[key] == value for segment in route_segments)):
+				route_entry.update(key, value)
+				for segment in route_segments:
+					segment.pop(key)
 	
 	with open("Path.json", encoding="utf-8") as paths_f:
 		data = json.load(paths_f)
@@ -68,6 +106,16 @@ def extend_path(waypoints: list[tuple[float, str, bool]]):
 		paths_list.append(route_entry)
 	with open("Path.json", "w", encoding="utf-8", newline="\n") as output:
 		json.dump(data, output, ensure_ascii=False, indent="\t")
+
+
+def import_station_categories() -> dict[str, int]:
+	with open("tools/bahnhoefe.csv", encoding="utf-8") as stations_f:
+		stations_reader = csv.reader(stations_f, delimiter=';')
+		stations_reader.__next__()
+		# (RIL100, category)
+		stations = dict(((station[5], station[6]) for station in stations_reader))
+		return stations
+	
 
 def import_platform_data() -> dict[str, tuple[int, int]]:
 	with open("tools/bahnsteige.csv", encoding="utf-8") as platform_f:
@@ -89,6 +137,7 @@ def import_platform_data() -> dict[str, tuple[int, int]]:
 		stations = dict(((int(station[3]), station[5]) for station in stations_reader))
 	platform_data_ril100 = dict(((stations[bf_nr], platform_info) for (bf_nr, platform_info) in platform_data))
 	return platform_data_ril100
+
 
 if __name__ == '__main__':
 	if not os.path.exists("Path.json") and os.path.exists("../Path.json"):

@@ -4,7 +4,7 @@ import os
 from turtle import pos
 
 def import_locations() -> dict[str, (int, int)]:
-	with open("tools/haltestellen.csv", encoding="utf-8") as haltestellen_f:
+	with open("tools/haltestellen.CSV", encoding="utf-8") as haltestellen_f:
 		haltestellen_reader = csv.reader(haltestellen_f, delimiter=";")
 		haltestellen_reader.__next__()
 		positions = ((station[1], float(station[5].replace(',', '.')), float(station[6].replace(',', '.'))) for station in haltestellen_reader)
