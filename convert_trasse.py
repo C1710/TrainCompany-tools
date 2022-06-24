@@ -20,7 +20,7 @@ def convert(trasse: str):
 
 
 def group_from_category(station_category: int) -> int:
-	if station_category == 2:
+	if station_category <= 2:
 		return 0
 	if station_category == 3:
 		return 1
