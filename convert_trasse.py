@@ -1,4 +1,5 @@
 import csv
+from functools import lru_cache
 import json
 import sys
 import re
@@ -30,6 +31,7 @@ def group_from_category(station_category: int) -> int:
 
 # We use this regex to remove extensions like "HO U" -> "HO"
 no_extensions_regex = re.compile(r'(\w+)( \w+)?')
+@lru_cache
 def remove_ril_extensions(ril100: str) -> str:
 	return no_extensions_regex.match(ril100).group(1)
 
@@ -40,6 +42,29 @@ def get_category_data(category_data: dict[str, int], ril100: str) -> int:
 	except KeyError:
 		return category_data[remove_ril_extensions(ril100)]
 
+
+@lru_cache
+def get_station_list():
+	with open("Station.json", encoding="utf-8") as station_f:
+		data = json.load(station_f)
+		stations_list: list = data["data"]
+	return stations_list
+
+@lru_cache
+def get_existing_ril100():
+	ril100_list = [station["ril100"] for station in get_station_list()]
+	return ril100_list
+
+
+def get_best_ril100(ril100: str) -> str:
+	"""Removes the extension (e.g. 'HO O' -> 'HO') if the shorter version already exists"""
+	ril100_list = get_existing_ril100()
+	if ril100 in ril100_list:
+		return ril100
+	elif remove_ril_extensions(ril100) in ril100_list:
+		return remove_ril_extensions(ril100)
+	else:
+		return ril100
 
 def extend_station(waypoints: list[tuple[str, str, int]]):
 	platform_data = import_platform_data()
@@ -55,14 +80,15 @@ def extend_station(waypoints: list[tuple[str, str, int]]):
 		"platforms": (platform_data[ril100][0] if ril100 in platform_data else 0)
 	} for (name, ril100) in waypoints]
 	
+	# FIXME: We can't use the function here, because we need the whole data entry
 	with open("Station.json", encoding="utf-8") as station_f:
 		data = json.load(station_f)
 		stations_list: list = data["data"]
-		ril100_list = [station["ril100"] for station in stations_list]
+		ril100_list = get_existing_ril100()
 		new_stations = [station for station in stations 
 						if station["ril100"] not in ril100_list 
 						and remove_ril_extensions(station["ril100"]) not in ril100_list]
-		stations_list.extend(new_stations)
+	stations_list.extend(new_stations)
 	with open("Station.json", "w", encoding="utf-8", newline="\n") as output:
 		json.dump(data, output, ensure_ascii=False, indent="\t")
 
@@ -99,8 +125,8 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 			distance_to_stop = 0
 		segment_segments.append(segment_no)
 	route_segments = [{
-		"start": ril_start,
-		"end": ril_end,
+		"start": get_best_ril100(ril_start),
+		"end": get_best_ril100(ril_end),
 		"electrified": electrified,
 		"group": category,
 		"length": segment_length,
@@ -132,7 +158,7 @@ def import_station_categories() -> dict[str, int]:
 		stations_reader = csv.reader(stations_f, delimiter=';')
 		stations_reader.__next__()
 		# (RIL100, category)
-		stations = dict(((station[5], station[6]) for station in stations_reader))
+		stations = dict(((station[5], int(station[6])) for station in stations_reader))
 		return stations
 	
 
