@@ -2,10 +2,10 @@ import csv
 import json
 import os
 
-import numpy
+# import numpy
 
-import ensure_distances
-import fast_spacing
+# import ensure_distances
+# import fast_spacing
 import plot
 
 
