@@ -1,6 +1,8 @@
 import csv
 import json
 import os
+import sys
+from typing import Optional
 import plot
 
 
@@ -24,7 +26,7 @@ def import_locations() -> dict[str, (int, int)]:
 		return positions_tc
 
 
-def fix_locations():
+def fix_locations(stations: Optional[list[str]] = None):
 	"""
 	Moves all stations to their "real" location, 
 	with the exception of stations with their RIL100 code starting with 'K', 'F', 'R', 'S', or 'T'.
@@ -36,8 +38,12 @@ def fix_locations():
 		station_list: list[dict] = data["data"]
 		for station in station_list:
 			try:
-				if station['ril100'][0] not in ["K", "F", "R", "S", "T"]:
-					station['x'], station['y'] = positions_tc[station["ril100"]]
+				if not stations:
+					if station['ril100'][0] not in ["K", "F", "R", "S", "T"]:
+						station['x'], station['y'] = positions_tc[station["ril100"]]
+				else:
+					if station['ril100'].lower() in stations:
+						station['x'], station['y'] = positions_tc[station["ril100"]]
 			except KeyError:
 				print("Konnte Position von {} nicht bestimmen.".format(station['ril100']))
 	# Spacing is disabled
@@ -55,4 +61,8 @@ def fix_locations():
 if __name__ == '__main__':
 	if not os.path.exists("Station.json") and os.path.exists("../Station.json"):
 		os.chdir('..')
-	fix_locations()
+	if len(sys.argv) >= 2:
+		stations = [ril100.lower() for ril100 in sys.argv[1:]]
+		fix_locations(stations)
+	else:
+		fix_locations()
