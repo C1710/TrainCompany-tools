@@ -79,6 +79,15 @@ def extend_station(waypoints: list[tuple[str, str, int]]):
 		"platformLength": (platform_data[ril100][1] if ril100 in platform_data else 0),
 		"platforms": (platform_data[ril100][0] if ril100 in platform_data else 0)
 	} for (name, ril100) in waypoints]
+
+	if any(station['x'] == 424242 or station['y'] == 424242 for station in stations):
+		print("Convert the missing coordinates in the following way:")
+		origin_x: float = 6.482451
+		origin_y: float = 51.766433
+		scale_x: float = 625.0 / (11.082989 - origin_x)
+		scale_y: float = 385.0 / (49.445616 - origin_y)
+		print("    x = (longitude - {}) * {}".format(origin_x, scale_x))
+		print("    y = (latitude  - {}) * {}".format(origin_y, scale_y))
 	
 	# FIXME: We can't use the function here, because we need the whole data entry
 	with open("Station.json", encoding="utf-8") as station_f:
