@@ -1,15 +1,14 @@
 import csv
 import json
 import os
-
-# import numpy
-
-# import ensure_distances
-# import fast_spacing
 import plot
 
 
 def import_locations() -> dict[str, (int, int)]:
+	"""
+	Imports location data for (almost) all stations in Germany.
+	returns: a dict from RIL100-string to location (in the TC coordinate system)
+	"""
 	with open("tools/haltestellen.CSV", encoding="utf-8") as haltestellen_f:
 		haltestellen_reader = csv.reader(haltestellen_f, delimiter=";")
 		haltestellen_reader.__next__()
@@ -26,6 +25,11 @@ def import_locations() -> dict[str, (int, int)]:
 
 
 def fix_locations():
+	"""
+	Moves all stations to their "real" location, 
+	with the exception of stations with their RIL100 code starting with 'K', 'F', 'R', 'S', or 'T'.
+	This does _not_ affect newly added stations.
+	"""
 	positions_tc = import_locations()
 	with open("Station.json", encoding="utf-8") as station_f:
 		data = json.load(station_f)
@@ -36,7 +40,7 @@ def fix_locations():
 					station['x'], station['y'] = positions_tc[station["ril100"]]
 			except KeyError:
 				print("Konnte Position von {} nicht bestimmen.".format(station['ril100']))
-	# Now we want to ensure that everything is spaced out enough
+	# Spacing is disabled
 	# mapping, points = ensure_distances.convert_to_list(station_list)
 	# points = [(point[0], point[1]) for point in points]
 	# points = fast_spacing.space(points, 15)

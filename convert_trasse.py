@@ -8,6 +8,10 @@ from fix_positions import import_locations
 from route_data import import_route_data
 
 def convert(trasse: str):
+	"""
+	Loads the route (in the CSV format of trassenfinder.de) from the given CSV file and adds relevant data
+	to the Station.json and Path.json files.
+	"""
 	with open(trasse, encoding="cp1252") as trasse_f:
 		trassen_reader = csv.reader(trasse_f, delimiter=';')
 		trassen_reader.__next__()
@@ -21,6 +25,13 @@ def convert(trasse: str):
 
 
 def group_from_category(station_category: int) -> int:
+	"""
+	Converts German station category ("Preisklasse") to the categories used in TC:
+	0 - Knotenbahnhof
+	1 - Hauptbahnhof
+	2 - Nebenbahnhof
+	(3, 4 - others)
+	"""
 	if station_category <= 2:
 		return 0
 	if station_category == 3:
@@ -29,14 +40,22 @@ def group_from_category(station_category: int) -> int:
 		return 2
 
 
+# TODO: Using a regex here is actually a bit much. We could use a simple split()...
 # We use this regex to remove extensions like "HO U" -> "HO"
 no_extensions_regex = re.compile(r'(\w+)( \w+)?')
 @lru_cache
 def remove_ril_extensions(ril100: str) -> str:
+	"""
+	Removes space-separated RIL100 extensions like 'UE P'
+	"""
 	return no_extensions_regex.match(ril100).group(1)
 
 
 def get_category_data(category_data: dict[str, int], ril100: str) -> int:
+	"""
+	Returns the station category (Preisklasse) for a given RIL100.
+	Uses the extension-less RIL100 as a fallback
+	"""
 	try:
 		return category_data[ril100]
 	except KeyError:
@@ -45,6 +64,7 @@ def get_category_data(category_data: dict[str, int], ril100: str) -> int:
 
 @lru_cache
 def get_station_list():
+	"""Loads all stations currently present in TC"""
 	with open("Station.json", encoding="utf-8") as station_f:
 		data = json.load(station_f)
 		stations_list: list = data["data"]
@@ -52,12 +72,13 @@ def get_station_list():
 
 @lru_cache
 def get_existing_ril100():
+	"""Loads all RIL100 codes currently present in TC"""
 	ril100_list = [station["ril100"] for station in get_station_list()]
 	return ril100_list
 
 
 def get_best_ril100(ril100: str) -> str:
-	"""Removes the extension (e.g. 'HO O' -> 'HO') if the shorter version already exists"""
+	"""Removes the extension (e.g. 'HO O' -> 'HO') if the shorter version already exists in TC"""
 	ril100_list = get_existing_ril100()
 	if ril100 in ril100_list:
 		return ril100
@@ -66,7 +87,11 @@ def get_best_ril100(ril100: str) -> str:
 	else:
 		return ril100
 
-def extend_station(waypoints: list[tuple[str, str, int]]):
+# FIXME: Use station data instead of trassen-CSV for the station names
+def extend_station(waypoints: list[tuple[str, str]]):
+	"""Adds station data.
+	params: waypoints: a list of all waypoints of a route, with their RIL100 and name
+	"""
 	platform_data = import_platform_data()
 	position_data = import_locations()
 	category_data = import_station_categories()
@@ -103,6 +128,16 @@ def extend_station(waypoints: list[tuple[str, str, int]]):
 
 
 def extend_path(waypoints: list[tuple[float, str, bool, int]]):
+	"""
+	Adds route data.
+	params: waypoints: a list of all route segments. The entries are of the format
+					   (
+						distance from the start ("lfd. km"),
+						ril100 of the waypoint,
+						whether the waypoint is an actual stop,
+						the "Strecken-Nr."
+					   )
+	"""
 	# (RIL100, length, is electrified, category)
 	route: list[tuple[str, int, bool, int]] = []
 	route_data: dict[int, (bool, int)] = import_route_data()
@@ -163,6 +198,9 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 
 
 def import_station_categories() -> dict[str, int]:
+	"""
+	Loads station categories (Preisklassen) as a mapping RIL100 -> Preisklasse
+	"""
 	with open("tools/bahnhoefe.csv", encoding="utf-8") as stations_f:
 		stations_reader = csv.reader(stations_f, delimiter=';')
 		stations_reader.__next__()
@@ -172,6 +210,9 @@ def import_station_categories() -> dict[str, int]:
 	
 
 def import_platform_data() -> dict[str, tuple[int, int]]:
+	"""
+	Loads information about the platform length and count as a mapping RIL100 -> (count, length)
+	"""
 	with open("tools/bahnsteige.csv", encoding="utf-8") as platform_f:
 		platform_reader = csv.reader(platform_f, delimiter=';')
 		platform_reader.__next__()
