@@ -2,6 +2,7 @@ import json
 from sys import argv
 import os
 
+
 def shift(x: int, y: int):
 	"""Takes all stations and shifts their x and y-coordinates by the specified amount."""
 	with open("Station.json", encoding="utf-8") as stations_file:
@@ -13,6 +14,7 @@ def shift(x: int, y: int):
 	with open("Station.json", "w", encoding="utf-8", newline='\n') as output:
 		# Preserve Unicode and formatting
 		json.dump(data, output, ensure_ascii=False,indent="\t")
+
 
 if __name__ == '__main__':
 	if not os.path.exists("Path.json") and os.path.exists("../Path.json"):

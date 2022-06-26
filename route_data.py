@@ -1,7 +1,9 @@
 import csv
 import re
+from typing import Tuple, Dict
 
-def import_route_data() -> dict[int, (bool, int)]:
+
+def import_route_data() -> Dict[int, (bool, int)]:
 	with open("tools/Strecken.MID", encoding="cp1252") as routes_f:
 		route_reader = csv.reader(routes_f, delimiter=',')
 		# (route ID, (electrification, Haupt/Nebenbahn))
@@ -10,7 +12,9 @@ def import_route_data() -> dict[int, (bool, int)]:
 
 
 speed_re = re.compile(r"(ab (\d+) )?bis (\d+) km/h")
-def extract_speed(speed_str: str) -> tuple[int, int]:
+
+
+def extract_speed(speed_str: str) -> Tuple[int, int]:
 	match = speed_re.search(speed_str)
 	if match is not None:
 		v_from = match.group(2)

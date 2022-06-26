@@ -1,11 +1,15 @@
+from __future__ import annotations
+
+from typing import List, Tuple
+
 import matplotlib.pyplot as plt
 import json
 import os
 
 
-def get_routes_points(station_data: list[dict], route_data: list[dict]) -> tuple[
-	list[tuple[str, tuple[int, int]]],
-	list[tuple[tuple[int, int], tuple[int, int]]]]:
+def get_routes_points(station_data: List[dict], route_data: List[dict]) -> Tuple[
+	List[Tuple[str, Tuple[int, int]]],
+	List[Tuple[Tuple[int, int], Tuple[int, int]]]]:
 	station_data = dict(((station['ril100'], (station['x'], station['y'])) for station in station_data))
 	route_data = (extract_route_stations(route) for route in route_data)
 	route_data = [segment for route in route_data for segment in route]
@@ -14,18 +18,18 @@ def get_routes_points(station_data: list[dict], route_data: list[dict]) -> tuple
 	return station_data, route_data
 
 
-def extract_route_stations(route_entry: dict) -> list[tuple[str, str]]:
+def extract_route_stations(route_entry: dict) -> List[Tuple[str, str]]:
 	waypoints = []
 	if 'objects' in route_entry:
-		segments: list[dict] = route_entry['objects']
+		segments: List[dict] = route_entry['objects']
 		waypoints.extend(((segment['start'], segment['end']) for segment in segments))
 	else:
 		waypoints.append((route_entry['start'], route_entry['end']))
 	return waypoints
 
 
-def plot_points(points: list[tuple[str, tuple[int, int]]],
-				routes: list[tuple[tuple[int, int], tuple[int, int]]],
+def plot_points(points: List[Tuple[str, Tuple[int, int]]],
+				routes: List[Tuple[Tuple[int, int], Tuple[int, int]]],
 				save: bool = False):
 	ril100s, points = zip(*points)
 	x, y = zip(*points)
@@ -49,10 +53,10 @@ def plot_points(points: list[tuple[str, tuple[int, int]]],
 def plot_map(save: bool = False):
 	with open("Station.json", encoding="utf-8") as path_f:
 		data = json.load(path_f)
-		station_data: list[dict] = data["data"]
+		station_data: List[dict] = data["data"]
 	with open("Path.json", encoding="utf-8") as path_f:
 		data = json.load(path_f)
-		route_data: list[dict] = data["data"]
+		route_data: List[dict] = data["data"]
 	station_points, route_points = get_routes_points(station_data, route_data)
 	plot_points(station_points, route_points, save)
 

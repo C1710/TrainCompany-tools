@@ -1,14 +1,15 @@
+from __future__ import annotations
 import csv
 import json
 import os
 import sys
 from functools import lru_cache
-from typing import Optional
+from typing import Optional, List, Tuple, Dict
 import plot
 
 
 @lru_cache
-def import_betriebsstellen_data() -> list[tuple[str, int, int, float, float]]:
+def import_betriebsstellen_data() -> List[Tuple[str, int, int, float, float]]:
 	with open("tools/betriebsstellen_open_data.csv", encoding="cp852") as betriebsstellen_f:
 		reader = csv.reader(betriebsstellen_f, delimiter=',')
 		reader.__next__()
@@ -24,14 +25,14 @@ def import_betriebsstellen_data() -> list[tuple[str, int, int, float, float]]:
 
 
 @lru_cache
-def betriebsstellen_as_dict() -> dict[str, (int, int, float, float)]:
+def betriebsstellen_as_dict() -> Dict[str, (int, int, float, float)]:
 	data = import_betriebsstellen_data()
 	data = ((ril100, (strecken_nr, km, longitude, latitude)) for (ril100, strecken_nr, km, longitude, latitude) in data)
 	return dict(data)
 
 
 @lru_cache
-def import_locations() -> dict[str, (int, int)]:
+def import_locations() -> Dict[str, (int, int)]:
 	"""
 	Imports location data for (almost) all stations in Germany.
 	returns: a dict from RIL100-string to location (in the TC coordinate system)
@@ -46,11 +47,11 @@ scale_x: float = 625.0 / (11.082989 - origin_x)
 scale_y: float = 385.0 / (49.445616 - origin_y)
 
 
-def transform_coordinates(longitude: float, latitude: float) -> tuple[int, int]:
+def transform_coordinates(longitude: float, latitude: float) -> Tuple[int, int]:
 	(int((longitude - origin_x) * scale_x), int((latitude - origin_y) * scale_y))
 
 
-def fix_locations(stations: Optional[list[str]] = None):
+def fix_locations(stations: Optional[List[str]] = None):
 	"""
 	Moves all stations to their "real" location,
 	with the exception of stations with their RIL100 code starting with 'K', 'F', 'R', 'S', or 'T'.
@@ -59,7 +60,7 @@ def fix_locations(stations: Optional[list[str]] = None):
 	positions_tc = import_locations()
 	with open("Station.json", encoding="utf-8") as station_f:
 		data = json.load(station_f)
-		station_list: list[dict] = data["data"]
+		station_list: List[dict] = data["data"]
 		for station in station_list:
 			try:
 				if not stations:

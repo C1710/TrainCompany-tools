@@ -1,9 +1,12 @@
+from __future__ import annotations
 import csv
 from functools import lru_cache
 import json
 import sys
 import re
 import os
+from typing import Dict, Tuple, List
+
 from fix_positions import import_locations
 from route_data import import_route_data
 
@@ -68,7 +71,7 @@ def remove_ril_extensions(ril100: str) -> str:
 	return no_extensions_regex.match(ril100).group(1)
 
 
-def get_category_data(category_data: dict[str, int], ril100: str) -> int:
+def get_category_data(category_data: Dict[str, int], ril100: str) -> int:
 	"""
 	Returns the station category (Preisklasse) for a given RIL100.
 	Uses the extension-less RIL100 as a fallback.
@@ -111,7 +114,7 @@ def get_best_ril100(ril100: str) -> str:
 
 
 # FIXME: Use station data instead of trassen-CSV for the station names
-def extend_station(waypoints: list[tuple[str, str]]):
+def extend_station(waypoints: List[Tuple[str, str]]):
 	"""Adds station data.
 	params: waypoints: a list of all waypoints of a route, with their RIL100 and name
 	"""
@@ -150,7 +153,7 @@ def extend_station(waypoints: list[tuple[str, str]]):
 
 
 @lru_cache
-def import_betriebsstellen_data() -> list[tuple[str, int, int, float, float, str]]:
+def import_betriebsstellen_data() -> List[Tuple[str, int, int, float, float, str]]:
 	with open("tools/betriebsstellen_open_data.csv", encoding="cp852") as betriebsstellen_f:
 		reader = csv.reader(betriebsstellen_f, delimiter=',')
 		reader.__next__()
@@ -167,7 +170,7 @@ def import_betriebsstellen_data() -> list[tuple[str, int, int, float, float, str
 
 
 @lru_cache
-def betriebsstellen_as_dict() -> dict[str, (int, int, float, float, str)]:
+def betriebsstellen_as_dict() -> Dict[str, Tuple[int, int, float, float, str]]:
 	data = import_betriebsstellen_data()
 	data = ((ril100, (
 		strecken_nr,
@@ -179,7 +182,7 @@ def betriebsstellen_as_dict() -> dict[str, (int, int, float, float, str)]:
 	return dict(data)
 
 
-def extend_path(waypoints: list[tuple[float, str, bool, int]]):
+def extend_path(waypoints: List[Tuple[float, str, bool, int]]):
 	"""
 	Adds route data.
 	params: waypoints: a list of all route segments. The entries are of the format
@@ -191,13 +194,13 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 					   )
 	"""
 	# (RIL100, length, is electrified, category)
-	route: list[tuple[str, int, bool, int]] = []
-	route_data: dict[int, (bool, int)] = import_route_data()
+	route: List[Tuple[str, int, bool, int]] = []
+	route_data: Dict[int, (bool, int)] = import_route_data()
 	# The distance to the next stop (accumulated for all segments without one)
 	distance_to_stop = 0
 	total_distance = 0
 	# The Streckennr., km_start, km_end we cover by this segment
-	segment_segments: list[(int, int, int)] = []
+	segment_segments: List[(int, int, int)] = []
 	for (km, ril100, is_stop, segment_no) in waypoints:
 		# Get the distance of the segment
 		segment = km - total_distance
@@ -250,7 +253,7 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 
 
 @lru_cache
-def import_station_categories() -> dict[str, int]:
+def import_station_categories() -> Dict[str, int]:
 	"""
 	Loads station categories (Preisklassen) as a mapping RIL100 -> Preisklasse
 	"""
@@ -262,7 +265,7 @@ def import_station_categories() -> dict[str, int]:
 		return stations
 
 
-def import_platform_data() -> dict[str, tuple[int, int]]:
+def import_platform_data() -> Dict[str, Tuple[int, int]]:
 	"""
 	Loads information about the platform length and count as a mapping RIL100 -> (count, length)
 	"""
