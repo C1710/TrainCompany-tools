@@ -36,6 +36,7 @@ def plot_points(points: list[tuple[str, tuple[int, int]]],
 	for x, y, text in zip(x, y, ril100s):
 		plt.text(x * 1.01, y * 1.01, text, fontsize=2)
 	plt.gca().invert_yaxis()
+	plt.gca().set_aspect('equal', adjustable='box')
 	if not save:
 		plt.show()
 	else:
