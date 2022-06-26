@@ -7,6 +7,7 @@ import os
 from fix_positions import import_locations
 from route_data import import_route_data
 
+
 def convert(trasse: str):
 	"""
 	Loads the route (in the CSV format of trassenfinder.de) from the given CSV file and adds relevant data
@@ -16,12 +17,23 @@ def convert(trasse: str):
 		trassen_reader = csv.reader(trasse_f, delimiter=';')
 		trassen_reader.__next__()
 		# Format: (distance from start, full name, RIL100, is stop, route number)
-		waypoints = [(float(waypoint[0].replace(',', '.')), waypoint[1], waypoint[2].replace('  ', ' '), 'Kundenhalt' in waypoint[17], int(waypoint[3] if waypoint[3] else '0')) for waypoint in trassen_reader]
+		waypoints = [(float(waypoint[0].replace(',', '.')), waypoint[1], waypoint[2].replace('  ', ' '),
+					  'Kundenhalt' in waypoint[17], int(waypoint[3] if waypoint[3] else '0')) for waypoint in
+					 trassen_reader]
 	# Split the data into the part relevant for Station.json and Path.json
 	waypoints_station = [(waypoint[1], waypoint[2]) for waypoint in waypoints if waypoint[3]]
 	waypoints_paths = [(waypoint[0], waypoint[2], waypoint[3], waypoint[4]) for waypoint in waypoints]
 	extend_station(waypoints_station)
 	extend_path(waypoints_paths)
+
+
+def group_from_ril100(ril100: str) -> int:
+	category = get_category_data(import_station_categories(), ril100)
+	if category < 0:
+		# It could be an Abzweig
+		if betriebsstellen_as_dict()[ril100] == 'Abzw':
+			return 4
+	return group_from_category(category)
 
 
 def group_from_category(station_category: int) -> int:
@@ -30,19 +42,24 @@ def group_from_category(station_category: int) -> int:
 	0 - Knotenbahnhof
 	1 - Hauptbahnhof
 	2 - Nebenbahnhof
-	(3, 4 - others)
+	3 - Betriebsbahnhof
+	4 - Abzweig
 	"""
-	if station_category <= 2:
+	if 0 < station_category <= 2:
 		return 0
 	if station_category == 3:
 		return 1
-	else:
+	if station_category > 3:
 		return 2
+	else:
+		return 3
 
 
 # TODO: Using a regex here is actually a bit much. We could use a simple split()...
 # We use this regex to remove extensions like "HO U" -> "HO"
 no_extensions_regex = re.compile(r'(\w+)( \w+)?')
+
+
 @lru_cache
 def remove_ril_extensions(ril100: str) -> str:
 	"""
@@ -54,12 +71,16 @@ def remove_ril_extensions(ril100: str) -> str:
 def get_category_data(category_data: dict[str, int], ril100: str) -> int:
 	"""
 	Returns the station category (Preisklasse) for a given RIL100.
-	Uses the extension-less RIL100 as a fallback
+	Uses the extension-less RIL100 as a fallback.
+	Returns -1 if not found
 	"""
 	try:
 		return category_data[ril100]
 	except KeyError:
-		return category_data[remove_ril_extensions(ril100)]
+		try:
+			return category_data[remove_ril_extensions(ril100)]
+		except KeyError:
+			return -1
 
 
 @lru_cache
@@ -69,6 +90,7 @@ def get_station_list():
 		data = json.load(station_f)
 		stations_list: list = data["data"]
 	return stations_list
+
 
 @lru_cache
 def get_existing_ril100():
@@ -87,6 +109,7 @@ def get_best_ril100(ril100: str) -> str:
 	else:
 		return ril100
 
+
 # FIXME: Use station data instead of trassen-CSV for the station names
 def extend_station(waypoints: list[tuple[str, str]]):
 	"""Adds station data.
@@ -94,9 +117,8 @@ def extend_station(waypoints: list[tuple[str, str]]):
 	"""
 	platform_data = import_platform_data()
 	position_data = import_locations()
-	category_data = import_station_categories()
 	stations = [{
-		"group": group_from_category(get_category_data(category_data, ril100)),
+		"group": group_from_ril100(ril100),
 		"name": name,
 		"ril100": ril100,
 		"x": position_data[ril100][0] if ril100 in position_data else 424242,
@@ -113,18 +135,48 @@ def extend_station(waypoints: list[tuple[str, str]]):
 		scale_y: float = 385.0 / (49.445616 - origin_y)
 		print("    x = (longitude - {}) * {}".format(origin_x, scale_x))
 		print("    y = (latitude  - {}) * {}".format(origin_y, scale_y))
-	
+
 	# FIXME: We can't use the function here, because we need the whole data entry
 	with open("Station.json", encoding="utf-8") as station_f:
 		data = json.load(station_f)
 		stations_list: list = data["data"]
 		ril100_list = get_existing_ril100()
-		new_stations = [station for station in stations 
-						if station["ril100"] not in ril100_list 
+		new_stations = [station for station in stations
+						if station["ril100"] not in ril100_list
 						and remove_ril_extensions(station["ril100"]) not in ril100_list]
 	stations_list.extend(new_stations)
 	with open("Station.json", "w", encoding="utf-8", newline="\n") as output:
 		json.dump(data, output, ensure_ascii=False, indent="\t")
+
+
+@lru_cache
+def import_betriebsstellen_data() -> list[tuple[str, int, int, float, float, str]]:
+	with open("tools/betriebsstellen_open_data.csv", encoding="cp852") as betriebsstellen_f:
+		reader = csv.reader(betriebsstellen_f, delimiter=',')
+		reader.__next__()
+		# RIL100, Strecke_nr, KM, longitude, latitude, Betriebsstellenart
+		data = [(
+			station[6],
+			int(station[0]),
+			int(station[2]),
+			float(station[10]),
+			float(station[9]),
+			station[5]
+		) for station in reader]
+	return data
+
+
+@lru_cache
+def betriebsstellen_as_dict() -> dict[str, (int, int, float, float, str)]:
+	data = import_betriebsstellen_data()
+	data = ((ril100, (
+		strecken_nr,
+		km,
+		longitude,
+		latitude,
+		betriebsstellen_art))
+			for (ril100, strecken_nr, km, longitude, latitude, betriebsstellen_art) in data)
+	return dict(data)
 
 
 def extend_path(waypoints: list[tuple[float, str, bool, int]]):
@@ -144,8 +196,8 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 	# The distance to the next stop (accumulated for all segments without one)
 	distance_to_stop = 0
 	total_distance = 0
-	# The Streckennr. we cover by this segment
-	segment_segments = []
+	# The Streckennr., km_start, km_end we cover by this segment
+	segment_segments: list[(int, int, int)] = []
 	for (km, ril100, is_stop, segment_no) in waypoints:
 		# Get the distance of the segment
 		segment = km - total_distance
@@ -167,7 +219,7 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 				route_category = 0
 			route.append((ril100, int(distance_to_stop), electrified, route_category))
 			distance_to_stop = 0
-		segment_segments.append(segment_no)
+		segment_segments.append((segment_no))
 	route_segments = [{
 		"start": get_best_ril100(ril_start),
 		"end": get_best_ril100(ril_end),
@@ -188,7 +240,7 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 				for segment in route_segments:
 					segment.pop(key)
 	route_entry.update(objects=route_segments)
-	
+
 	with open("Path.json", encoding="utf-8") as paths_f:
 		data = json.load(paths_f)
 		paths_list: list = data["data"]
@@ -197,6 +249,7 @@ def extend_path(waypoints: list[tuple[float, str, bool, int]]):
 		json.dump(data, output, ensure_ascii=False, indent="\t")
 
 
+@lru_cache
 def import_station_categories() -> dict[str, int]:
 	"""
 	Loads station categories (Preisklassen) as a mapping RIL100 -> Preisklasse
@@ -207,7 +260,7 @@ def import_station_categories() -> dict[str, int]:
 		# (RIL100, category)
 		stations = dict(((station[5], int(station[6])) for station in stations_reader))
 		return stations
-	
+
 
 def import_platform_data() -> dict[str, tuple[int, int]]:
 	"""
@@ -243,4 +296,3 @@ if __name__ == '__main__':
 		print("Usage: python convert_trasse.py trassenfinder.csv")
 		exit()
 	convert(filename)
-	

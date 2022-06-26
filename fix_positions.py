@@ -2,33 +2,57 @@ import csv
 import json
 import os
 import sys
+from functools import lru_cache
 from typing import Optional
 import plot
 
 
+@lru_cache
+def import_betriebsstellen_data() -> list[tuple[str, int, int, float, float]]:
+	with open("tools/betriebsstellen_open_data.csv", encoding="cp852") as betriebsstellen_f:
+		reader = csv.reader(betriebsstellen_f, delimiter=',')
+		reader.__next__()
+		# RIL100, Strecke_nr, KM, longitude, latitude
+		data = [(
+			station[6],
+			int(station[0]),
+			int(station[2]),
+			float(station[10].replace(',', '.')),
+			float(station[9].replace(',', '.'))
+		) for station in reader]
+	return data
+
+
+@lru_cache
+def betriebsstellen_as_dict() -> dict[str, (int, int, float, float)]:
+	data = import_betriebsstellen_data()
+	data = ((ril100, (strecken_nr, km, longitude, latitude)) for (ril100, strecken_nr, km, longitude, latitude) in data)
+	return dict(data)
+
+
+@lru_cache
 def import_locations() -> dict[str, (int, int)]:
 	"""
 	Imports location data for (almost) all stations in Germany.
 	returns: a dict from RIL100-string to location (in the TC coordinate system)
 	"""
-	with open("tools/haltestellen.CSV", encoding="utf-8") as haltestellen_f:
-		haltestellen_reader = csv.reader(haltestellen_f, delimiter=";")
-		haltestellen_reader.__next__()
-		positions = ((station[1], float(station[5].replace(',', '.')), float(station[6].replace(',', '.'))) for station in haltestellen_reader)
-		# Some entries have multiple RIL100 in one line
-		positions = ([(ril100, lon, lat) for ril100 in ril100s.split(',')] for (ril100s, lon, lat) in positions)
-		positions = ((ril100.replace('  ', ' '), lon, lat) for entries in positions for (ril100, lon, lat) in entries)
-		origin_x: float = 6.482451
-		origin_y: float = 51.766433
-		scale_x: float = 625.0 / (11.082989 - origin_x)
-		scale_y: float = 385.0 / (49.445616 - origin_y)
-		positions_tc = dict(((ril100, (int((lon - origin_x) * scale_x), int((lat - origin_y) * scale_y))) for (ril100, lon, lat) in positions))
-		return positions_tc
+	betriebsstellen_data = import_betriebsstellen_data()
+	return dict(((ril100, transform_coordinates(lon, lat)) for (ril100, _, _, lon, lat) in betriebsstellen_data))
+
+
+origin_x: float = 6.482451
+origin_y: float = 51.766433
+scale_x: float = 625.0 / (11.082989 - origin_x)
+scale_y: float = 385.0 / (49.445616 - origin_y)
+
+
+def transform_coordinates(longitude: float, latitude: float) -> tuple[int, int]:
+	(int((longitude - origin_x) * scale_x), int((latitude - origin_y) * scale_y))
 
 
 def fix_locations(stations: Optional[list[str]] = None):
 	"""
-	Moves all stations to their "real" location, 
+	Moves all stations to their "real" location,
 	with the exception of stations with their RIL100 code starting with 'K', 'F', 'R', 'S', or 'T'.
 	This does _not_ affect newly added stations.
 	"""

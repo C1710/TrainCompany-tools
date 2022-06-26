@@ -21,10 +21,11 @@ Here, you simply need to call `python plot.py`. It will then save the map to `ma
 You can also shift all coordinates to have another coordinate origin.
 For this, you call `python shift_station_coordinates.py <x-offset> <y-offset>` with the offsets you want to add.
 
-# License `bahnhoefe.csv`, `haltestellen.csv`, `strecken.MID`, and `bahnsteige.csv`:
+# License `bahnhoefe.csv`, `haltestellen.csv`, `strecken.MID`, `betriebsstellen_open_data.csv`, and `bahnsteige.csv`:
 > © 2016 Deutsche Bahn AG. Dieser Datensatz wird bereitgestellt unter der Lizenz Creative Commons Attribution 4.0 International (CC BY 4.0). 
 Source:
 - https://data.deutschebahn.com/dataset/data-stationsdaten.html
 - https://data.deutschebahn.com/dataset/data-haltestellen.html
 - https://data.deutschebahn.com/dataset/geo-strecke.html
+- https://data.deutschebahn.com/dataset/geo-betriebsstelle.html
 - https://data.deutschebahn.com/dataset/data-bahnsteig.html
