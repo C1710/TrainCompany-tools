@@ -36,7 +36,7 @@ def plot_points(points: List[Tuple[str, Tuple[int, int]]],
 	route_xy = [tuple(zip(*waypoints)) for waypoints in routes]
 	for (route_x, route_y) in route_xy:
 		plt.plot(route_x, route_y, color='teal', linewidth=0.1)
-	plt.scatter(x, y, s=5)
+	plt.scatter(x, y, s=1.3)
 	for x, y, text in zip(x, y, ril100s):
 		plt.text(x * 1.01, y * 1.01, text, fontsize=2)
 	plt.gca().invert_yaxis()
