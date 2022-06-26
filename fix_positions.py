@@ -76,13 +76,6 @@ def fix_locations(stations: Optional[List[str]] = None):
 						station['x'], station['y'] = positions_tc[station["ril100"]]
 			except KeyError:
 				print("Konnte Position von {} nicht bestimmen.".format(station['ril100']))
-	# Spacing is disabled
-	# mapping, points = ensure_distances.convert_to_list(station_list)
-	# points = [(point[0], point[1]) for point in points]
-	# points = fast_spacing.space(points, 15)
-	# points = numpy.array(points)
-	# new_coordinates = ensure_distances.convert_to_dict(mapping, points)
-	# ensure_distances.apply_new_coordinates(new_coordinates, station_list)
 	with open("Station.json", 'w', encoding='utf-8', newline='\n') as output:
 		json.dump(data, output, ensure_ascii=False, indent='\t')
 	plot.plot_map()
