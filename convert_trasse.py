@@ -20,9 +20,13 @@ def convert(trasse: str):
 		trassen_reader = csv.reader(trasse_f, delimiter=';')
 		trassen_reader.__next__()
 		# Format: (distance from start, full name, RIL100, is stop, route number)
-		waypoints = [(float(waypoint[0].replace(',', '.')), waypoint[1], waypoint[2].replace('  ', ' '),
-					  'Kundenhalt' in waypoint[17], int(waypoint[3] if waypoint[3] else '0')) for waypoint in
-					 trassen_reader]
+		waypoints = [(
+			float(waypoint[0].replace(',', '.')),
+			waypoint[1],
+			waypoint[2].replace('  ', ' '),
+			'Kundenhalt' in waypoint[17],
+			int(waypoint[3] if waypoint[3] else '0')
+		) for waypoint in trassen_reader]
 	# Split the data into the part relevant for Station.json and Path.json
 	waypoints_station = [(waypoint[1], waypoint[2]) for waypoint in waypoints if waypoint[3]]
 	waypoints_paths = [(waypoint[0], waypoint[2], waypoint[3], waypoint[4]) for waypoint in waypoints]

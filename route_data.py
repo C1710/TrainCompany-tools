@@ -1,9 +1,10 @@
+from __future__ import annotations
 import csv
 import re
 from typing import Tuple, Dict
 
 
-def import_route_data() -> Dict[int, (bool, int)]:
+def import_route_data() -> Dict[int, Tuple[bool, int]]:
 	with open("tools/Strecken.MID", encoding="cp1252") as routes_f:
 		route_reader = csv.reader(routes_f, delimiter=',')
 		# (route ID, (electrification, Haupt/Nebenbahn))

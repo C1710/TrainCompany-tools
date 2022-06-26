@@ -18,8 +18,9 @@ def import_betriebsstellen_data() -> List[Tuple[str, int, int, float, float]]:
 			station[6],
 			int(station[0]),
 			int(station[2]),
-			float(station[10].replace(',', '.')),
-			float(station[9].replace(',', '.'))
+			# Longitude and latitude couldn't get this large, so it is okay to use as a placeholder
+			float(station[10] if station[10] else 424242),
+			float(station[9] if station[9] else 424242)
 		) for station in reader]
 	return data
 
@@ -48,7 +49,11 @@ scale_y: float = 385.0 / (49.445616 - origin_y)
 
 
 def transform_coordinates(longitude: float, latitude: float) -> Tuple[int, int]:
-	(int((longitude - origin_x) * scale_x), int((latitude - origin_y) * scale_y))
+	if longitude < 424242 and latitude < 424242:
+		return int((longitude - origin_x) * scale_x), int((latitude - origin_y) * scale_y)
+	else:
+		# We don't have coordinates here
+		return 424242, 424242
 
 
 def fix_locations(stations: Optional[List[str]] = None):
