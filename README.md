@@ -1,10 +1,11 @@
 # How to use
 First, this repository needs to be the `tools` directory in `TrainCompany-Data`.
 You can use the scripts from both this directory as well as the `TrainCompany-Data` directory, to which the script will change automatically.
-In order to use the scripts, you will need to install the `requirements.txt`. Note that right now, a `matplotlib` installation would also be sufficient.
+Python 3.9 is required (older versions such as 3.8 might work though).
+You will also need to install the `requirements.txt` (`python -m pip install -r requirements.txt`) --- right now, only `matplotlib` is required.
 
 ## Converting routes to station and route/path data
-For this, you take the CSV with all stations covered by the route being marked as "Kundenhalt" (stop time >= 1, or 2 minutes) and open it with `python tools/convert_trasse.py trasse.csv`.
+For this, you take the Trassenfinder-CSV with all stations covered by the route being marked as "Kundenhalt" (stop time >= 1, or 2 minutes) and open it with `python tools/convert_trasse.py <trasse.csv>` (with `<trasse.csv>` being the name of your exported CSV file).
 If no errors occur, it saves the following data:
 - `Station.json`
   - _All attributes if available_
