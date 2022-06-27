@@ -52,14 +52,14 @@ def group_from_category(station_category: int) -> int:
 	3 - Betriebsbahnhof
 	4 - Abzweig
 	"""
+	if station_category < 1:
+		return 3
 	if 0 < station_category <= 2:
 		return 0
 	if station_category == 3:
 		return 1
-	if station_category > 3:
-		return 2
-	else:
-		return 3
+	if 3 < station_category < 7:
+		return 5
 
 
 # TODO: Using a regex here is actually a bit much. We could use a simple split()...
