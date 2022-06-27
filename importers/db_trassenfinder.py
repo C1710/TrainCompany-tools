@@ -23,7 +23,7 @@ class DbTrassenfinderImporter(CsvImporter[CodeWaypoint]):
 
 
 def convert_waypoints_tracks_to_route(waypoints: List[CodeWaypoint], track_data: List[Track]) -> Route:
-    route_number_to_track = dict(((track.route_number, track) for track in track_data))
+    route_number_to_track = {track.route_number: track for track in track_data}
     tracks_used = [route_number_to_track[waypoint.next_route_number]
                    for waypoint in waypoints if waypoint.next_route_number]
     return Route(

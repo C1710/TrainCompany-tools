@@ -20,7 +20,7 @@ class TcRoute:
 
     @staticmethod
     def from_route(route: Route, station_data: List[Station]) -> TcRoute:
-        code_to_station = dict(((code, station) for station in station_data for code in station.codes))
+        code_to_station = {code: station for station in station_data for code in station.codes}
         station_data = [code_to_station[waypoint.code] for waypoint in route.waypoints if waypoint.is_stop]
         paths = TcPath.merge(TcPath.from_route(route))
         return TcRoute(station_data, paths)

@@ -28,7 +28,7 @@ class DbBahnhoefeImporter(CsvImporter[Station]):
 
 
 def add_hp_information_to_stations(stations: List[Station], new_data: List[Station]):
-    ril100_to_stations = dict(((ril100, index) for (index, station) in enumerate(stations) for ril100 in station.codes))
+    ril100_to_stations = {ril100: index for (index, station) in enumerate(stations) for ril100 in station.codes}
 
     for station in new_data:
         # We want to add station number and station category if not present

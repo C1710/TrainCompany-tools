@@ -23,7 +23,7 @@ class DbBahnsteigeImporter(CsvImporter[Platform]):
 
 def add_platforms_to_stations(stations: List[Station], platforms: List[Platform]):
     # First we make it easier to look up the stations
-    station_code_to_index: Dict[int, int] = dict(((station.number, index) for (index, station) in enumerate(stations)))
+    station_code_to_index: Dict[int, int] = {station.number: index for (index, station) in enumerate(stations)}
     for platform in platforms:
         if platform.station is int:
             index: int = station_code_to_index[platform.station]
