@@ -55,14 +55,14 @@ if __name__ == '__main__':
                                       help="Ein regulärer Ausdruck, "
                                            "nach dem die Betriebsstellen hinzugefügt werden sollen.")
     regex_or_ril100_list.required = True
-    parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str,
+    parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str,
+    parser.add_argument('--data-dir', dest='data_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.join(script_dir, 'data'),
                         help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
     update_or_override = parser.add_mutually_exclusive_group()
-    update_or_override.add_argument('--override_stations', action='store_true',
+    update_or_override.add_argument('--override-stations', action='store_true',
                                     help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     update_or_override.add_argument('--update-stations', action='store_true',
                                     help="Aktualisiert existierende Haltestellen, fügt aber keine hinzu")

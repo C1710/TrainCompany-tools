@@ -10,7 +10,8 @@ def add_stations_to_file(stations: List[Station],
                          override_stations: bool = False,
                          update_stations: bool = False):
     existing_station_codes = frozenset([station['ril100'] for station in file.data])
-    # We only want to add stations
+    code_to_existing_station = {station['ril100']: station for station in file.data}
+    # We only want to add new stations
     if not override_stations and not update_stations:
         for station in stations.copy():
             for code in station.codes:
@@ -19,12 +20,25 @@ def add_stations_to_file(stations: List[Station],
     # We only want to update existing stations
     if update_stations:
         for station in stations.copy():
+            is_existing: bool = False
             for code in station.codes:
-                if code not in existing_station_codes:
-                    stations.remove(station)
-    tc_stations = (TcStation.from_station(station) for station in stations)
-    # https://stackoverflow.com/a/33797147
-    # We remove all entries that are None here
-    tc_stations_dicts = [{key: value for key, value in station.__dict__.items() if value is not None}
-                         for station in tc_stations]
-    file.data.extend(tc_stations_dicts)
+                if code in existing_station_codes:
+                    is_existing = True
+            if not is_existing:
+                stations.remove(station)
+    # Update or append the data
+    for station in stations:
+        # Convert to dict for insertion
+        tc_station = TcStation.from_station(station)
+        tc_station_dict = {key: value for key, value in tc_station.__dict__.items() if value is not None}
+
+        updated: bool = False
+        for code in station.codes:
+            if code in existing_station_codes:
+                # Update data
+                code_to_existing_station[code].update(tc_station_dict)
+                updated = True
+                break
+        # There is no station with that code there, so we need to append it
+        if not updated:
+            file.data.append(tc_station_dict)
