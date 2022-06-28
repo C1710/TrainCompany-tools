@@ -4,6 +4,12 @@ from dataclasses import dataclass, field
 from typing import Optional, List, Iterable
 
 
+# It will add all of them in that order if one is added
+special_codes: List[List[str]] = [
+    ["EMSTP", "EMST"]
+]
+
+
 class CodeList (List[str]):
     def append(self, __object: str):
         if __object not in self:
@@ -16,6 +22,11 @@ class CodeList (List[str]):
                 __object = __object.split(' ')[0]
                 if __object not in self:
                     super().append(__object)
+        for special in special_codes:
+            if __object in special:
+                for other in special:
+                    if other != __object:
+                        super().append(other)
 
     def extend(self, __iterable: Iterable[str]):
         for code in __iterable:
@@ -50,7 +61,7 @@ class Station:
             if self.station_category == 7:
                 # Haltepunkt (unsichtbar
                 return 5
-        if self.kind.lower() == 'abzw':
+        if self.kind and self.kind.lower() == 'abzw':
             # Abzweig
             return 4
         else:
@@ -62,7 +73,7 @@ class Station:
 
     @property
     def platform_length(self) -> int:
-        return max((platform.length for platform in self.platforms)) if self.platforms is not None else 0
+        return max((platform.length for platform in self.platforms)) if self.platforms else 0
 
     @property
     def codes(self):
@@ -109,7 +120,7 @@ class TcStation:
 
     @staticmethod
     def from_station(station: Station) -> TcStation:
-        x, y = station.location.convert_to_tc()
+        x, y = station.location.convert_to_tc() if station.location else (0, 0)
         return TcStation(
             name=station.name,
             ril100=station.codes[0],

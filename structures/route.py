@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import logging
 from abc import ABCMeta
 from dataclasses import dataclass, field
 from enum import Enum
@@ -13,6 +15,13 @@ class Route:
     tracks: List[Track]
 
 
+def invalid_station(code: str) -> Station:
+    logging.warning("Unbekannter Haltepunkt: {}. Kann keine automatischen Daten hinzufügen.".format(code))
+    station = Station()
+    station.codes.append(code)
+    return station
+
+
 @dataclass
 class TcRoute:
     stations: List[Station]
@@ -21,7 +30,8 @@ class TcRoute:
     @staticmethod
     def from_route(route: Route, station_data: List[Station]) -> TcRoute:
         code_to_station = {code: station for station in station_data for code in station.codes}
-        stations = [code_to_station[waypoint.code] for waypoint in route.waypoints if waypoint.is_stop]
+        stations = [code_to_station[waypoint.code] if waypoint.code in code_to_station else invalid_station(waypoint.code)
+                    for waypoint in route.waypoints if waypoint.is_stop]
         paths = TcPath.merge(TcPath.from_route(route))
         return TcRoute(stations, paths)
 
@@ -129,9 +139,9 @@ class TrackKind(Enum):
             return TrackKind.NEBENBAHN
         elif category == "Hauptbahn":
             if v_max >= 250:
-                return TrackKind.HAUPTBAHN
-            else:
                 return TrackKind.SFS
+            else:
+                return TrackKind.HAUPTBAHN
         else:
             return TrackKind.UNKNOWN
 

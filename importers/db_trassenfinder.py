@@ -1,7 +1,8 @@
+import logging
 from typing import List
 
 from importer import CsvImporter
-from structures.route import CodeWaypoint, Route, Track
+from structures.route import CodeWaypoint, Route, Track, TrackKind
 
 
 class DbTrassenfinderImporter(CsvImporter[CodeWaypoint]):
@@ -22,9 +23,20 @@ class DbTrassenfinderImporter(CsvImporter[CodeWaypoint]):
         return waypoint
 
 
+def invalid_track(route_number: int) -> Track:
+    logging.warning("Unbekannte Streckennr.: {}. Kann Elektrifizierung, Streckenart nicht identifizieren.".format(route_number))
+    return Track(
+        electrified=False,
+        kind=TrackKind.UNKNOWN,
+        length=0,
+        route_number=route_number
+    )
+
+
 def convert_waypoints_tracks_to_route(waypoints: List[CodeWaypoint], track_data: List[Track]) -> Route:
     route_number_to_track = {track.route_number: track for track in track_data}
     tracks_used = [route_number_to_track[waypoint.next_route_number]
+                   if waypoint.next_route_number in route_number_to_track else invalid_track(waypoint.next_route_number)
                    for waypoint in waypoints if waypoint.next_route_number]
     return Route(
         waypoints,
