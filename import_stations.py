@@ -10,7 +10,7 @@ from typing import List
 from structures import DataSet
 from tc_utils import TcFile
 from tc_utils.stations import add_stations_to_file
-from . import check_files
+from cli_utils import check_files
 
 
 def import_stations_into_tc(stations: List[str],
@@ -49,12 +49,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Importiere neue Betriebsstellen in TrainCompany')
     regex_or_ril100_list = parser.add_mutually_exclusive_group()
-    regex_or_ril100_list.add_argument('stations', metavar='RIL100', type=str, nargs='+',
-                                      required='--regex' not in sys.argv,
+    regex_or_ril100_list.add_argument('--stations', metavar='RIL100', type=str, nargs='+',
                                       help='Die RIL100-Codes, die hinzugefügt werden sollen')
     regex_or_ril100_list.add_argument('--regex', type=str, metavar='REGEX',
                                       help="Ein regulärer Ausdruck, "
                                            "nach dem die Betriebsstellen hinzugefügt werden sollen.")
+    regex_or_ril100_list.required = True
     parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")

@@ -10,7 +10,7 @@ from structures import DataSet
 from structures.route import TcRoute
 from tc_utils import TcFile
 from tc_utils.paths import add_route_to_files
-from . import check_files
+from cli_utils import check_files
 
 
 def import_trasse_into_tc(trasse: PathLike | str,
