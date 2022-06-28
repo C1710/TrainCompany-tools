@@ -5,12 +5,22 @@ from structures.station import TcStation
 from tc_utils import TcFile
 
 
-def add_stations_to_file(stations: List[Station], file: TcFile, override_stations: bool = False):
+def add_stations_to_file(stations: List[Station],
+                         file: TcFile,
+                         override_stations: bool = False,
+                         update_stations: bool = False):
     existing_station_codes = frozenset([station['ril100'] for station in file.data])
-    if not override_stations:
+    # We only want to add stations
+    if not override_stations and not update_stations:
         for station in stations.copy():
             for code in station.codes:
                 if code in existing_station_codes:
+                    stations.remove(station)
+    # We only want to update existing stations
+    if update_stations:
+        for station in stations.copy():
+            for code in station.codes:
+                if code not in existing_station_codes:
                     stations.remove(station)
     tc_stations = (TcStation.from_station(station) for station in stations)
     # https://stackoverflow.com/a/33797147
