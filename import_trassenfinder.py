@@ -37,14 +37,14 @@ def import_trasse_into_tc(trasse: PathLike | str,
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
-    parser.add_argument('trasse', metavar='DATEI', type=str,
+    parser.add_argument('trasse', metavar='TRASSENFINDER_DATEI', type=str,
                         help="Die CSV-Datei, die aus Trassenfinder exportiert wurde")
     parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str, default='..',
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
     parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str, default='data',
                         help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
-    parser.add_argument('--stations_only', nargs='?', help="Fügt nur Stationen ein")
-    parser.add_argument('--override_stations', nargs='?',
+    parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
+    parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     args = parser.parse_args()
     if not isfile(os.path.join(args.tc_directory, 'Station.json')):
