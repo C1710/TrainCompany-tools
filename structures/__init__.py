@@ -3,12 +3,8 @@ import os.path
 from dataclasses import dataclass
 from typing import List
 
-from importers.db_bahnhoefe import DbBahnhoefeImporter, add_hp_information_to_stations
-from importers.db_bahnsteige import DbBahnsteigeImporter, add_platforms_to_stations
-from importers.db_betriebsstellen import DbBetriebsstellenImporter
-from importers.db_strecken import DbStreckenImporter
 from structures.route import Track
-from structures.station import Station
+from structures.station import Station, merge_stations
 
 
 @dataclass
@@ -20,6 +16,25 @@ class DataSet:
     def load_data(
             data_directory: str = 'data'
     ) -> DataSet:
+        from importers.db_strecken import DbStreckenImporter
+
+        stations = DataSet.load_station_data(data_directory)
+        tracks = DbStreckenImporter().import_data(os.path.join(data_directory, "strecken.csv"))
+
+        return DataSet(
+            stations,
+            tracks
+        )
+
+    @staticmethod
+    def load_station_data(data_directory: str = 'data') -> List[Station]:
+        from importers.ch_bahnhofsbenutzer import ChBahnhofsbenutzerImporter, add_passengers_to_stations_ch
+        from importers.ch_betriebsstellen import ChBetriebsstellenImporter
+        from importers.ch_platforms import ChPlatformsImporter
+        from importers.db_bahnhoefe import DbBahnhoefeImporter, add_hp_information_to_stations
+        from importers.db_bahnsteige import DbBahnsteigeImporter, add_platforms_to_stations
+        from importers.db_betriebsstellen import DbBetriebsstellenImporter
+
         stations = DbBetriebsstellenImporter().import_data(os.path.join(data_directory, "betriebsstellen.csv"))
 
         passenger_stations = DbBahnhoefeImporter().import_data(os.path.join(data_directory, "bahnhoefe.csv"))
@@ -28,9 +43,14 @@ class DataSet:
         platforms = DbBahnsteigeImporter().import_data(os.path.join(data_directory, "bahnsteige.csv"))
         add_platforms_to_stations(stations, platforms)
 
-        tracks = DbStreckenImporter().import_data(os.path.join(data_directory, "strecken.csv"))
+        stations_ch = ChBetriebsstellenImporter().import_data(os.path.join(data_directory, "sbb_didok.csv"))
 
-        return DataSet(
-            stations,
-            tracks
-        )
+        platforms_ch = ChPlatformsImporter().import_data(os.path.join(data_directory, "sbb_platforms.csv"))
+        add_platforms_to_stations(stations_ch, platforms_ch)
+
+        passenger_stations_ch = ChBahnhofsbenutzerImporter().import_data(os.path.join(data_directory, 'sbb_bahnhofsbenutzer.csv'))
+        add_passengers_to_stations_ch(stations_ch, passenger_stations_ch)
+
+        merge_stations(stations, stations_ch, 'name')
+
+        return stations

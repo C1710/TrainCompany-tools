@@ -1,6 +1,6 @@
 import csv
 from abc import ABCMeta, abstractmethod
-from typing import TypeVar, Generic, List
+from typing import TypeVar, Generic, List, Optional
 
 T = TypeVar('T')
 
@@ -30,9 +30,10 @@ class CsvImporter(Importer[T], metaclass=ABCMeta):
             reader = csv.reader(csv_file, delimiter=self.delimiter)
             if self.skip_first_line:
                 reader.__next__()
-            data = [self.deserialize(entry) for entry in reader]
+            data = (self.deserialize(entry) for entry in reader)
+            data = [entry for entry in data if entry is not None]
         return data
 
     @abstractmethod
-    def deserialize(self, entry: List[str]) -> T:
+    def deserialize(self, entry: List[str]) -> Optional[T]:
         pass

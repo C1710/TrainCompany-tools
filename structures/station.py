@@ -69,6 +69,33 @@ class Station:
         return self._codes
 
 
+def merge_stations(onto: List[Station],
+                   new_data: List[Station],
+                   on: str):
+    id_to_station = {station.__getattribute__(on): station for station in onto}
+    for new_station in new_data:
+        try:
+            station = id_to_station[new_station.__getattribute__(on)]
+            if on != 'name' and station.name is None:
+                station.name = new_station.name
+            if on != 'number' and station.number is None:
+                station.number = new_station.number
+            if on != 'station_category' and station.station_category is None:
+                station.station_category = new_station.station_category
+            if on != 'location' and station.location is None:
+                station.location = new_station.location
+            if on != 'location_path' and station.location_path is None:
+                station.location_path = new_station.location_path
+            if on != 'platforms' and station.platforms is None:
+                station.platforms = new_station.platforms
+            if on != 'kind' and station.kind is None:
+                station.kind = new_station.kind
+            station.codes.extend(new_station.codes)
+        except KeyError:
+            # Not in the list (yet)
+            onto.append(new_station)
+
+
 @dataclass
 class TcStation:
     name: str
@@ -86,7 +113,7 @@ class TcStation:
         return TcStation(
             name=station.name,
             ril100=station.codes[0],
-            group=station.group,
+            group=station.group if station.group is not None else 2,
             x=x,
             y=y,
             platformLength=int(station.platform_length),
