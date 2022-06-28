@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import logging
 import os.path
 from os import PathLike
 from os.path import isfile
@@ -13,7 +12,6 @@ from structures.route import TcRoute
 from tc_utils import TcFile
 from tc_utils.paths import add_route_to_files
 
-logging.basicConfig(level=logging.DEBUG)
 
 
 def import_trasse_into_tc(trasse: PathLike | str,
@@ -36,23 +34,20 @@ def import_trasse_into_tc(trasse: PathLike | str,
 
 
 if __name__ == '__main__':
+    script_path = os.path.realpath(__file__)
+    script_dir = os.path.dirname(script_path)
+    
     parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
     parser.add_argument('trasse', metavar='TRASSENFINDER_DATEI', type=str,
                         help="Die CSV-Datei, die aus Trassenfinder exportiert wurde")
-    parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str, default='..',
+    parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str, default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str, default='data',
+    parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str, default=os.path.join(script_dir, 'data'),
                         help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     args = parser.parse_args()
-    if not isfile(os.path.join(args.tc_directory, 'Station.json')):
-        script_path = os.path.realpath(__file__)
-        script_dir = os.path.dirname(script_path)
-        parent_dir = os.path.dirname(script_dir)
-        if isfile(os.path.join(parent_dir, 'Station.json')):
-            args.tc_directory = parent_dir
 
     for tc_file in ['Station', 'Path']:
         if not isfile(os.path.join(args.tc_directory, tc_file) + '.json'):
