@@ -3,8 +3,7 @@ from __future__ import annotations
 import json
 import os.path
 from os import PathLike
-from plistlib import Dict
-from typing import List, Any
+from typing import List, Any, Dict
 
 
 class TcFile:

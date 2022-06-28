@@ -1,7 +1,8 @@
+import logging
 from typing import List, Dict
 
-from tools.importer import CsvImporter
-from tools.structures.station import Station, Platform
+from importer import CsvImporter
+from structures.station import Station, Platform
 
 
 class DbBahnsteigeImporter(CsvImporter[Platform]):
@@ -23,9 +24,12 @@ class DbBahnsteigeImporter(CsvImporter[Platform]):
 
 def add_platforms_to_stations(stations: List[Station], platforms: List[Platform]):
     # First we make it easier to look up the stations
-    station_code_to_index: Dict[int, int] = {station.number: index for (index, station) in enumerate(stations)}
+    station_number_to_index: Dict[int, int] = {station.number: index for (index, station) in enumerate(stations)}
     for platform in platforms:
-        if platform.station is int:
-            index: int = station_code_to_index[platform.station]
-            stations[index].platforms.append(platform)
+        if isinstance(platform.station, int):
+            try:
+                index: int = station_number_to_index[platform.station]
+                stations[index].platforms.append(platform)
+            except KeyError:
+                logging.debug("Couldn't find station for platform: {}".format(platform.station))
         # TODO: Fail here

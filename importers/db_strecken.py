@@ -1,9 +1,8 @@
-import logging
 import re
 from typing import List, Tuple
 
-from tools.importer import CsvImporter
-from tools.structures.route import Track, TrackKind
+from importer import CsvImporter
+from structures.route import Track, TrackKind
 
 
 class DbStreckenImporter(CsvImporter[Track]):
@@ -15,7 +14,7 @@ class DbStreckenImporter(CsvImporter[Track]):
         )
 
     def deserialize(self, entry: List[str]) -> Track:
-        v_max = convert_min_max_speed(entry[8])[1]
+        v_max = convert_min_max_speed(entry[10])[1]
         track = Track(
             route_number=int(entry[1]),
             length=float(entry[3]),
@@ -38,5 +37,4 @@ def convert_min_max_speed(speed_str: str) -> Tuple[int, int]:
         else:
             v_from = int(v_from)
         return v_from, v_to
-    logging.warning("Couldn't find speed: {}".format(speed_str))
     return 0, 0

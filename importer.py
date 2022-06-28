@@ -30,7 +30,7 @@ class CsvImporter(Importer[T], metaclass=ABCMeta):
             reader = csv.reader(csv_file, delimiter=self.delimiter)
             if self.skip_first_line:
                 reader.__next__()
-        data = [self.deserialize(entry) for entry in reader]
+            data = [self.deserialize(entry) for entry in reader]
         return data
 
     @abstractmethod

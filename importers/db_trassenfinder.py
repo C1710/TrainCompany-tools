@@ -1,7 +1,7 @@
 from typing import List
 
-from tools.importer import CsvImporter
-from tools.structures.route import CodeWaypoint, Route, Track
+from importer import CsvImporter
+from structures.route import CodeWaypoint, Route, Track
 
 
 class DbTrassenfinderImporter(CsvImporter[CodeWaypoint]):

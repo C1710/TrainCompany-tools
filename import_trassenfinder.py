@@ -1,24 +1,26 @@
 from __future__ import annotations
 
 import argparse
+import logging
 import os.path
-import sys
 from os import PathLike
 from os.path import isfile
 from typing import Tuple
 
-from tools.importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_tracks_to_route
-from tools.structures import DataSet
-from tools.structures.route import TcRoute
-from tools.tc_utils import TcFile
-from tools.tc_utils.paths import add_route_to_files, add_path_to_file
-from tools.tc_utils.stations import add_stations_to_file
+from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_tracks_to_route
+from structures import DataSet
+from structures.route import TcRoute
+from tc_utils import TcFile
+from tc_utils.paths import add_route_to_files
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def import_trasse_into_tc(trasse: PathLike | str,
                           tc_directory: PathLike | str = '..',
-                          data_directory: PathLike | str = 'data'
-                         ) -> Tuple[TcFile, TcFile]:
+                          data_directory: PathLike | str = 'data',
+                          override_stations: bool = False
+                          ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     waypoints = DbTrassenfinderImporter().import_data(trasse)
 
@@ -28,7 +30,7 @@ def import_trasse_into_tc(trasse: PathLike | str,
     route = convert_waypoints_tracks_to_route(waypoints, data_set.track_data)
     tc_route = TcRoute.from_route(route, data_set.station_data)
 
-    add_route_to_files(tc_route, station_json, path_json)
+    add_route_to_files(tc_route, station_json, path_json, override_stations=override_stations)
 
     return station_json, path_json
 
@@ -42,6 +44,8 @@ if __name__ == '__main__':
     parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str, default='data',
                         help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
     parser.add_argument('--stations_only', nargs='?', help="Fügt nur Stationen ein")
+    parser.add_argument('--override_stations', nargs='?',
+                        help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     args = parser.parse_args()
     if not isfile(os.path.join(args.tc_directory, 'Station.json')):
         script_path = os.path.realpath(__file__)
@@ -60,7 +64,8 @@ if __name__ == '__main__':
     path_json, station_json = import_trasse_into_tc(
         args.trasse,
         args.tc_directory,
-        args.data_directory
+        args.data_directory,
+        args.override_stations
     )
 
     station_json.save()

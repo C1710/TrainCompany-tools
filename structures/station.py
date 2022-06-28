@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from functools import lru_cache
 from typing import Optional, List, Iterable
 
 
 class CodeList (List[str]):
     def append(self, __object: str):
         if __object not in self:
+            super().append(__object)
             if '  ' in __object:
                 __object = __object.replace('  ', ' ')
                 if __object not in self:
@@ -32,11 +32,10 @@ class Station:
     location: Optional[Location] = field(default=None)
     location_path: Optional[PathLocation] = field(default=None)
     kind: Optional[str] = field(default=None)
-    platforms: Optional[List[Platform]] = field(default=None)
+    platforms: List[Platform] = field(default_factory=list)
     station_category: Optional[int] = field(default=None)
 
     @property
-    @lru_cache
     def group(self) -> int:
         if self.station_category is not None:
             if 1 <= self.station_category <= 2:
@@ -90,7 +89,7 @@ class TcStation:
             group=station.group,
             x=x,
             y=y,
-            platformLength=station.platform_length,
+            platformLength=int(station.platform_length),
             platforms=station.platform_count,
             forRandomTasks=None
         )
@@ -108,7 +107,6 @@ class Location:
     latitude: float
     longitude: float
 
-    @lru_cache
     def convert_to_tc(self) -> (int, int):
         x = int((self.longitude - origin_x) * scale_x)
         y = int((self.latitude - origin_y) * scale_y)

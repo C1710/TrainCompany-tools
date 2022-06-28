@@ -2,9 +2,9 @@ from __future__ import annotations
 from abc import ABCMeta
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
-from tools.structures.station import PathLocation, Station
+from structures.station import PathLocation, Station
 
 
 @dataclass
@@ -21,9 +21,9 @@ class TcRoute:
     @staticmethod
     def from_route(route: Route, station_data: List[Station]) -> TcRoute:
         code_to_station = {code: station for station in station_data for code in station.codes}
-        station_data = [code_to_station[waypoint.code] for waypoint in route.waypoints if waypoint.is_stop]
+        stations = [code_to_station[waypoint.code] for waypoint in route.waypoints if waypoint.is_stop]
         paths = TcPath.merge(TcPath.from_route(route))
-        return TcRoute(station_data, paths)
+        return TcRoute(stations, paths)
 
 
 @dataclass
@@ -36,7 +36,7 @@ class TcPath:
     length: Optional[int] = field(default=None)
     maxSpeed: Optional[int] = field(default=None)
     twistingFactor: Optional[float] = field(default=None)
-    objects: Optional[List[TcPath]] = field(default=None)
+    objects: Optional[List[TcPath] | List[Dict[str, Any]]] = field(default=None)
 
     @staticmethod
     def from_route(route: Route) -> List[TcPath]:
@@ -59,7 +59,7 @@ class TcPath:
                     start=visited_waypoints[0].code,
                     end=waypoint_end.code,
                     electrified=all((track.electrified for track in visited_tracks)),
-                    group=max((track.kind.rank for track in visited_tracks)),
+                    group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
                     length=int(length),
                     maxSpeed=None,
                     twistingFactor=None,
@@ -89,6 +89,14 @@ class TcPath:
         main_path.objects = paths
         return main_path
 
+    def to_dict(self) -> Dict[str, Any]:
+        data = {key: value for key, value in self.__dict__.items() if value is not None}
+        try:
+            data['objects'] = [path.to_dict() for path in data['objects']]
+        except KeyError:
+            pass
+        return data
+
 
 @dataclass
 class Track:
@@ -102,6 +110,7 @@ class TrackKind(Enum):
     HAUPTBAHN = 0
     NEBENBAHN = 1
     SFS = 2
+    UNKNOWN = -1
 
     @property
     def rank(self):
@@ -111,6 +120,8 @@ class TrackKind(Enum):
             return 0
         if self == TrackKind.SFS:
             return 2
+        if self == TrackKind.UNKNOWN:
+            return -1
 
     @staticmethod
     def from_speed_category(v_max: float, category: str) -> TrackKind:
@@ -122,7 +133,7 @@ class TrackKind(Enum):
             else:
                 return TrackKind.SFS
         else:
-            raise NotImplementedError("Unsupported track category: {}".format(category))
+            return TrackKind.UNKNOWN
 
 
 @dataclass
