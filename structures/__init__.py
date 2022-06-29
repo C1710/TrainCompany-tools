@@ -51,8 +51,8 @@ class DataSet:
 
         assert_unique_first_code(stations)
 
-        # platforms = DbBahnsteigeImporter().import_data(os.path.join(data_directory, "bahnsteige.csv"))
-        # add_platforms_to_stations(stations, platforms)
+        platforms = DbBahnsteigeImporter().import_data(os.path.join(data_directory, "bahnsteige.csv"))
+        add_platforms_to_stations(stations, platforms)
 
         # stations_ch = ChBetriebsstellenImporter().import_data(os.path.join(data_directory, "sbb_didok.csv"))
 
