@@ -1,20 +1,17 @@
 from __future__ import annotations
 
 import argparse
-import logging
 import os.path
 from os import PathLike
-from typing import Tuple, Union
+from typing import Tuple
 
-from geopy.exc import GeopyError
-
-from geo import location_data
+from cli_utils import check_files
+from geo.location_data import add_location_data_to_list
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_tracks_to_route
 from structures import DataSet
 from structures.route import TcRoute
 from tc_utils import TcFile
 from tc_utils.paths import add_route_to_files
-from cli_utils import check_files
 
 
 def import_trasse_into_tc(trasse: PathLike | str,
@@ -32,11 +29,7 @@ def import_trasse_into_tc(trasse: PathLike | str,
     tc_route = TcRoute.from_route(route, data_set.station_data)
 
     # Add location data from Google, if necessary
-    for index, station in enumerate(tc_route.stations):
-        try:
-            tc_route.stations[index] = location_data.with_location_data(station)
-        except Union[TimeoutError, GeopyError]:
-            logging.warning("Konnte Standortdaten für {} nicht abrufen.".format(station.name))
+    add_location_data_to_list(tc_route.stations)
 
     add_route_to_files(tc_route, station_json, path_json, override_stations=override_stations)
 

@@ -6,6 +6,7 @@ import re
 from os import PathLike
 from typing import List
 
+from geo.location_data import add_location_data_to_list
 from structures import DataSet
 from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
@@ -22,6 +23,8 @@ def import_stations_into_tc(stations: List[str],
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
     stations = [code_to_station[code.upper()] for code in stations]
+
+    add_location_data_to_list(stations)
 
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations, station_json, override_stations, update_stations)

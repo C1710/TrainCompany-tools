@@ -1,9 +1,11 @@
 import logging
 from functools import lru_cache
 from time import sleep
+from typing import List, Union
 
 import geopy
 from geopy import Nominatim, GoogleV3
+from geopy.exc import GeopyError
 
 from structures import Station
 from structures.station import Location
@@ -36,3 +38,11 @@ def with_location_data(station: Station) -> Station:
         )
     )
     return station
+
+
+def add_location_data_to_list(stations: List[Station]):
+    for index, station in enumerate(stations):
+        try:
+            stations[index] = with_location_data(station)
+        except Union[TimeoutError, GeopyError]:
+            logging.warning("Konnte Standortdaten für {} nicht abrufen.".format(station.name))
