@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional, List, Iterable
-
+from typing import Optional, List, Iterable, Generator, Tuple
 
 # It will add all of them in that order if one is added
 special_codes: List[List[str]] = [
-    ["EMSTP", "EMST"]
+    ["EMSTP", "EMST"],
+    ['BL', 'BLS']
 ]
 
 
@@ -31,6 +31,26 @@ class CodeList (List[str]):
     def extend(self, __iterable: Iterable[str]):
         for code in __iterable:
             self.append(code)
+
+    def __hash__(self):
+        return ';'.join(self).__hash__()
+
+
+def iter_stations_by_codes(stations: List[Station]) -> Generator[Tuple[str, Station], None, None]:
+    max_index = max((len(station.codes) for station in stations)) - 1
+    for index in range(0, max_index + 1):
+        for station in stations:
+            if len(station.codes) > index:
+                yield station.codes[index], station
+
+
+def iter_stations_by_codes_reverse(stations: List[Station]) -> Generator[Tuple[str, Station], None, None]:
+    # We don't want to use -1 here, because we want to account for the length of the codes
+    max_index = max((len(station.codes) for station in stations)) - 1
+    for index in range(max_index, -1, -1):
+        for station in stations:
+            if len(station.codes) > index:
+                yield station.codes[index], station
 
 
 @dataclass
@@ -83,28 +103,44 @@ class Station:
 def merge_stations(onto: List[Station],
                    new_data: List[Station],
                    on: str):
-    id_to_station = {station.__getattribute__(on): station for station in onto}
+    if on != "codes":
+        id_to_station = {station.__getattribute__(on): station for station in onto}
+    else:
+        id_to_station = {code: station for code, station in iter_stations_by_codes_reverse(onto)}
     for new_station in new_data:
         try:
-            station = id_to_station[new_station.__getattribute__(on)]
-            if on != 'name' and station.name is None:
-                station.name = new_station.name
-            if on != 'number' and station.number is None:
-                station.number = new_station.number
-            if on != 'station_category' and station.station_category is None:
-                station.station_category = new_station.station_category
-            if on != 'location' and station.location is None:
-                station.location = new_station.location
-            if on != 'location_path' and station.location_path is None:
-                station.location_path = new_station.location_path
-            if on != 'platforms' and station.platforms is None:
-                station.platforms = new_station.platforms
-            if on != 'kind' and station.kind is None:
-                station.kind = new_station.kind
-            station.codes.extend(new_station.codes)
+            if on != "codes":
+                station = id_to_station[new_station.__getattribute__(on)]
+                _merge_station(station, new_station, on)
+            else:
+                for code in new_station.codes:
+                    if code in id_to_station:
+                        # Merging the same station on another one repeatedly doesn't make a difference,
+                        # because anything we have already added will not be None (or stay None),
+                        # so we won't overwrite anything
+                        station = id_to_station[new_station.__getattribute__(on)]
+                        _merge_station(station, new_station, on)
         except KeyError:
             # Not in the list (yet)
             onto.append(new_station)
+
+
+def _merge_station(station: Station, new_station: Station, on: str):
+    if on != 'name' and station.name is None:
+        station.name = new_station.name
+    if on != 'number' and station.number is None:
+        station.number = new_station.number
+    if on != 'station_category' and station.station_category is None:
+        station.station_category = new_station.station_category
+    if on != 'location' and station.location is None:
+        station.location = new_station.location
+    if on != 'location_path' and station.location_path is None:
+        station.location_path = new_station.location_path
+    if on != 'platforms' and station.platforms is None:
+        station.platforms = new_station.platforms
+    if on != 'kind' and station.kind is None:
+        station.kind = new_station.kind
+    station.codes.extend(new_station.codes)
 
 
 @dataclass

@@ -3,6 +3,7 @@ import os.path
 from dataclasses import dataclass
 from typing import List
 
+from importers.db_betriebsstellenverzeichnis import DbBetriebsstellenverzeichnisImporter
 from structures.route import Track
 from structures.station import Station, merge_stations
 
@@ -31,14 +32,17 @@ class DataSet:
         from importers.ch_bahnhofsbenutzer import ChBahnhofsbenutzerImporter, add_passengers_to_stations_ch
         from importers.ch_betriebsstellen import ChBetriebsstellenImporter
         from importers.ch_platforms import ChPlatformsImporter
-        from importers.db_bahnhoefe import DbBahnhoefeImporter, add_hp_information_to_stations
+        from importers.db_bahnhoefe import DbBahnhoefeImporter, add_information_to_stations
         from importers.db_bahnsteige import DbBahnsteigeImporter, add_platforms_to_stations
         from importers.db_betriebsstellen import DbBetriebsstellenImporter
 
-        stations = DbBetriebsstellenImporter().import_data(os.path.join(data_directory, "betriebsstellen.csv"))
+        stations = DbBetriebsstellenverzeichnisImporter().import_data(os.path.join(data_directory, "betriebsstellen_verzeichnis.csv"))
+
+        stations_with_location = DbBetriebsstellenImporter().import_data(os.path.join(data_directory, "betriebsstellen.csv"))
+        merge_stations(stations, stations_with_location, on="codes")
 
         passenger_stations = DbBahnhoefeImporter().import_data(os.path.join(data_directory, "bahnhoefe.csv"))
-        add_hp_information_to_stations(stations, passenger_stations)
+        merge_stations(stations, passenger_stations, on="codes")
 
         platforms = DbBahnsteigeImporter().import_data(os.path.join(data_directory, "bahnsteige.csv"))
         add_platforms_to_stations(stations, platforms)

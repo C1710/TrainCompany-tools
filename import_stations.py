@@ -7,6 +7,7 @@ from os import PathLike
 from typing import List
 
 from structures import DataSet
+from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
 from tc_utils.stations import add_stations_to_file
 from cli_utils import check_files
@@ -19,7 +20,7 @@ def import_stations_into_tc(stations: List[str],
                             update_stations: bool = False
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
-    code_to_station = {code: station for station in data_set.station_data for code in station.codes}
+    code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
     stations = [code_to_station[code.upper()] for code in stations]
 
     station_json = TcFile('Station', tc_directory)

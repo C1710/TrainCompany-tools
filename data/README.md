@@ -12,6 +12,8 @@ License:
 - https://data.deutschebahn.com/dataset/geo-betriebsstelle.html
 `bahnsteige.csv`:
 - https://data.deutschebahn.com/dataset/data-bahnsteig.html
+`betriebsstellen_verzeichnis.csv`:
+- https://data.deutschebahn.com/dataset/data-betriebsstellen.html
 
 ## CH
 `sbb_didok.csv`:

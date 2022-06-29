@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional, Dict, Any
 
-from structures.station import PathLocation, Station
+from structures.station import PathLocation, Station, iter_stations_by_codes_reverse
 
 
 @dataclass
@@ -29,7 +29,8 @@ class TcRoute:
 
     @staticmethod
     def from_route(route: Route, station_data: List[Station]) -> TcRoute:
-        code_to_station = {code: station for station in station_data for code in station.codes}
+        # Because we add the last (i.e. least precise) codes first, the "better" ones will override them at the end
+        code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(station_data)}
         stations = [code_to_station[waypoint.code] if waypoint.code in code_to_station else invalid_station(waypoint.code)
                     for waypoint in route.waypoints if waypoint.is_stop]
         paths = TcPath.merge(TcPath.from_route(route))
@@ -87,7 +88,7 @@ class TcPath:
             maxSpeed=0,
             twistingFactor=0
         )
-        for attr in ['electrified', 'group', 'name']:
+        for attr in paths[0].__dict__.keys():
             base = paths[0].__getattribute__(attr)
             if all((path.__getattribute__(attr) == base for path in paths)):
                 # Add to the main path if not None
