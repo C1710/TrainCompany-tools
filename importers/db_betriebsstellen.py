@@ -1,7 +1,7 @@
 from typing import List
 
 from importer import CsvImporter
-from structures.station import Station, Location, PathLocation
+from structures.station import Station, Location, PathLocation, CodeTuple
 
 
 class DbBetriebsstellenImporter (CsvImporter[Station]):
@@ -17,18 +17,16 @@ class DbBetriebsstellenImporter (CsvImporter[Station]):
         station = Station(
             name=entry[4],
             number=None,
+            codes=CodeTuple(entry[6]),
             location=Location(
                 latitude=float(entry[9]),
                 longitude=float(entry[10])
             ) if entry[9] and entry[10] else None,
-            location_path=PathLocation(
-                route_number=int(entry[0]),
-                lfd_km=int(entry[2])
-            ),
+            locations_path=frozenset({
+                PathLocation(route_number=int(entry[0]), lfd_km=int(entry[2]))
+            }),
             kind=entry[5],
-            platforms=[],
             station_category=None
         )
-        station.codes.append(entry[6])
 
         return station

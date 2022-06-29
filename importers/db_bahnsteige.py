@@ -24,12 +24,12 @@ class DbBahnsteigeImporter(CsvImporter[Platform]):
 
 def add_platforms_to_stations(stations: List[Station], platforms: List[Platform]):
     # First we make it easier to look up the stations
-    station_number_to_index: Dict[int, int] = {station.number: index for (index, station) in enumerate(stations)}
+    number_to_station: Dict[int, Station] = {station.number: station for station in stations}
     for platform in platforms:
         if isinstance(platform.station, int):
             try:
-                index: int = station_number_to_index[platform.station]
-                stations[index].platforms.append(platform)
+                station = number_to_station[platform.station]
+                station.platforms.append(platform)
             except KeyError:
                 logging.debug("Couldn't find station for platform: {}".format(platform.station))
         # TODO: Fail here

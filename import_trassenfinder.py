@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import logging
 import os.path
 from os import PathLike
-from typing import Tuple
+from typing import Tuple, Union
 
+from geopy.exc import GeopyError
+
+from geo import location_data
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_tracks_to_route
 from structures import DataSet
 from structures.route import TcRoute
@@ -27,6 +31,13 @@ def import_trasse_into_tc(trasse: PathLike | str,
     route = convert_waypoints_tracks_to_route(waypoints, data_set.track_data)
     tc_route = TcRoute.from_route(route, data_set.station_data)
 
+    # Add location data from Google, if necessary
+    for index, station in enumerate(tc_route.stations):
+        try:
+            tc_route.stations[index] = location_data.with_location_data(station)
+        except Union[TimeoutError, GeopyError]:
+            logging.warning("Konnte Standortdaten für {} nicht abrufen.".format(station.name))
+
     add_route_to_files(tc_route, station_json, path_json, override_stations=override_stations)
 
     return station_json, path_json
@@ -39,9 +50,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
     parser.add_argument('trasse', metavar='TRASSENFINDER_DATEI', type=str,
                         help="Die CSV-Datei, die aus Trassenfinder exportiert wurde")
-    parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str, default=os.path.dirname(script_dir),
+    parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str,
+                        default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str, default=os.path.join(script_dir, 'data'),
+    parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str,
+                        default=os.path.join(script_dir, 'data'),
                         help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',

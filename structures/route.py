@@ -9,7 +9,7 @@ from typing import List, Optional, Dict, Any
 from structures.station import PathLocation, Station, iter_stations_by_codes_reverse
 
 
-@dataclass
+@dataclass(frozen=True)
 class Route:
     waypoints: List[CodeWaypoint]
     tracks: List[Track]
@@ -109,7 +109,7 @@ class TcPath:
         return data
 
 
-@dataclass
+@dataclass(frozen=True)
 class Track:
     route_number: int
     electrified: bool
@@ -147,27 +147,13 @@ class TrackKind(Enum):
             return TrackKind.UNKNOWN
 
 
-@dataclass
+@dataclass(frozen=True)
 class Waypoint(metaclass=ABCMeta):
     distance_from_start: float
     is_stop: bool
     next_route_number: Optional[int]
 
 
-@dataclass
+@dataclass(frozen=True)
 class CodeWaypoint(Waypoint):
     code: str
-
-
-@dataclass
-class PathLocationWaypoint(Waypoint):
-    location: PathLocation
-
-    def __init__(self, lfd_km: float, *args, **kwargs):
-        super().__init__(*args, *kwargs)
-        self.location = PathLocation(
-            route_number=self.next_route_number,
-            lfd_km=lfd_km
-        )
-
-

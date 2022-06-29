@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import logging
 from typing import List, Optional
 
 from importer import CsvImporter
-from structures.station import Station
+from structures.station import Station, CodeTuple
 
 
 class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
@@ -15,14 +16,13 @@ class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
         )
 
     def deserialize(self, entry: List[str]) -> Optional[Station]:
+        assert entry[1]
         station = Station(
             name=entry[2],
             number=None,
+            codes=CodeTuple(entry[1]),
             location=None,
-            location_path=None,
             kind=entry[5],
-            platforms=[],
             station_category=None
         )
-        station.codes.append(entry[1])
         return station

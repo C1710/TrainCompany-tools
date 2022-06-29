@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
-from typing import Optional, List, Iterable, Generator, Tuple
+from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
 # It will add all of them in that order if one is added
-special_codes: List[List[str]] = [
-    ["EMSTP", "EMST"],
-    ['BL', 'BLS']
-]
+import geopy.distance
+
+special_codes: Tuple[Tuple[str, ...], ...] = (
+    ("EMSTP", "EMST"),
+    ("BL", "BLS"),
+    ("EBILP", "EBIL")
+)
 
 
-class CodeList (List[str]):
+class _CodeList (List[str]):
     def append(self, __object: str):
         if __object not in self:
             super().append(__object)
@@ -32,8 +36,42 @@ class CodeList (List[str]):
         for code in __iterable:
             self.append(code)
 
-    def __hash__(self):
-        return ';'.join(self).__hash__()
+
+def expand_codes(base_code: str) -> Generator[str, None, None]:
+    yield base_code
+    if '  ' in base_code:
+        base_code = base_code.replace('  ', ' ')
+        yield base_code
+    if ' ' in base_code:
+        base_code = base_code.split(' ')[0]
+        yield base_code
+    for special in special_codes:
+        if base_code in special:
+            for other in special:
+                if other != base_code:
+                    yield other
+
+
+def _without_duplicates(data: Iterable) -> List:
+    result = []
+    seen: Set = set()
+    for item in data:
+        if item not in seen:
+            result.append(item)
+            seen.add(item)
+    return result
+
+
+class CodeTuple(Tuple[str]):
+    def __add__(self, other):
+        return CodeTuple(*self, *other)
+
+    def __new__(cls, *args):
+        if not len(args):
+            return tuple.__new__(cls)
+        return tuple.__new__(cls, _without_duplicates(
+            (expanded_code for code in args for expanded_code in expand_codes(code))
+        ))
 
 
 def iter_stations_by_codes(stations: List[Station]) -> Generator[Tuple[str, Station], None, None]:
@@ -49,21 +87,23 @@ def iter_stations_by_codes_reverse(stations: List[Station]) -> Generator[Tuple[s
     max_index = max((len(station.codes) for station in stations)) - 1
     for index in range(max_index, -1, -1):
         for station in stations:
-            if len(station.codes) > index:
+            try:
                 yield station.codes[index], station
+            except IndexError:
+                pass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Station:
     name: Optional[str] = field(default=None)
     # A station might have multiple codes like "UE P" and "UE"
-    # or stations outside of Germany might use a diffferent scheme
-    _codes: CodeList[str] = field(default_factory=CodeList)
+    # or stations outside of Germany might use a different scheme
+    codes: CodeTuple[str] = field(default_factory=CodeTuple)
     number: Optional[int] = field(default=None)
     location: Optional[Location] = field(default=None)
-    location_path: Optional[PathLocation] = field(default=None)
+    locations_path: FrozenSet[PathLocation] = field(default_factory=frozenset)
     kind: Optional[str] = field(default=None)
-    platforms: List[Platform] = field(default_factory=list)
+    platforms: Tuple[Platform] = field(default_factory=tuple)
     station_category: Optional[int] = field(default=None)
 
     @property
@@ -95,52 +135,99 @@ class Station:
     def platform_length(self) -> int:
         return max((platform.length for platform in self.platforms)) if self.platforms else 0
 
-    @property
-    def codes(self):
-        return self._codes
+
+def merge_stations_on_first_code(stations: List[Station]) -> List[Station]:
+    merged_stations: Dict[str, Station] = {}
+    for station in stations:
+        code = station.codes[0]
+        if code in merged_stations:
+            existing_station = merged_stations.pop(code)
+            merged_stations.update({
+                code: _merge_station(existing_station, station, 'codes')
+            })
+        else:
+            merged_stations.update({code: station})
+    return list(merged_stations.values())
 
 
 def merge_stations(onto: List[Station],
                    new_data: List[Station],
-                   on: str):
+                   on: str,
+                   ignore_data_loss: bool = False) -> List[Station]:
+    remaining_stations = set(onto)
+    if not ignore_data_loss:
+        assert_unique_first_code(onto)
+        assert_unique_first_code(new_data)
+    merged_stations = []
     if on != "codes":
         id_to_station = {station.__getattribute__(on): station for station in onto}
+        id_to_wip: Dict[Any, Dict[str, Any]] = {}
+        for new_station in new_data:
+            key = new_station.__getattribute__(on)
+            if key in id_to_station:
+                # Move the station into the WIP state
+                station = id_to_station.pop(key)
+                remaining_stations.remove(station)
+                id_to_wip[key] = station.__dict__.copy()
+            if key in id_to_wip:
+                # ...but only the next time.
+                _merge_station_dicts_inplace(id_to_wip[key], new_station.__dict__.copy(), on)
+            else:
+                # New station
+                merged_stations.append(new_station)
     else:
         id_to_station = {code: station for code, station in iter_stations_by_codes_reverse(onto)}
-    for new_station in new_data:
-        try:
-            if on != "codes":
-                station = id_to_station[new_station.__getattribute__(on)]
-                _merge_station(station, new_station, on)
-            else:
-                for code in new_station.codes:
-                    if code in id_to_station:
-                        # Merging the same station on another one repeatedly doesn't make a difference,
-                        # because anything we have already added will not be None (or stay None),
-                        # so we won't overwrite anything
-                        station = id_to_station[new_station.__getattribute__(on)]
-                        _merge_station(station, new_station, on)
-        except KeyError:
-            # Not in the list (yet)
-            onto.append(new_station)
+        id_to_wip: Dict[str, Dict[str, Any]] = {}
+        for new_station in new_data:
+            code_in_stations = False
+            for code in new_station.codes:
+                if code in id_to_station:
+                    # Move the station into the WIP state
+                    station = id_to_station.pop(code)
+                    if station in remaining_stations:
+                        remaining_stations.remove(station)
+                        id_to_wip[code] = station.__dict__.copy()
+                if code in id_to_wip:
+                    # We won't have an else-branch here, because we only want the first code to be added in case
+                    # the station is not existing at all
+                    code_in_stations = True
+                    _merge_station_dicts_inplace(id_to_wip[code], new_station.__dict__.copy(), on)
+            if not code_in_stations:
+                # It's completely new, add it to the list
+                merged_stations.append(new_station)
+    # Add old, unchanged values
+    merged_stations.extend(remaining_stations)
+    # And then the modified/new ones
+    merged_stations.extend(set((Station(**new_station_data) for new_station_data in id_to_wip.values())))
+
+    if not ignore_data_loss:
+        assert len(merged_stations) >= len(onto), (len(merged_stations), len(onto))
+
+    return merged_stations
 
 
-def _merge_station(station: Station, new_station: Station, on: str):
-    if on != 'name' and station.name is None:
-        station.name = new_station.name
-    if on != 'number' and station.number is None:
-        station.number = new_station.number
-    if on != 'station_category' and station.station_category is None:
-        station.station_category = new_station.station_category
-    if on != 'location' and station.location is None:
-        station.location = new_station.location
-    if on != 'location_path' and station.location_path is None:
-        station.location_path = new_station.location_path
-    if on != 'platforms' and station.platforms is None:
-        station.platforms = new_station.platforms
-    if on != 'kind' and station.kind is None:
-        station.kind = new_station.kind
-    station.codes.extend(new_station.codes)
+def assert_unique_first_code(stations: List[Station]):
+    first_codes = sorted([station.codes[0] for station in stations])
+    for last_code, code in zip(first_codes, first_codes[1:]):
+        assert last_code != code, code
+
+
+def _merge_station(station: Station, new_station: Station, on: str) -> Station:
+    result: Dict[str, Any] = station.__dict__.copy()
+    _merge_station_dicts_inplace(result, new_station.__dict__.copy(), on)
+    return Station(**result)
+
+
+def _merge_station_dicts_inplace(station: Dict[str, Any], new_station: Dict[str, Any], on: str):
+    """Merges one station onto another, in place (with Dicts as a temporary structure)"""
+    for key, value in station.items():
+        if key not in ['codes', 'location_path', on] and value is None:
+            if value is None:
+                station[key] = new_station[key]
+        elif key == 'codes':
+            station['codes'] += new_station['codes']
+        elif key == 'locations_path':
+            station['locations_path'] = station['locations_path'].union(new_station['locations_path'])
 
 
 @dataclass
@@ -175,7 +262,7 @@ scale_x: float = 625.0 / (11.082989 - origin_x)
 scale_y: float = 385.0 / (49.445616 - origin_y)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Location:
     __slots__ = 'latitude', 'longitude'
     latitude: float
@@ -186,17 +273,26 @@ class Location:
         y = int((self.latitude - origin_y) * scale_y)
         return x, y
 
+    def distance(self, other: Location) -> int:
+        return geopy.distance.geodesic(
+            (self.latitude, self.longitude),
+            (other.latitude, other.longitude)
+        ).kilometers
 
-@dataclass
+    def __hash__(self):
+        return ('location', self.latitude, self.longitude).__hash__()
+
+
+@dataclass(frozen=True)
 class PathLocation:
     __slots__ = 'route_number', 'lfd_km'
     route_number: int
     lfd_km: float
 
 
-@dataclass
+@dataclass(frozen=True)
 class Platform:
     __slots__ = 'length', 'station'
     length: float
-    # The station could be a station code, a station number, or simply a station object
-    station: str | int | Station
+    # The station could be a station code, or a station number
+    station: str | int

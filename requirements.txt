@@ -1,1 +1,2 @@
 matplotlib ~= 3.5.2
+geopy ~= 2.2.0

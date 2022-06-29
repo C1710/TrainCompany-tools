@@ -20,8 +20,6 @@ class ChBahnhofsbenutzerImporter (CsvImporter[Station]):
             number=None,
             station_category=passengers_to_station_category(int(float(entry[10]))),
             location=None,
-            location_path=None,
-            platforms=[],
             kind=None
         )
 
