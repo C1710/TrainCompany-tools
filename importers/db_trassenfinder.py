@@ -44,16 +44,18 @@ def track_from_path(route_number: int,
                     path_data: Dict[int, Path],
                     code_start: Optional[str] = None,
                     code_end: Optional[str] = None) -> Track:
+    warning = []
     if not code_start and not code_end:
-        logging.warning("Kann kein Segment feststellen.\n"
-                        "    Übernehme Daten zu Elektrifizierung, Streckenklasse vom letzten Segment")
+        warning.append("Kann kein Segment feststellen.")
+        warning.append("    Übernehme Daten zu Elektrifizierung, Streckenklasse vom letzten Segment")
     else:
-        logging.warning("Kann kein Segment feststellen zwischen {} und {}.\n"
-                        "    Übernehme Daten zu Elektrifizierung, Streckenklasse vom letzten Segment"
-                        .format(code_start, code_end))
+        warning.append("Kann kein Segment feststellen zwischen {} und {}."
+                       .format(code_start, code_end))
+        warning.append("    Übernehme Daten zu Elektrifizierung, Streckenklasse vom letzten Segment"
+                       .format(code_start, code_end))
     # Generate a median segment for the route number
     if not last_known_segment and route_number in path_data:
-        logging.warning("    Kein letztes Streckensegment bekannt. Verwende Median der Gesamtstrecke")
+        warning.append("    Kein letztes Streckensegment bekannt. Verwende Median der Gesamtstrecke")
         last_known_segment = Track(
             route_number=route_number,
             electrified=statistics.median_high((track.electrified for track in path_data[route_number].tracks)),
@@ -62,6 +64,7 @@ def track_from_path(route_number: int,
             from_km=None,
             to_km=None
         )
+    logging.warning('\n'.join(warning))
     return Track(
         route_number=route_number,
         electrified=last_known_segment.electrified if last_known_segment else False,
