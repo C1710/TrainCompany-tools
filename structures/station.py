@@ -272,6 +272,15 @@ class Location:
         y = int((self.latitude - origin_y) * scale_y)
         return x, y
 
+    @staticmethod
+    def from_tc(x: int, y: int) -> Location:
+        longitude = (x / scale_x) + origin_x
+        latitude = (y / scale_y) + origin_y
+        return Location(
+            latitude,
+            longitude
+        )
+
     def distance(self, other: Location) -> int:
         return geopy.distance.geodesic(
             (self.latitude, self.longitude),
