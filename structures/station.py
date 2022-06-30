@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass, field
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
@@ -287,7 +286,7 @@ class Location:
 class PathLocation:
     __slots__ = 'route_number', 'lfd_km'
     route_number: int
-    lfd_km: float
+    lfd_km: StreckenKilometer
 
 
 @dataclass(frozen=True)
@@ -296,3 +295,35 @@ class Platform:
     length: float
     # The station could be a station code, or a station number
     station: str | int
+
+
+@dataclass(frozen=True)
+class StreckenKilometer:
+    lfd_km: float
+    correction: float
+
+    def __lt__(self, other: StreckenKilometer) -> bool:
+        if self.lfd_km != other.lfd_km:
+            return self.lfd_km < other.lfd_km
+        else:
+            return self.correction < other.correction
+
+    def __eq__(self, other: StreckenKilometer) -> bool:
+        return self.lfd_km == other.lfd_km and self.correction == other.correction
+
+    def __le__(self, other: StreckenKilometer) -> bool:
+        return self < other or self == other
+
+    @staticmethod
+    def from_str(km_str: str):
+        if '+' in km_str:
+            lfd_km, correction = km_str.split(' + ')
+            return StreckenKilometer(
+                lfd_km=float(lfd_km.replace(',', '.')),
+                correction=float(correction.replace(',', '.'))
+            )
+        else:
+            return StreckenKilometer(
+                lfd_km=float(km_str.replace(',', '.')),
+                correction=0
+            )

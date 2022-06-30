@@ -1,7 +1,7 @@
 from typing import List
 
 from importer import CsvImporter
-from structures.station import Station, Location, PathLocation, CodeTuple
+from structures.station import Station, Location, PathLocation, CodeTuple, StreckenKilometer
 
 
 class DbBetriebsstellenImporter (CsvImporter[Station]):
@@ -23,7 +23,7 @@ class DbBetriebsstellenImporter (CsvImporter[Station]):
                 longitude=float(entry[10])
             ) if entry[9] and entry[10] else None,
             locations_path=frozenset({
-                PathLocation(route_number=int(entry[0]), lfd_km=int(entry[2]))
+                PathLocation(route_number=int(entry[0]), lfd_km=StreckenKilometer.from_str(entry[3]))
             }),
             kind=entry[5],
             station_category=None

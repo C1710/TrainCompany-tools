@@ -4,14 +4,14 @@ from dataclasses import dataclass
 from typing import List
 
 from importers.db_betriebsstellenverzeichnis import DbBetriebsstellenverzeichnisImporter
-from structures.route import Track
+from structures.route import Track, Path, merge_tracks
 from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code
 
 
 @dataclass
 class DataSet:
     station_data: List[Station]
-    track_data: List[Track]
+    path_data: List[Path]
 
     @staticmethod
     def load_data(
@@ -21,10 +21,11 @@ class DataSet:
 
         stations = DataSet.load_station_data(data_directory)
         tracks = DbStreckenImporter().import_data(os.path.join(data_directory, "strecken.csv"))
+        paths = merge_tracks(tracks)
 
         return DataSet(
             stations,
-            tracks
+            paths
         )
 
     @staticmethod

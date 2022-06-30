@@ -7,7 +7,7 @@ from typing import Tuple
 
 from cli_utils import check_files
 from geo.location_data import add_location_data_to_list
-from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_tracks_to_route
+from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
 from structures import DataSet
 from structures.route import TcRoute
 from tc_utils import TcFile
@@ -25,7 +25,7 @@ def import_trasse_into_tc(trasse: PathLike | str,
     station_json = TcFile('Station', tc_directory)
     path_json = TcFile('Path', tc_directory)
 
-    route = convert_waypoints_tracks_to_route(waypoints, data_set.track_data)
+    route = convert_waypoints_to_route(waypoints, data_set.station_data, data_set.path_data)
     tc_route = TcRoute.from_route(route, data_set.station_data)
 
     # Add location data from Google, if necessary

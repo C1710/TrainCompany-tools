@@ -1,8 +1,9 @@
 import re
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from importer import CsvImporter
-from structures.route import Track, TrackKind, StreckenKilometer
+from structures.route import Track, TrackKind
+from structures.station import StreckenKilometer
 
 
 class DbStreckenImporter(CsvImporter[Track]):
@@ -13,17 +14,19 @@ class DbStreckenImporter(CsvImporter[Track]):
             skip_first_line=False
         )
 
-    def deserialize(self, entry: List[str]) -> Track:
+    def deserialize(self, entry: List[str]) -> Optional[Track]:
         v_max = convert_min_max_speed(entry[10])[1]
         track = Track(
             route_number=int(entry[1]),
             length=float(entry[3]),
             electrified=entry[8] != 'nicht elektrifiziert',
             kind=TrackKind.from_speed_category(v_max, entry[13]),
-            from_km=StreckenKilometer.from_str(entry[6]),
-            to_km=StreckenKilometer.from_str(entry[7])
+            # Make we can sort the tracks later on
+            from_km=min(StreckenKilometer.from_str(entry[6]), StreckenKilometer.from_str(entry[7])),
+            to_km=max(StreckenKilometer.from_str(entry[7]), StreckenKilometer.from_str(entry[7]))
         )
-        return track
+        # Don't add Gegengleis
+        return track if int(entry[2]) != 2 else None
 
 
 speed_re = re.compile(r"(ab (\d+) )?bis (\d+) km/h")

@@ -4,21 +4,49 @@ import logging
 from abc import ABCMeta
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple, Set
 
-from structures.station import PathLocation, Station, iter_stations_by_codes_reverse
+from structures.station import Station, iter_stations_by_codes_reverse, CodeTuple, StreckenKilometer
 
 
 @dataclass(frozen=True)
 class Route:
     waypoints: List[CodeWaypoint]
-    tracks: List[Track]
+    tracks: List[Tuple[Track, ...]]
+
+
+@dataclass(frozen=True)
+class Path:
+    route_numer: int
+    tracks: Tuple[Track]
+
+
+def merge_tracks(tracks: List[Track]) -> List[Path]:
+    route_number_to_tracks: Dict[int, Set[Track]] = {}
+    for track in tracks:
+        if track.route_number not in route_number_to_tracks:
+            route_number_to_tracks[track.route_number] = set()
+        route_number_to_tracks[track.route_number].add(track)
+    # Sorting the segments makes it easier later on
+    for tracks in route_number_to_tracks.values():
+        tracks = list(tracks)
+        tracks.sort(key=lambda track: track.from_km)
+        # Check for duplicates
+        for (track, next_track) in zip(tracks, tracks[1:]):
+            assert track.from_km != next_track.from_km, (track, next_track)
+    return [
+        Path(
+            route_numer=route_number,
+            tracks=tuple(tracks)
+        ) for route_number, tracks in route_number_to_tracks.items()
+    ]
 
 
 def invalid_station(code: str) -> Station:
     logging.warning("Unbekannter Haltepunkt: {}. Kann keine automatischen Daten hinzufügen.".format(code))
-    station = Station()
-    station.codes.append(code)
+    station = Station(
+        codes=CodeTuple(code)
+    )
     return station
 
 
@@ -54,12 +82,12 @@ class TcPath:
         paths = []
         visited_waypoints: List[CodeWaypoint] = []
         visited_tracks: List[Track] = []
-        for (waypoint_start, track, waypoint_end) in zip(route.waypoints, route.tracks, route.waypoints[1:]):
+        for (waypoint_start, tracks, waypoint_end) in zip(route.waypoints, route.tracks, route.waypoints[1:]):
             waypoint_start: CodeWaypoint
-            track: Track
+            tracks: Tuple[Track]
             waypoint_end: CodeWaypoint
 
-            visited_tracks.append(track)
+            visited_tracks.extend(tracks)
             visited_waypoints.append(waypoint_start)
 
             if waypoint_end.is_stop:
@@ -115,34 +143,8 @@ class Track:
     electrified: bool
     kind: TrackKind
     length: float
-    from_km: Optional[StreckenKilometer]=field(default=None)
-    to_km: Optional[StreckenKilometer]=field(default=None)
-
-
-@dataclass(frozen=True)
-class StreckenKilometer:
-    lfd_km: float
-    correction: float
-
-    def __lt__(self, other: StreckenKilometer) -> bool:
-        if self.lfd_km != other.lfd_km:
-            return self.lfd_km < other.lfd_km
-        else:
-            return self.correction < other.correction
-
-    @staticmethod
-    def from_str(km_str: str):
-        if '+' in km_str:
-            lfd_km, correction = km_str.split(' + ')
-            return StreckenKilometer(
-                lfd_km=float(lfd_km.replace(',', '.')),
-                correction=float(correction.replace(',', '.'))
-            )
-        else:
-            return StreckenKilometer(
-                lfd_km=float(km_str.replace(',', '.')),
-                correction=0
-            )
+    from_km: Optional[StreckenKilometer] = field(default=None)
+    to_km: Optional[StreckenKilometer] = field(default=None)
 
 
 class TrackKind(Enum):
@@ -161,6 +163,9 @@ class TrackKind(Enum):
             return 2
         if self == TrackKind.UNKNOWN:
             return -1
+
+    def __lt__(self, other):
+        return self.rank < other.rank
 
     @staticmethod
     def from_speed_category(v_max: float, category: str) -> TrackKind:
