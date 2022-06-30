@@ -29,7 +29,7 @@ def invalid_track(route_number: int) -> Track:
         electrified=False,
         kind=TrackKind.UNKNOWN,
         length=0,
-        route_number=route_number
+        route_number=route_number,
     )
 
 

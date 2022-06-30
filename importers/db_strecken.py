@@ -2,7 +2,7 @@ import re
 from typing import List, Tuple
 
 from importer import CsvImporter
-from structures.route import Track, TrackKind
+from structures.route import Track, TrackKind, StreckenKilometer
 
 
 class DbStreckenImporter(CsvImporter[Track]):
@@ -19,7 +19,9 @@ class DbStreckenImporter(CsvImporter[Track]):
             route_number=int(entry[1]),
             length=float(entry[3]),
             electrified=entry[8] != 'nicht elektrifiziert',
-            kind=TrackKind.from_speed_category(v_max, entry[13])
+            kind=TrackKind.from_speed_category(v_max, entry[13]),
+            from_km=StreckenKilometer.from_str(entry[6]),
+            to_km=StreckenKilometer.from_str(entry[7])
         )
         return track
 

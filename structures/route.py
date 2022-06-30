@@ -115,6 +115,34 @@ class Track:
     electrified: bool
     kind: TrackKind
     length: float
+    from_km: Optional[StreckenKilometer]=field(default=None)
+    to_km: Optional[StreckenKilometer]=field(default=None)
+
+
+@dataclass(frozen=True)
+class StreckenKilometer:
+    lfd_km: float
+    correction: float
+
+    def __lt__(self, other: StreckenKilometer) -> bool:
+        if self.lfd_km != other.lfd_km:
+            return self.lfd_km < other.lfd_km
+        else:
+            return self.correction < other.correction
+
+    @staticmethod
+    def from_str(km_str: str):
+        if '+' in km_str:
+            lfd_km, correction = km_str.split(' + ')
+            return StreckenKilometer(
+                lfd_km=float(lfd_km.replace(',', '.')),
+                correction=float(correction.replace(',', '.'))
+            )
+        else:
+            return StreckenKilometer(
+                lfd_km=float(km_str.replace(',', '.')),
+                correction=0
+            )
 
 
 class TrackKind(Enum):
