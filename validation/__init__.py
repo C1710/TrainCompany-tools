@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import logging
 import random
+import time
+import timeit
 from os import PathLike
 from typing import Dict, Any
 
+import networkx as nx
 from networkx import is_connected
 
 from geo.location_data import with_location_data
@@ -60,16 +63,18 @@ def validate(tc_directory: PathLike | str = '..',
         # 1.2. Platforms
         real_platforms = station_obj.platforms
         if real_platforms and 'platformLength' in station:
-            data_platform_length = station['platformLength']
-            delta = abs(station_obj.platform_length - data_platform_length)
-            if delta > 20:
-                logging.warning("Haltepunkt {} hat eine um > 20 m abweichende Bahnsteiglänge."
-                                .format(station['ril100']))
-                issues += 10
-            if delta > 100:
-                logging.warning("Haltepunkt {} hat eine um > 100 m abweichende Bahnsteiglänge."
-                                .format(station['ril100']))
-                issues += 100
+            # Length checking is disabled for now because it might not work correctly
+            if False:
+                data_platform_length = station['platformLength']
+                delta = abs(station_obj.platform_length - data_platform_length)
+                if delta > 20:
+                    logging.warning("Haltepunkt {} hat eine um > 20 m abweichende Bahnsteiglänge."
+                                    .format(station['ril100']))
+                    issues += 10
+                if delta > 100:
+                    logging.warning("Haltepunkt {} hat eine um > 100 m abweichende Bahnsteiglänge."
+                                    .format(station['ril100']))
+                    issues += 100
 
             data_platforms = station['platforms']
             delta = abs(station_obj.platform_count - data_platforms)
@@ -153,9 +158,8 @@ def validate(tc_directory: PathLike | str = '..',
 
     # Step 3: graph-based validation
     logging.info(" --- Routing --- ")
-    path_edges = [(path['start'], path['end']) for path in paths
-                  if path['start'] in selected_codes and path['end'] in selected_codes
-                  ]
+    path_edges = [(path['start'], path['end'], path) for path in paths
+                  if path['start'] in selected_codes and path['end'] in selected_codes]
 
     graph = build_tc_graph(selected_codes, path_edges)
     if not is_connected(graph):
@@ -206,3 +210,4 @@ def validate(tc_directory: PathLike | str = '..',
                     issues += 10000
 
     return issues
+

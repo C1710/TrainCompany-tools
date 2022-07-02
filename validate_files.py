@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     logging.info("Score: {} (kleiner ist besser)".format(issues))
 
-    if issues > 3000:
+    if issues > 500:
         raise AssertionError(issues)
 
 

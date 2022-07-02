@@ -54,7 +54,7 @@ def track_from_path(route_number: int,
         warning.append("    Übernehme Daten zu Elektrifizierung, Streckenklasse vom letzten Segment"
                        .format(code_start, code_end))
     # Generate a median segment for the route number
-    if not last_known_segment and route_number in path_data:
+    if not last_known_segment and route_number in path_data or last_known_segment.route_number != route_number:
         warning.append("    Kein letztes Streckensegment bekannt. Verwende Median der Gesamtstrecke")
         last_known_segment = Track(
             route_number=route_number,
@@ -99,8 +99,9 @@ def convert_waypoints_to_route(waypoints: List[CodeWaypoint],
                     km_start = min(station_km, next_station_km)
                     km_end = max(station_km, next_station_km)
                     for track in path_used.tracks:
-                        if km_start <= track.from_km <= km_end or km_start <= track.to_km <= km_end:
+                        if track.from_km <= km_start <= track.to_km or track.from_km <= km_end <= track.to_km:
                             tracks_between_waypoints.append(track)
+                    assert tracks_between_waypoints
                 else:
                     next_station_km = next_station_km[0] if next_station_km else None
                     last_known_segment = tracks_between_waypoints[-1] if tracks_between_waypoints else None
@@ -125,6 +126,7 @@ def convert_waypoints_to_route(waypoints: List[CodeWaypoint],
                 ))
         else:
             tracks_between_waypoints.append(invalid_track(waypoint.next_route_number))
+        assert tracks_between_waypoints, (waypoint, next_waypoint)
         tracks_used.append(tuple(tracks_between_waypoints))
 
     return Route(

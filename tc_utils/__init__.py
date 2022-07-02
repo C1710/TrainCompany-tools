@@ -5,6 +5,8 @@ import os.path
 from os import PathLike
 from typing import List, Any, Dict
 
+from tc_utils.formatting import format_json
+
 
 class TcFile:
     name: str
@@ -22,3 +24,8 @@ class TcFile:
     def save(self):
         with open(self.path, 'w', encoding='utf-8', newline='\n') as output_file:
             json.dump(self.content, output_file, ensure_ascii=False, indent='\t')
+
+    def save_formatted(self):
+        with open(self.path, 'w', encoding='utf-8', newline='\n') as output_file:
+            output_file.write(format_json(self.content))
+

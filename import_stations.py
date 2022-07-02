@@ -41,6 +41,8 @@ def import_regex_stations_into_tc(stations_regex: str,
     data_set = DataSet.load_data(data_directory)
     stations = [station for station in data_set.station_data if any((regex.match(code) for code in station.codes))]
 
+    add_location_data_to_list(stations)
+
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations, station_json, override_stations, update_stations)
     return station_json

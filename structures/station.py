@@ -18,7 +18,8 @@ class _CodeList (List[str]):
         if __object not in self:
             super().append(__object)
             if '  ' in __object:
-                __object = __object.replace('  ', ' ')
+                while '  ' in __object:
+                    __object = __object.replace('  ', ' ')
                 if __object not in self:
                     super().append(__object)
             if ' ' in __object:

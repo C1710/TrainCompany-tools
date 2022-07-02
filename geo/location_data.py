@@ -27,6 +27,8 @@ def with_location_data(station: Station) -> Station:
     if location is None:
         logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
         location = geolocator.geocode(station.name)
+        if location is None:
+            logging.warning("Couldn't find station {}.".format(station.name))
     station = Station(
         name=station.name,
         codes=station.codes,
@@ -38,7 +40,7 @@ def with_location_data(station: Station) -> Station:
         location=Location(
             latitude=location.latitude,
             longitude=location.longitude
-        )
+        ) if location else None
     )
     return station
 
