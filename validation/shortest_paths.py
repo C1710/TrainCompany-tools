@@ -19,3 +19,7 @@ def get_shortest_path(graph: nx.Graph,
             return shortest_path
     else:
         return None
+
+
+def without_trivial_nodes(graph: nx.Graph, path: List[str]) -> List[str]:
+    return [node for node, degree in graph.degree(path) if degree > 2]
