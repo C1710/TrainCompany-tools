@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import logging
 import os.path
 from dataclasses import dataclass
 from typing import List
@@ -55,14 +57,14 @@ class DataSet:
         platforms = DbBahnsteigeImporter().import_data(os.path.join(data_directory, "bahnsteige.csv"))
         add_platforms_to_stations(stations, platforms)
 
-        # stations_ch = ChBetriebsstellenImporter().import_data(os.path.join(data_directory, "sbb_didok.csv"))
+        stations_ch = ChBetriebsstellenImporter().import_data(os.path.join(data_directory, "sbb_didok.csv"))
 
-        # platforms_ch = ChPlatformsImporter().import_data(os.path.join(data_directory, "sbb_platforms.csv"))
-        # add_platforms_to_stations(stations_ch, platforms_ch)
+        platforms_ch = ChPlatformsImporter().import_data(os.path.join(data_directory, "sbb_platforms.csv"))
+        add_platforms_to_stations(stations_ch, platforms_ch)
 
         # passenger_stations_ch = ChBahnhofsbenutzerImporter().import_data(os.path.join(data_directory, 'sbb_bahnhofsbenutzer.csv'))
         # add_passengers_to_stations_ch(stations_ch, passenger_stations_ch)
 
-        # merge_stations(stations, stations_ch, 'name')
+        stations = merge_stations(stations, stations_ch, 'name')
 
         return stations

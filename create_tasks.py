@@ -17,7 +17,8 @@ def create_tasks(Gattung: Type,
                  stations: List[List[str]],
                  name: Optional[str] = None,
                  tc_directory: PathLike | str = '..',
-                 pronouns: Optional[Pronouns] = None
+                 pronouns: Optional[Pronouns] = None,
+                 add_path_suggestion: bool = False
                  ) -> TcFile:
     path_json = TcFile('Path', tc_directory)
     station_json = TcFile('Station', tc_directory)
@@ -49,7 +50,7 @@ def create_tasks(Gattung: Type,
     ) for stations_task in stations]
     for task in tasks:
         task.add_sfs_description(graph=graph)
-    tasks_dicts = [task.to_dict(graph) for task in tasks]
+    tasks_dicts = [task.to_dict(graph, add_suggestion=add_path_suggestion) for task in tasks]
     tasks_merged = merge_task_dicts(tasks_dicts)
     for merged_task in tasks_merged:
         extract_remaining_subtask_from_task(merged_task)
@@ -75,6 +76,8 @@ if __name__ == '__main__':
                         required='--name' in sys.argv)
     parser.add_argument('--stations', metavar='RIL100', type=str, nargs='+', action='append', required=True,
                         help='Die RIL100-Codes der angefahrenen bahnhöfe, die hinzugefügt werden sollen')
+    parser.add_argument('--no_add_suggestion', action='store_true',
+                        help="Fügt der Task einen Hinweis auf den kürzesten Pfad hinzu.")
     parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
@@ -97,7 +100,8 @@ if __name__ == '__main__':
                      stations=args.stations,
                      tc_directory=args.tc_directory,
                      name=args.name,
-                     pronouns=article_to_pronoun[args.article]
+                     pronouns=article_to_pronoun[args.article],
+                     add_path_suggestion=not args.no_add_suggestion
                  )
 
     tasks_json.save_formatted()

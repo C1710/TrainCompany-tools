@@ -6,7 +6,7 @@ from typing import Dict, Any, Optional, Tuple, List
 brace_with_or_without_comma_re = re.compile(r'},?')
 bracket_with_or_without_comma_re = re.compile(r'],?')
 
-station_re = (re.compile(r'"stations": \['), re.compile(r']'))
+station_re = (re.compile(r'"(stations|pathSuggestion)": \['), re.compile(r']'))
 needed_capacity_re = (re.compile(r'"neededCapacity": \['), bracket_with_or_without_comma_re)
 
 acc_res: List[Tuple[re.Pattern, re.Pattern]] = [station_re]

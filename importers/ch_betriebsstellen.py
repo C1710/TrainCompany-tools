@@ -10,18 +10,18 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
     def __init__(self):
         super().__init__(
             delimiter=';',
-            encoding='cp852',
+            encoding='utf-8',
             skip_first_line=True
         )
 
     def deserialize(self, entry: List[str]) -> Station:
         station = Station(
             # This is unique
-            name=entry[2],
+            name=normalize_name(entry[2]),
             # We want to use international identifieres here to prevent conflicts with German stations
             number=int(entry[1]),
             # Subsitute the code with BPUIC if not available
-            codes=CodeTuple(*(('CH:' + entry[3], str(entry[1])) if entry[3] else (entry[1]))),
+            codes=CodeTuple('CH:' + entry[3], entry[1]) if entry[3] else CodeTuple(entry[1]),
             location=Location(
                 latitude=float(entry[25]),
                 longitude=float(entry[24])
@@ -32,3 +32,8 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
         )
 
         return station
+
+
+def normalize_name(name: str) -> str:
+    name = name.replace("St. Margrethen SG", "St. Margrethen")
+    return name

@@ -165,6 +165,7 @@ def merge_stations(onto: List[Station],
         for new_station in new_data:
             key = new_station.__getattribute__(on)
             if key in id_to_station:
+                # It's a match!
                 # Move the station into the WIP state
                 station = id_to_station.pop(key)
                 remaining_stations.remove(station)
@@ -221,11 +222,13 @@ def _merge_station(station: Station, new_station: Station, on: str) -> Station:
 def _merge_station_dicts_inplace(station: Dict[str, Any], new_station: Dict[str, Any], on: str):
     """Merges one station onto another, in place (with Dicts as a temporary structure)"""
     for key, value in station.items():
-        if key not in ['codes', 'location_path', on] and value is None:
+        if key not in ['codes', 'location_path', 'platforms', on] and value is None:
             if value is None:
                 station[key] = new_station[key]
         elif key == 'codes':
             station['codes'] += new_station['codes']
+        elif key == 'platforms' and not station['platforms']:
+            station['platforms'] = new_station['platforms']
         elif key == 'locations_path':
             station['locations_path'] = station['locations_path'].union(new_station['locations_path'])
 

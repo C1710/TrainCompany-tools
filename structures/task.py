@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from functools import lru_cache
+from dataclasses import dataclass, field
+from typing import List, Dict, Any, Optional
 
 import networkx as nx
 
-from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple, Type
+from validation.shortest_paths import without_trivial_nodes, get_shortest_path
 
 
 @dataclass(frozen=True)
@@ -55,7 +55,7 @@ class TcTask:
             shortest_path.extend(sub_path[1:])
         return shortest_path
 
-    def to_dict(self, graph: Optional[nx.Graph]) -> Dict[str, Any]:
+    def to_dict(self, graph: Optional[nx.Graph], add_suggestion: bool = False) -> Dict[str, Any]:
         task = self.__dict__
         if (not self.plops) and graph:
             task['plops'] = self.calculate_plops(graph)
@@ -64,6 +64,8 @@ class TcTask:
         task['neededCapacity'] = [
             needed_capacity.__dict__ for needed_capacity in self.neededCapacity
         ]
+        if add_suggestion:
+            task['pathSuggestion'] = without_trivial_nodes(graph, self.stations, get_shortest_path(graph, self.stations))
         return task
 
     def uses_sfs(self, graph: nx.Graph) -> bool:

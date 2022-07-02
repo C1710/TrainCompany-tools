@@ -18,7 +18,7 @@ class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
     def deserialize(self, entry: List[str]) -> Optional[Station]:
         assert entry[1]
         station = Station(
-            name=entry[2],
+            name=correct_ch_name(entry[2]),
             number=None,
             codes=CodeTuple(entry[1]),
             location=None,
@@ -26,3 +26,9 @@ class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
             station_category=None
         )
         return station
+
+
+def correct_ch_name(name: str) -> str:
+    if name == "St Gallen":
+        return "St. Gallen"
+    return name
