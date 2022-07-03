@@ -55,7 +55,16 @@ def create_tasks(Gattung: Type,
     for merged_task in tasks_merged:
         extract_remaining_subtask_from_task(merged_task)
         cleanup_task(merged_task)
-    task_model_json.data.extend(tasks_merged)
+    task_groups = [task['group'] if 'group' in task else -1 for task in task_model_json.data]
+    assert -1 not in task_groups
+    # Insert before the first 0 group entry
+    first_0_index = task_groups.index(0)
+    for task in tasks_merged:
+        if task['group'] == 1:
+            task_model_json.data.insert(first_0_index, task)
+            first_0_index += 1
+        else:
+            task_model_json.data.append(task)
 
     return task_model_json
 

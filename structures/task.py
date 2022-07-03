@@ -34,7 +34,7 @@ class TcTask:
 
     def calculate_plops(self, graph: nx.Graph) -> int:
         length = self.shortest_path_length(graph)
-        return int(self.payout_per_km * length) + self.payout_baseline
+        return int(self.payout_per_km * length + self.payout_baseline)
 
     def shortest_path_length(self, graph: nx.Graph) -> float:
         shortest_paths = (
