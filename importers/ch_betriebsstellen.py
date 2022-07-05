@@ -38,4 +38,6 @@ def normalize_name(name: str) -> str:
     name = name.replace(" SG", "")
     name = name.replace("Zürich Oerlikon", "Zürich-Oerlikon")
     name = name.replace("Horn", "Horn (Bodensee)")
+    name = name.replace(" ZH", "")
+    name = name.replace("Baden", "Baden                               (CH)")
     return name
