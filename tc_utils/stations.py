@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 from structures import Station
@@ -27,6 +28,7 @@ def add_stations_to_file(stations: List[Station],
             if not is_existing:
                 stations.remove(station)
     # Update or append the data
+    insertion_index = random.randint(0, len(file.data))
     for station in stations:
         # Convert to dict for insertion
         tc_station = TcStation.from_station(station)
@@ -41,4 +43,6 @@ def add_stations_to_file(stations: List[Station],
                 break
         # There is no station with that code there, so we need to append it
         if not updated:
-            file.data.append(tc_station_dict)
+            # Insert at a random point to prevent git conflicts
+            file.data.insert(insertion_index, tc_station_dict)
+            insertion_index += 1
