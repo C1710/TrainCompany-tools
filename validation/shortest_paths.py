@@ -8,7 +8,7 @@ def get_shortest_path(graph: nx.Graph,
                       train: Optional[Dict[str, Any]] = None) -> Optional[List[str]]:
     if len(stations) >= 2:
         # Only use the track's maxSpeed if there is no train
-        train_max_speed = train['speed'] if train and 'maxSpeed' in train else 5000
+        train_max_speed = train['speed'] if train and 'speed' in train else 5000
         shortest_paths = (
             nx.dijkstra_path(graph, station_from, station_to,
                              weight=lambda start, end, edge: edge['length'] / min(edge['maxSpeed'], train_max_speed))
