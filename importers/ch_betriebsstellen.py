@@ -35,5 +35,7 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
 
 
 def normalize_name(name: str) -> str:
-    name = name.replace("St. Margrethen SG", "St. Margrethen")
+    name = name.replace(" SG", "")
+    name = name.replace("Zürich Oerlikon", "Zürich-Oerlikon")
+    name = name.replace("Horn", "Horn (Bodensee)")
     return name
