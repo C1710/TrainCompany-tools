@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from importer import CsvImporter
@@ -35,7 +36,13 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
 
 
 def normalize_name(name: str) -> str:
-    name = name.replace(" SG", "")
+    # name = name.replace(" SG", "")
     name = name.replace("Zürich Oerlikon", "Zürich-Oerlikon")
     name = name.replace("Horn", "Horn (Bodensee)")
+    name = name.replace("Zug", "Zug (CH)")
+    name = name.replace("Altdorf UR", "Altdorf")
+    name = name.replace("Bodio TI", "Bodio")
+    name = name.replace("Fribourg/Freiburg", "Fribourg")
+    name = name.replace("Cornaux NE", "Cornaux")
+    name = name.replace("Münsingen", "Münsingen (CH)")
     return name

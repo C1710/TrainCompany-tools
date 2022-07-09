@@ -242,6 +242,11 @@ class IcTask(GattungTask):
     service = ServiceLevel.INTERCITY
 
 
+class IrTask(IcTask):
+    gattung = 'IR'
+    gattung_long = 'Interregio'
+
+
 class EcTask(IcTask):
     gattung = 'EC'
     gattung_long = 'Eurocity'

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import List, Optional
 
 from importer import CsvImporter
@@ -28,7 +29,16 @@ class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
         return station
 
 
+ch_re = re.compile(r' +\(CH\)')
+
+
 def correct_ch_name(name: str) -> str:
     if name == "St Gallen":
         return "St. Gallen"
+    name = ch_re.sub(' (CH)', name)
+    name = name.replace('Geneve', 'Genève')
+    name = name.replace(" / ", "/")
+    name = name.replace("Neuchatel", "Neuchâtel")
+    name = name.replace("Yverdon", "Yverdon-les-Bains")
+    name = name.replace("Delemont", "Delémont")
     return name

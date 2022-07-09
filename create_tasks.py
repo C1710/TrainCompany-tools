@@ -74,7 +74,7 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(script_path)
 
     gattungen = {task.gattung: task for task in (SbahnTask, RbTask, ReTask, IreTask,
-                                                 IcTask, EcTask,
+                                                 IcTask, IrTask, EcTask,
                                                  IceTask, IceSprinterTask, EceTask)}
 
     parser = argparse.ArgumentParser(description='Erstelle neue Strecken')

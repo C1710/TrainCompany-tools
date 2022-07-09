@@ -57,8 +57,8 @@ def validate(tc_directory: PathLike | str = '..',
                 logging.warning("Haltepunkt {} ist über 60 km vom echten Punkt entfernt.".format(station['ril100']))
                 issues += 10
             if delta > 300:
-                logging.error("Haltepunkt {} ist über 300 km vom echten Punkt entfernt.".format(station['ril100']))
-                issues += 10000
+                logging.warning("Haltepunkt {} ist über 300 km vom echten Punkt entfernt.".format(station['ril100']))
+                issues += 20
 
         # 1.2. Platforms
         real_platforms = station_obj.platforms
