@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import List, Dict, Any, Optional
 
 import networkx as nx
@@ -31,6 +32,7 @@ class TcTask:
     group: int = field(default=1)
     payout_per_km: float = field(default=300)
     payout_baseline: int = field(default=80000)
+    service: int = field(default=4)
 
     def calculate_plops(self, graph: nx.Graph) -> int:
         length = self.shortest_path_length(graph)
@@ -81,6 +83,16 @@ class TcTask:
             return False
 
 
+class ServiceLevel(Enum):
+    HIGH_SPEED = 0
+    INTERCITY = 1
+    REGIONAL = 2
+    COMMUTER = 3
+    SPECIAL = 4
+    FREIGHT_IMPORTANT = 10
+    FREIGHT = 11
+
+
 @dataclass(frozen=True)
 class Pronouns:
     nominative: str
@@ -125,8 +137,8 @@ class SieIhrPronouns(Pronouns):
 class GattungTask(TcTask):
     gattung: str = ''
     gattung_long: str = ''
-    # Nominativ, Genitiv, Dativ, Akkusativ
     pronouns: Pronouns
+    service: ServiceLevel = ServiceLevel.SPECIAL
 
     def __init__(self,
                  line: str,
@@ -145,6 +157,7 @@ class GattungTask(TcTask):
                 )
             ],
             payout_per_km=self.__class__.payout_per_km,
+            service=self.__class__.service.value,
             *args, **kwargs
         )
         if 'payout_baseline' in self.__class__.__dict__:
@@ -193,6 +206,7 @@ class SbahnTask(GattungTask):
     payout_per_km = 360
     payout_baseline = 90000
     pronouns = SieIhrPronouns()
+    service = ServiceLevel.COMMUTER
 
 
 class RbTask(GattungTask):
@@ -201,6 +215,7 @@ class RbTask(GattungTask):
     payout_per_km = 360
     payout_baseline = 90000
     pronouns = SieIhrPronouns()
+    service = ServiceLevel.COMMUTER
 
 
 class ReTask(GattungTask):
@@ -209,6 +224,7 @@ class ReTask(GattungTask):
     payout_per_km = 420
     payout_baseline = 85000
     pronouns = ErIhmPronouns()
+    service = ServiceLevel.REGIONAL
 
 
 class IreTask(ReTask):
@@ -223,6 +239,12 @@ class IcTask(GattungTask):
     payout_per_km = 400
     pronouns = ErIhmPronouns()
     payout_baseline = 120000
+    service = ServiceLevel.INTERCITY
+
+
+class IrTask(IcTask):
+    gattung = 'IR'
+    gattung_long = 'Interregio'
 
 
 class EcTask(IcTask):
@@ -239,6 +261,7 @@ class IceTask(GattungTask):
     payout_per_km = 400
     pronouns = ErIhmPronouns()
     payout_baseline = 130000
+    service = ServiceLevel.HIGH_SPEED
 
 
 class IceSprinterTask(IceTask):

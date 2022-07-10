@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import random
+import re
 import time
 import timeit
 from os import PathLike
@@ -42,9 +43,26 @@ def validate(tc_directory: PathLike | str = '..',
     # Step 1: Validate stations
     logging.info(" --- Station.json --- ")
     selected_codes = [station['ril100'] for station in station_json.data]
-    selected_stations = [(station, stations[station['ril100']]) for station in station_json.data]
+    selected_stations = [(station, stations[station['ril100']] if station['ril100'] in stations else None)
+                         for station in station_json.data]
+
+    flag_re = re.compile(r"[🇦-🇿]{2}")
+    known_flags = ["🇨🇭"]
 
     for station, station_obj in selected_stations:
+        if station_obj is None:
+            if flag_re.search(station['ril100']):
+                for known_flag in known_flags:
+                    if known_flag in station['ril100']:
+                        logging.warning("Unbekannte Haltestelle: {}".format(station['ril100']))
+                        issues += 50
+                        break
+                else:
+                    logging.info("Betriebsstelle in unbekanntem Land: {}".format(station['ril100']))
+            else:
+                logging.warning("Unbekannte Haltestelle: {}".format(station['ril100']))
+                issues += 50
+            continue
         # 1.1. location check
         real_location = station_obj.location
         if real_location:
@@ -57,8 +75,8 @@ def validate(tc_directory: PathLike | str = '..',
                 logging.warning("Haltepunkt {} ist über 60 km vom echten Punkt entfernt.".format(station['ril100']))
                 issues += 10
             if delta > 300:
-                logging.error("Haltepunkt {} ist über 300 km vom echten Punkt entfernt.".format(station['ril100']))
-                issues += 10000
+                logging.warning("Haltepunkt {} ist über 300 km vom echten Punkt entfernt.".format(station['ril100']))
+                issues += 20
 
         # 1.2. Platforms
         real_platforms = station_obj.platforms
