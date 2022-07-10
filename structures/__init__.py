@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import logging
 import os.path
 from dataclasses import dataclass
 from typing import List
 
-from importers.db_betriebsstellenverzeichnis import DbBetriebsstellenverzeichnisImporter
 from structures.route import Track, Path, merge_tracks
 from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code
 
@@ -32,6 +30,9 @@ class DataSet:
 
     @staticmethod
     def load_station_data(data_directory: str = 'data') -> List[Station]:
+        from importers.db_betriebsstellenverzeichnis import DbBetriebsstellenverzeichnisImporter
+        from importers.fr_platforms import FrPlatformsImporter
+        from importers.fr_stations import FrStationsImporter
         from importers.ch_bahnhofsbenutzer import ChBahnhofsbenutzerImporter, add_passengers_to_stations_ch
         from importers.ch_betriebsstellen import ChBetriebsstellenImporter
         from importers.ch_platforms import ChPlatformsImporter
@@ -62,9 +63,16 @@ class DataSet:
         platforms_ch = ChPlatformsImporter().import_data(os.path.join(data_directory, "sbb_platforms.csv"))
         add_platforms_to_stations(stations_ch, platforms_ch)
 
+        stations_fr = FrStationsImporter().import_data(os.path.join(data_directory, 'fr_stations.csv'))
+        stations_fr = merge_stations_on_first_code(stations_fr)
+
+        platforms_fr = FrPlatformsImporter(stations_fr).import_data(os.path.join(data_directory, 'fr_platforms.csv'))
+        add_platforms_to_stations(stations_fr, platforms_fr)
+
         # passenger_stations_ch = ChBahnhofsbenutzerImporter().import_data(os.path.join(data_directory, 'sbb_bahnhofsbenutzer.csv'))
         # add_passengers_to_stations_ch(stations_ch, passenger_stations_ch)
 
         stations = merge_stations(stations, stations_ch, 'name')
+        stations = merge_stations(stations, stations_fr, 'name')
 
         return stations

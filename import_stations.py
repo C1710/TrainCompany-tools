@@ -18,7 +18,8 @@ def import_stations_into_tc(stations: List[str],
                             tc_directory: PathLike | str = '..',
                             data_directory: PathLike | str = 'data',
                             override_stations: bool = False,
-                            update_stations: bool = False
+                            update_stations: bool = False,
+                            append: bool = False
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
@@ -27,7 +28,7 @@ def import_stations_into_tc(stations: List[str],
     add_location_data_to_list(stations)
 
     station_json = TcFile('Station', tc_directory)
-    add_stations_to_file(stations, station_json, override_stations, update_stations)
+    add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
     return station_json
 
 
@@ -35,7 +36,8 @@ def import_regex_stations_into_tc(stations_regex: str,
                                   tc_directory: PathLike | str = '..',
                                   data_directory: PathLike | str = 'data',
                                   override_stations: bool = False,
-                                  update_stations: bool = False
+                                  update_stations: bool = False,
+                                  append: bool = False
                                   ) -> TcFile:
     regex = re.compile(stations_regex, re.RegexFlag.IGNORECASE)
     data_set = DataSet.load_data(data_directory)
@@ -44,7 +46,7 @@ def import_regex_stations_into_tc(stations_regex: str,
     add_location_data_to_list(stations)
 
     station_json = TcFile('Station', tc_directory)
-    add_stations_to_file(stations, station_json, override_stations, update_stations)
+    add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
     return station_json
 
 
@@ -71,6 +73,8 @@ if __name__ == '__main__':
                                     help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     update_or_override.add_argument('--update-stations', action='store_true',
                                     help="Aktualisiert existierende Haltestellen, fügt aber keine hinzu")
+    parser.add_argument('--append', action='store_true',
+                        help="Fügt alles am Ende ein")
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
@@ -80,7 +84,8 @@ if __name__ == '__main__':
             args.tc_directory,
             args.data_directory,
             args.override_stations,
-            args.update_stations
+            args.update_stations,
+            append=args.append
         )
     else:
         # We (should?) have a regex
@@ -89,6 +94,7 @@ if __name__ == '__main__':
             args.tc_directory,
             args.data_directory,
             args.override_stations,
-            args.update_stations
+            args.update_stations,
+            append=args.append
         )
     station_json.save()
