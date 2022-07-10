@@ -47,11 +47,18 @@ def validate(tc_directory: PathLike | str = '..',
                          for station in station_json.data]
 
     flag_re = re.compile(r"[🇦-🇿]{2}")
+    known_flags = ["🇨🇭"]
 
     for station, station_obj in selected_stations:
         if station_obj is None:
             if flag_re.search(station['ril100']):
-                logging.info("Betriebsstelle in unbekanntem Land: {}".format(station['ril100']))
+                for known_flag in known_flags:
+                    if known_flag in station['ril100']:
+                        logging.warning("Unbekannte Haltestelle: {}".format(station['ril100']))
+                        issues += 50
+                        break
+                else:
+                    logging.info("Betriebsstelle in unbekanntem Land: {}".format(station['ril100']))
             else:
                 logging.warning("Unbekannte Haltestelle: {}".format(station['ril100']))
                 issues += 50
