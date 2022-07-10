@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import random
+import re
 import time
 import timeit
 from os import PathLike
@@ -42,9 +43,19 @@ def validate(tc_directory: PathLike | str = '..',
     # Step 1: Validate stations
     logging.info(" --- Station.json --- ")
     selected_codes = [station['ril100'] for station in station_json.data]
-    selected_stations = [(station, stations[station['ril100']]) for station in station_json.data]
+    selected_stations = [(station, stations[station['ril100']] if station['ril100'] in stations else None)
+                         for station in station_json.data]
+
+    flag_re = re.compile(r"[🇦-🇿]{2}")
 
     for station, station_obj in selected_stations:
+        if station_obj is None:
+            if flag_re.search(station['ril100']):
+                logging.info("Betriebsstelle in unbekanntem Land: {}".format(station['ril100']))
+            else:
+                logging.warning("Unbekannte Haltestelle: {}".format(station['ril100']))
+                issues += 50
+            continue
         # 1.1. location check
         real_location = station_obj.location
         if real_location:

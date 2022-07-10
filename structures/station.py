@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
@@ -13,24 +14,14 @@ special_codes: Tuple[Tuple[str, ...], ...] = (
 )
 
 
+more_whitespace_re = re.compile(r'  +')
+
+
 class _CodeList (List[str]):
     def append(self, __object: str):
-        if __object not in self:
-            super().append(__object)
-            if '  ' in __object:
-                while '  ' in __object:
-                    __object = __object.replace('  ', ' ')
-                if __object not in self:
-                    super().append(__object)
-            if ' ' in __object:
-                __object = __object.split(' ')[0]
-                if __object not in self:
-                    super().append(__object)
-        for special in special_codes:
-            if __object in special:
-                for other in special:
-                    if other != __object:
-                        super().append(other)
+        for code in expand_codes(__object):
+            if code not in self:
+                super().append(code)
 
     def extend(self, __iterable: Iterable[str]):
         for code in __iterable:
@@ -39,8 +30,8 @@ class _CodeList (List[str]):
 
 def expand_codes(base_code: str) -> Generator[str, None, None]:
     yield base_code
-    if '  ' in base_code:
-        base_code = base_code.replace('  ', ' ')
+    if more_whitespace_re.search(base_code):
+        base_code = more_whitespace_re.sub(' ', base_code)
         yield base_code
     if ' ' in base_code:
         base_code = base_code.split(' ')[0]
