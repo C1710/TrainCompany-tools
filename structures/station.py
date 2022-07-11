@@ -110,7 +110,7 @@ class Station:
                 # Nebenbahnhof
                 return 2
             if self.station_category == 7:
-                # Haltepunkt (unsichtbar
+                # Haltepunkt (unsichtbar)
                 return 5
         if self.kind and self.kind.lower() == 'abzw':
             # Abzweig

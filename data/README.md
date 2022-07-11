@@ -27,3 +27,12 @@ License:
 `sbb_bahnhofsbenutzer.csv`:
 - License: https://data.sbb.ch/page/licence
 - Source: https://data.sbb.ch/explore/dataset/anzahl-sbb-bahnhofbenutzer/information/
+
+## FR
+`fr_platforms.csv`:
+- License: https://data.sncf.com/pages/licence/#A1
+- Source: https://data.sncf.com/explore/dataset/liste-des-quais/information/
+
+`fr_stations.csv`:
+- License: https://data.sncf.com/pages/licence/#A1
+- Source: https://data.sncf.com/explore/dataset/liste-des-gares/information/
