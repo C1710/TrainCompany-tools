@@ -36,3 +36,7 @@ License:
 `fr_stations.csv`:
 - License: https://data.sncf.com/pages/licence/#A1
 - Source: https://data.sncf.com/explore/dataset/liste-des-gares/information/
+
+`fr_acronyms.csv`:
+- License: https://data.sncf.com/pages/licence/#A1
+- Source: https://ressources.data.sncf.com/explore/dataset/lexique-des-acronymes-sncf/information/
