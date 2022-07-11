@@ -205,6 +205,16 @@ def validate(tc_directory: PathLike | str = '..',
             for used_equipment in train['equipments']:
                 if used_equipment not in train_equipments:
                     logging.error("Zug {} hat nicht existierendes Equipment: {}".format(train['id'], used_equipment))
+                    issues += 10000
+
+    # 4.4. operationCosts
+    # TODO: Better validation (e.g., high force = high costs)
+    for train in train_json.data:
+        if 'operationCosts' not in train:
+            train['operationCosts'] = 0
+        if train['force'] > 0 and train['operationCosts'] < 5:
+            logging.error("Zug {} (ID {}) hat keine/zu geringe operationCosts: {}"
+                          .format(train['name'] if 'name' in train else 'Unbenannt', train['id'], train['operationCosts']))
 
     # Step 5: task model
     logging.info(" --- TaskModel.json --- ")
