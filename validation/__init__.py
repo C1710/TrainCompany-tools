@@ -215,6 +215,7 @@ def validate(tc_directory: PathLike | str = '..',
         if train['force'] > 0 and train['operationCosts'] < 5:
             logging.error("Zug {} (ID {}) hat keine/zu geringe operationCosts: {}"
                           .format(train['name'] if 'name' in train else 'Unbenannt', train['id'], train['operationCosts']))
+            issues += 1000
 
     # Step 5: task model
     logging.info(" --- TaskModel.json --- ")
