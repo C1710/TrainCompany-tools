@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from typing import List
 
 from structures.route import Track, Path, merge_tracks
-from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code
+from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code, \
+    CodeTuple, Location
 
 
 @dataclass
@@ -65,6 +66,23 @@ class DataSet:
 
         stations_fr = FrStationsImporter().import_data(os.path.join(data_directory, 'fr_stations.csv'))
         stations_fr = merge_stations_on_first_code(stations_fr)
+        # Manual stations
+        stations_fr.append(Station(
+            name="Baudrecourt",
+            number=hash('Baudrecourt'),
+            codes=CodeTuple("🇫🇷BDC"),
+            kind='abzw'
+        ))
+        stations_fr.append(Station(
+            name="Pasilly à Aisy",
+            number=hash("Pasilly à Aisy"),
+            codes=CodeTuple("🇫🇷PAI"),
+            location=Location(
+                latitude=47.68882057293988,
+                longitude=4.075627659435932
+            ),
+            kind='abzw'
+        ))
 
         platforms_fr = FrPlatformsImporter(stations_fr).import_data(os.path.join(data_directory, 'fr_platforms.csv'))
         add_platforms_to_stations(stations_fr, platforms_fr)

@@ -264,6 +264,11 @@ class IceTask(GattungTask):
     service = ServiceLevel.HIGH_SPEED
 
 
+class TgvTask(IceTask):
+    gattung = 'TGV'
+    gattung_long = 'TGV'
+
+
 class IceSprinterTask(IceTask):
     gattung = 'ICE-Sprinter'
     gattung_long = 'ICE-Sprinter'

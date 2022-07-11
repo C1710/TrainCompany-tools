@@ -1,4 +1,5 @@
 import csv
+import logging
 from abc import ABCMeta, abstractmethod
 from typing import TypeVar, Generic, List, Optional
 
@@ -29,7 +30,11 @@ class CsvImporter(Importer[T], metaclass=ABCMeta):
         with open(file_name, encoding=self.encoding) as csv_file:
             reader = csv.reader(csv_file, delimiter=self.delimiter)
             if self.skip_first_line:
-                reader.__next__()
+                first_line = reader.__next__()
+                if first_line[0] == "utf-8" and self.encoding != 'utf-8':
+                    self.encoding = 'utf-8'
+                    logging.info("Reopening with UTF-8 encoding")
+                    return self.import_data(file_name)
             data = (self.deserialize(entry) for entry in reader)
             data = [entry for entry in data if entry is not None]
         return data

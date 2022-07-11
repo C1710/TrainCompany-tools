@@ -19,7 +19,7 @@ class FrStationsImporter (CsvImporter[Station]):
         station = Station(
             name=normalize_french_station_name(entry[1]),
             number=int(entry[0]),
-            codes=CodeTuple(entry[0]),
+            codes=generate_code_tuple(entry),
             location=Location(
                 latitude=float(entry[14]),
                 longitude=float(entry[13])
@@ -29,6 +29,29 @@ class FrStationsImporter (CsvImporter[Station]):
         )
 
         return station
+
+
+special_codes = {
+    "Montbard": "MBA",
+    "Mâlain": "MLI",
+    "Blaisy-Bas": "BSB"
+}
+
+
+def generate_code_tuple(entry: List[str]) -> CodeTuple:
+    number = entry[0]
+    name = entry[1]
+    codes = []
+    for stations_name, code in special_codes.items():
+        if name == stations_name:
+            codes.append(code)
+            break
+
+    for index, code in enumerate(codes):
+        codes[index] = '🇫🇷' + code
+    codes.append(number)
+
+    return CodeTuple(*codes)
 
 
 def normalize_french_station_name(name: str) -> str:
