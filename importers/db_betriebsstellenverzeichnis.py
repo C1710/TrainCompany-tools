@@ -57,4 +57,10 @@ def correct_fr_name(name: str) -> str:
     name = name.replace('Lorraine-Louvigny', 'Lorraine-TGV')
     name = name.replace('Champagne-Ardennes', 'Champagne-Ardenne-TGV')
     name = name.replace("Bening", 'Béning')
+    name = name.replace("Amberieu", "Ambérieu")
+    name = name.replace("Marne-la-Vallee-Chessy", "Marne-la-Vallée-Chessy")
+    name = name.replace("Calais-Frethun", "Calais-Fréthun")
+    name = name.replace("Selestat", "Sélestat")
+    name = name.replace("Chalon-sur-Saone", "Chalon-sur-Saône")
+    name = name.replace("Macon-Ville", "Mâcon-Ville")
     return name

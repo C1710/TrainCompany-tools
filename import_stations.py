@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import argparse
+from ast import parse
 import os
 import re
 from os import PathLike
-from typing import List
+from typing import List, Tuple
 
 from geo.location_data import add_location_data_to_list
 from structures import DataSet
@@ -14,23 +15,41 @@ from tc_utils.stations import add_stations_to_file
 from cli_utils import check_files
 
 
-def import_stations_into_tc(stations: List[str],
+def import_stations_into_tc(stations_codes: List[str],
                             tc_directory: PathLike | str = '..',
                             data_directory: PathLike | str = 'data',
                             override_stations: bool = False,
                             update_stations: bool = False,
-                            append: bool = False
+                            append: bool = False,
+                            trassenfinder: bool = False
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [code_to_station[code.upper()] for code in stations]
+    stations = [code_to_station[code.upper()] for code in stations_codes]
 
     add_location_data_to_list(stations)
 
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
+    
+    if trassenfinder:
+        create_trassenfinder([(code, code_to_station[code.upper()].name) for code in stations_codes], tc_directory)
+
     return station_json
 
+
+def create_trassenfinder(stations: List[Tuple[str, str]], tc_directory: PathLike | str = '..'):
+    lines = ['utf-8;"Lfd. km";;"Betriebsstelle (kurz)";"Nachfolgende Streckennr.";;;;;;;;;;;;;;;"Bemerkung"\n']
+    for index, (code, station_name) in enumerate(stations):
+        lines.append('"{}";;"{}";"0";;;;;;;;;;;;;;"{}; Kundenhalt"\n'.format("0,0" if index == 0 else "", code, station_name))
+    assert len(lines) == len(stations) + 1
+    filename = "{}-{}.csv".format(stations[0][0], stations[-1][0])
+    index = 1
+    while os.path.exists(os.path.join(tc_directory, filename)):
+        filename = "{}-{}-{}.csv".format(index,stations[0][0], stations[-1][0])
+        index += 1
+    with open(os.path.join(tc_directory, filename), 'w', encoding='utf-8', newline='\n') as outfile:
+        outfile.writelines(lines)
 
 def import_regex_stations_into_tc(stations_regex: str,
                                   tc_directory: PathLike | str = '..',
@@ -75,6 +94,8 @@ if __name__ == '__main__':
                                     help="Aktualisiert existierende Haltestellen, fügt aber keine hinzu")
     parser.add_argument('--append', action='store_true',
                         help="Fügt alles am Ende ein")
+    parser.add_argument('--trassenfinder', action='store_true',
+                        help="Legt eine Trassenfinder-ähnliche Datei mit den Haltestellen an.")
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
@@ -85,7 +106,8 @@ if __name__ == '__main__':
             args.data_directory,
             args.override_stations,
             args.update_stations,
-            append=args.append
+            append=args.append,
+            trassenfinder=args.trassenfinder
         )
     else:
         # We (should?) have a regex
@@ -95,6 +117,7 @@ if __name__ == '__main__':
             args.data_directory,
             args.override_stations,
             args.update_stations,
-            append=args.append
+            append=args.append,
+            trassenfinder=args.trassenfinder
         )
     station_json.save()

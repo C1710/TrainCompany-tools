@@ -182,6 +182,9 @@ def validate(tc_directory: PathLike | str = '..',
     graph = build_tc_graph(selected_codes, path_edges)
     if not is_connected(graph):
         logging.error("Das Netz ist nicht zusammenhängend.")
+        for node, degree in graph.degree():
+            if degree == 0:
+                print(node)
         issues += 1000
 
     # Step 4: trains

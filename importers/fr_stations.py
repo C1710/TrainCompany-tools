@@ -34,7 +34,27 @@ class FrStationsImporter (CsvImporter[Station]):
 special_codes = {
     "Montbard": "MBA",
     "Mâlain": "MLI",
-    "Blaisy-Bas": "BSB"
+    "Blaisy-Bas": "BSB",
+    "Villers-les-Pots": "VLP",
+    "Genlis": "GLS",
+    "Andelot": "AND",
+    "Frasne": "FRA",
+    "Labergement-Ste-Marie": "LGM",
+    "Les Longevilles-Rochejean": "LLR",
+    "Beynost": "BNO",
+    "Meximieux-Pérouges": "MEX",
+    "St-Rambert-d'Albon": "SRA",
+    "Seyssel-Corbonod": "SSS",
+    "Virieu-le-Grand-Belley": "VRU",
+    "Aéroport-Charles-de-Gaulle 2-TGV": "CDG",
+    "Lyon-St-Exupéry-TGV": "SXA",
+    "Beaune": "BEA",
+    "Nuits-St-Georges": "NUI",
+    "Sennecey-le-Grand": "SRD",
+    "Tournus": "TOS",
+    "Fleurville-Pont-de-Vaux": "FLV",
+    "Pontanevaux": "PNX",
+    "Anse": "ANS"
 }
 
 
@@ -58,4 +78,6 @@ def normalize_french_station_name(name: str) -> str:
     name = name.replace('-Souterraine', '')
     name = name.replace('-Surface', '')
     name = name.replace('Lille-Europe', 'Lille Europe')
+    name = name.replace('Dole', 'Dole-Ville')
+    name = name.replace('Bellegarde', 'Bellegarde (Ain)')
     return name

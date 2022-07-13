@@ -244,8 +244,8 @@ class TcStation:
             group=station.group if station.group is not None else 2,
             x=x,
             y=y,
-            platformLength=int(station.platform_length),
-            platforms=station.platform_count,
+            platformLength=int(station.platform_length) if station.platform_length != 0 else None,
+            platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None
         )
 
@@ -262,7 +262,7 @@ class Location:
     latitude: float
     longitude: float
 
-    def convert_to_tc(self) -> (int, int):
+    def convert_to_tc(self) -> Tuple[int, int]:
         x = int((self.longitude - origin_x) * scale_x)
         y = int((self.latitude - origin_y) * scale_y)
         return x, y
