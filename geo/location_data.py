@@ -21,28 +21,31 @@ def load_api_key() -> str:
 
 
 def with_location_data(station: Station) -> Station:
-    geolocator = GoogleV3(api_key=load_api_key())
-    location = geolocator.geocode(station.name + " Bahnhof")
-    logging.info("Loading station location from Google Maps")
-    if location is None:
-        logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
-        location = geolocator.geocode(station.name)
+    if not station.location:
+        geolocator = GoogleV3(api_key=load_api_key())
+        location = geolocator.geocode(station.name + " Bahnhof")
+        logging.info("Loading station location from Google Maps")
         if location is None:
-            logging.warning("Couldn't find station {}.".format(station.name))
-    station = Station(
-        name=station.name,
-        codes=station.codes,
-        locations_path=station.locations_path,
-        station_category=station.station_category,
-        platforms=station.platforms,
-        number=station.number,
-        kind=station.kind,
-        location=Location(
-            latitude=location.latitude,
-            longitude=location.longitude
-        ) if location else None
-    )
-    return station
+            logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
+            location = geolocator.geocode(station.name)
+            if location is None:
+                logging.warning("Couldn't find station {}.".format(station.name))
+        station = Station(
+            name=station.name,
+            codes=station.codes,
+            locations_path=station.locations_path,
+            station_category=station.station_category,
+            platforms=station.platforms,
+            number=station.number,
+            kind=station.kind,
+            location=Location(
+                latitude=location.latitude,
+                longitude=location.longitude
+            ) if location else None
+        )
+        return station
+    else:
+        return station
 
 
 def add_location_data_to_list(stations: List[Station]):
