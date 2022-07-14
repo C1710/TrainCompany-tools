@@ -188,7 +188,7 @@ def validate(tc_directory: PathLike | str = '..',
         logging.error("Das Netz ist nicht zusammenhängend.")
         for node, degree in graph.degree():
             if degree == 0:
-                print(node)
+                logging.error("Haltepunkt ohne Route: {}".format(node))
         issues += 1000
 
     # Step 4: trains
