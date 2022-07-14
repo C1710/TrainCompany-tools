@@ -65,8 +65,9 @@ def validate(tc_directory: PathLike | str = '..',
                 issues += 50
             continue
         # 1.1. location check
+        # Currently not done because the new coordinates are not yet supported
         real_location = station_obj.location
-        if real_location:
+        if real_location and False:
             data_location = Location.from_tc(station['x'], station['y'])
             delta = real_location.distance(data_location)
             if delta > 20:
