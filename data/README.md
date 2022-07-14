@@ -44,6 +44,7 @@ License:
 
 ## UK
 - License: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+> Contains public sector information licensed under the Open Government Licence v3.0.
 
 `uk_stations`:
 - Source: https://datafeeds.networkrail.co.uk/ntrod/SupportingFileAuthenticate?type=CORPUS
