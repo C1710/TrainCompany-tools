@@ -32,7 +32,11 @@ def import_stations_into_tc(stations_codes: List[str],
 
     for station in stations:
         if not station.platform_count or not station.platform_length and station.group != 4:
-            logging.info("{} on OSM: https://www.openstreetmap.org/#map=16/{}/{}&layers=T"
+            logging.info("{} on OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T"
+                         .format(station.codes[0],
+                                 station.location.latitude,
+                                 station.location.longitude))
+            logging.info("{} on G/M: https://maps.google.com/@{},{},17z"
                          .format(station.codes[0],
                                  station.location.latitude,
                                  station.location.longitude))
