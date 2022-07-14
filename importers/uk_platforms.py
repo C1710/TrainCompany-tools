@@ -16,10 +16,10 @@ class UkPlatformImporter(CsvImporter[Platform]):
         self.tiploc_to_station_number = {station.codes[-1]: station.number for station in stations}
 
     def deserialize(self, entry: List[str]) -> Optional[Platform]:
-        if entry[0] == "PLT" and entry[6] and int(entry[6]):
+        if entry[0] == "PLT" and entry[6]:
             tiploc = '🇬🇧' + entry[2]
             platform = Platform(
-                length=float(entry[6]),
+                length=float(entry[6]) if entry[6] else 0.0,
                 station=self.tiploc_to_station_number[tiploc]
             )
             return platform

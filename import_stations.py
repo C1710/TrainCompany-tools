@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import logging
 from ast import parse
 import os
 import re
@@ -28,6 +29,13 @@ def import_stations_into_tc(stations_codes: List[str],
     stations = [code_to_station[code.upper()] for code in stations_codes]
 
     add_location_data_to_list(stations)
+
+    for station in stations:
+        if not station.platform_count or not station.platform_length and station.group != 4:
+            logging.info("{} on OSM: https://www.openstreetmap.org/#map=16/{}/{}&layers=T"
+                         .format(station.codes[0],
+                                 station.location.latitude,
+                                 station.location.longitude))
 
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
