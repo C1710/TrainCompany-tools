@@ -27,7 +27,7 @@ def export_station_list(country: str,
             station_data_de = [station for station in station_data_de if any((code.startswith("XK") for code in station.codes))]
         station_data.extend(station_data_de)
 
-    return ["{}\t{}\n".format(station.name, station.codes) for station in station_data]
+    return ["{}\t{}\n".format(station.name, ' - '.join(station.codes)) for station in station_data]
 
 
 if __name__ == '__main__':
