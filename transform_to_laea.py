@@ -14,7 +14,7 @@ def transform_coordinates(tc_directory: PathLike | str = '..') -> TcFile:
         if 'laea' not in station or not station['laea']:
             location = Location.from_tc(station['x'], station['y'])
             station['x'], station['y'] = location.to_laea()
-            station['laea'] = True
+            station['laea'] = 1
     return station_json
 
 
