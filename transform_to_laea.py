@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 from os import PathLike
+from typing import Dict, Any
 
 from geo import Location
 from tc_utils import TcFile
@@ -11,11 +12,21 @@ from tc_utils import TcFile
 def transform_coordinates(tc_directory: PathLike | str = '..') -> TcFile:
     station_json = TcFile('Station', tc_directory)
     for station in station_json.data:
-        if 'laea' not in station or not station['laea']:
-            location = Location.from_tc(station['x'], station['y'])
-            station['x'], station['y'] = location.to_laea()
-            station['laea'] = 1
+        transform_coordinate_for_station(station)
     return station_json
+
+
+def transform_coordinate_for_station(station: Dict[str, Any]):
+    if 'laea' not in station or not station['laea']:
+        if isinstance(station['x'], float) and isinstance(station['y'], float):
+            location = Location(
+                longitude=station['x'],
+                latitude=station['y']
+            )
+        else:
+            location = Location.from_tc(station['x'], station['y'])
+        station['x'], station['y'] = location.to_laea()
+        station['laea'] = 1
 
 
 if __name__ == '__main__':
