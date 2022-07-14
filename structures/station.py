@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
 # It will add all of them in that order if one is added
-import geopy.distance
+from geo import Location
 
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
@@ -234,10 +234,11 @@ class TcStation:
     platformLength: Optional[int]
     platforms: Optional[int]
     forRandomTasks: Optional[bool]
+    laea: Optional[bool] = None
 
     @staticmethod
     def from_station(station: Station) -> TcStation:
-        x, y = station.location.convert_to_tc() if station.location else (0, 0)
+        x, y = station.location.to_laea() if station.location else (0, 0)
         return TcStation(
             name=station.name,
             ril100=station.codes[0],
@@ -246,44 +247,9 @@ class TcStation:
             y=y,
             platformLength=int(station.platform_length) if station.platform_length != 0 else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
-            forRandomTasks=None
+            forRandomTasks=None,
+            laea=True
         )
-
-
-origin_x: float = 6.482451
-origin_y: float = 51.766433
-scale_x: float = 625.0 / (11.082989 - origin_x)
-scale_y: float = 385.0 / (49.445616 - origin_y)
-
-
-@dataclass(frozen=True)
-class Location:
-    __slots__ = 'latitude', 'longitude'
-    latitude: float
-    longitude: float
-
-    def convert_to_tc(self) -> Tuple[int, int]:
-        x = int((self.longitude - origin_x) * scale_x)
-        y = int((self.latitude - origin_y) * scale_y)
-        return x, y
-
-    @staticmethod
-    def from_tc(x: int, y: int) -> Location:
-        longitude = (x / scale_x) + origin_x
-        latitude = (y / scale_y) + origin_y
-        return Location(
-            latitude,
-            longitude
-        )
-
-    def distance(self, other: Location) -> int:
-        return geopy.distance.geodesic(
-            (self.latitude, self.longitude),
-            (other.latitude, other.longitude)
-        ).kilometers
-
-    def __hash__(self):
-        return ('location', self.latitude, self.longitude).__hash__()
 
 
 @dataclass(frozen=True)

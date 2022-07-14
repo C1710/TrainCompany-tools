@@ -3,7 +3,8 @@ from typing import List
 
 from importer import CsvImporter
 from structures import Station
-from structures.station import Location, CodeTuple
+from structures.station import CodeTuple
+from geo import Location
 
 
 class ChBetriebsstellenImporter (CsvImporter[Station]):

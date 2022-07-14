@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 from importer import CsvImporter
-from structures.station import Location, Station
+from structures.station import Station
+from geo import Location
 
 
 @dataclass(frozen=True)

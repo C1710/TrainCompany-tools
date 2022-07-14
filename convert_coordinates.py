@@ -1,6 +1,6 @@
 import sys
 
-from structures.station import Location
+from geo import Location
 
 if __name__ == '__main__':
     location = Location(
@@ -8,4 +8,4 @@ if __name__ == '__main__':
         longitude=float(sys.argv[2].strip(','))
     )
 
-    print("x: {}\ny: {}".format(*location.convert_to_tc()))
+    print("x: {}\ny: {}".format(*location.to_laea()))

@@ -13,7 +13,8 @@ from networkx import is_connected
 
 from geo.location_data import with_location_data
 from structures import DataSet, Station
-from structures.station import iter_stations_by_codes_reverse, Location
+from structures.station import iter_stations_by_codes_reverse
+from geo import Location
 from tc_utils import TcFile
 from validation.graph import build_tc_graph
 

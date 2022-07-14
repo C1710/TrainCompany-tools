@@ -7,7 +7,8 @@ from typing import List, Tuple
 
 from structures.route import Track, Path, merge_tracks
 from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code, \
-    CodeTuple, Location
+    CodeTuple
+from geo import Location
 
 
 @dataclass
@@ -89,7 +90,7 @@ class DataSet:
             number=hash("LGV Interconnexion Est -> Sud-Est"),
             codes=CodeTuple("🇫🇷MOIS"),
             location=Location(
-                latitude=48.576961786948054, 
+                latitude=48.576961786948054,
                 longitude=2.74276121315047
             ),
             kind='abzw'
@@ -99,7 +100,7 @@ class DataSet:
             number=hash("Warum muss das alles so kompliziert sein?!"),
             codes=CodeTuple("🇫🇷JAB"),
             location=Location(
-                latitude=48.94902574095624, 
+                latitude=48.94902574095624,
                 longitude=2.7114885647354288
             ),
             kind='abzw'
@@ -109,7 +110,7 @@ class DataSet:
             number=hash("Vemars"),
             codes=CodeTuple("🇫🇷VEMARS"),
             location=Location(
-                latitude=49.055763434522255, 
+                latitude=49.055763434522255,
                 longitude=2.5651358332731578
             ),
             kind='abzw'
@@ -119,7 +120,7 @@ class DataSet:
             number=hash("EUROTUNNEL!!!!"),
             codes=CodeTuple("🇬🇧ETUK"),
             location=Location(
-                latitude=51.09612758903609, 
+                latitude=51.09612758903609,
                 longitude=1.139774590509386
             )
         ))
@@ -128,7 +129,7 @@ class DataSet:
             number=hash("FR:Montanay"),
             codes=CodeTuple("🇫🇷MONT"),
             location=Location(
-                latitude=45.8892271474285, 
+                latitude=45.8892271474285,
                 longitude=4.877505944798289
             ),
             kind='abzw'

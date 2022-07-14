@@ -31,7 +31,7 @@ def import_stations_into_tc(stations_codes: List[str],
 
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
-    
+
     if trassenfinder:
         create_trassenfinder([(code, code_to_station[code.upper()].name) for code in stations_codes], tc_directory)
 
@@ -50,6 +50,7 @@ def create_trassenfinder(stations: List[Tuple[str, str]], tc_directory: PathLike
         index += 1
     with open(os.path.join(tc_directory, filename), 'w', encoding='utf-8', newline='\n') as outfile:
         outfile.writelines(lines)
+
 
 def import_regex_stations_into_tc(stations_regex: str,
                                   tc_directory: PathLike | str = '..',

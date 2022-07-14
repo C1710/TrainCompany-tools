@@ -1,14 +1,19 @@
+from __future__ import annotations
+
 import logging
 import os.path
 from functools import lru_cache
-from time import sleep
-from typing import List, Union
+from typing import List
 
 from geopy import GoogleV3
 from geopy.exc import GeopyError
 
-from structures import Station
-from structures.station import Location
+# https://adamj.eu/tech/2021/05/13/python-type-hints-how-to-fix-circular-imports/
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from structures import Station
+
+from geo import Location
 
 
 @lru_cache
@@ -21,6 +26,7 @@ def load_api_key() -> str:
 
 
 def with_location_data(station: Station) -> Station:
+    from structures import Station
     if not station.location:
         geolocator = GoogleV3(api_key=load_api_key())
         location = geolocator.geocode(station.name + " Bahnhof")

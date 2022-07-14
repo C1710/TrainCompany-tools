@@ -6,7 +6,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional, Dict, Any, Tuple, Set
 
-from structures.station import Station, iter_stations_by_codes_reverse, CodeTuple, StreckenKilometer, Location
+from structures.station import Station, iter_stations_by_codes_reverse, CodeTuple, StreckenKilometer
+from geo import Location
 
 
 @dataclass(frozen=True)
