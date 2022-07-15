@@ -238,7 +238,7 @@ class TcStation:
 
     @staticmethod
     def from_station(station: Station) -> TcStation:
-        x, y = station.location.to_laea() if station.location else (0, 0)
+        x, y = station.location.to_projection() if station.location else (0, 0)
         return TcStation(
             name=station.name,
             ril100=station.codes[0],

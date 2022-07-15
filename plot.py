@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import json
 import os
 
-from transform_to_laea import transform_coordinate_for_station
+from project_coordinates import project_coordinate_for_station
 
 
 def get_routes_points(station_data: List[dict], route_data: List[dict]) -> Tuple[
@@ -14,7 +14,7 @@ def get_routes_points(station_data: List[dict], route_data: List[dict]) -> Tuple
     List[Tuple[Tuple[int, int], Tuple[int, int]]]
 ]:
     for station in station_data:
-        transform_coordinate_for_station(station)
+        project_coordinate_for_station(station)
     station_data = dict(((station['ril100'], (station['x'], station['y'])) for station in station_data))
     route_data = (extract_route_stations(route) for route in route_data)
     route_data = [segment for route in route_data for segment in route]

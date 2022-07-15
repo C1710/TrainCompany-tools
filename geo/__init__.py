@@ -5,7 +5,11 @@ from typing import Tuple
 import geopy.distance
 import pyproj
 
-projection = pyproj.Proj(init='epsg:3035')
+crs_wg84 = pyproj.CRS('WGS84')
+crs_proj = pyproj.CRS('epsg:3035')
+transformer = pyproj.Transformer.from_crs(crs_wg84, crs_proj)
+transformer_reverse = pyproj.Transformer.from_crs(crs_proj, crs_wg84)
+projection = pyproj.Proj('epsg:3035')
 
 origin_x_tc: float = 6.482451
 origin_y_tc: float = 51.766433
@@ -25,24 +29,47 @@ class Location:
         return x, y
 
     @staticmethod
-    def from_tc(x: int, y: int) -> Location:
-        longitude = (x / scale_x_tc) + origin_x_tc
-        latitude = (y / scale_y_tc) + origin_y_tc
-        if x == 0:
-            assert abs(longitude - origin_x_tc) < 0.002, abs(longitude - origin_x_tc)
-        if y == 0:
-            assert abs(latitude - origin_y_tc) < 0.002, abs(latitude - origin_y_tc)
-        if x == 625:
-            assert abs(longitude - location_nn.longitude) < 0.002, abs(longitude - location_nn.longitude)
-        if y == 385:
-            assert abs(latitude - location_nn.latitude) < 0.002, abs(latitude - location_nn.latitude)
+    def from_tc(x: int | float, y: int | float) -> Location:
+        if isinstance(x, float) and isinstance(y, float):
+            location = Location(
+                longitude=x,
+                latitude=y
+            )
+        else:
+            longitude = (x / scale_x_tc) + origin_x_tc
+            latitude = (y / scale_y_tc) + origin_y_tc
+            if x == 0:
+                assert abs(longitude - origin_x_tc) < 0.002, abs(longitude - origin_x_tc)
+            if y == 0:
+                assert abs(latitude - origin_y_tc) < 0.002, abs(latitude - origin_y_tc)
+            if x == 625:
+                assert abs(longitude - location_nn.longitude) < 0.002, abs(longitude - location_nn.longitude)
+            if y == 385:
+                assert abs(latitude - location_nn.latitude) < 0.002, abs(latitude - location_nn.latitude)
+            location = Location(
+                latitude=latitude,
+                longitude=longitude
+            )
+        return location
+
+    @staticmethod
+    def from_projection(x: int, y: int, version: int = 1) -> Location:
+        if version == 0:
+            return Location.from_tc(x, y)
+        if version == 1:
+            longitude, latitude = projection(x, y, inverse=True)
+        elif version == 2:
+            longitude, latitude = transformer_reverse.transform(x, y)
         return Location(
-            latitude,
-            longitude
+            latitude=latitude,
+            longitude=longitude
         )
 
-    def to_laea(self) -> Tuple[int, int]:
-        x, y = projection(longitude=self.longitude, latitude=self.latitude, errcheck=True)
+    def to_projection(self, version: int = 1) -> Tuple[int, int]:
+        if version == 1:
+            x, y = projection(longitude=self.longitude, latitude=self.latitude, errcheck=True)
+        elif version == 2:
+            x, y = transformer.transform(longitude=self.longitude, latitude=self.latitude, errcheck=True)
         x -= x_kdn
         y -= y_ha
         # Note that we negate y here, as we want y to face southwards
