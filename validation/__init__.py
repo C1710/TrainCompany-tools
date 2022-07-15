@@ -17,7 +17,7 @@ from structures.station import iter_stations_by_codes_reverse
 from geo import Location
 from tc_utils import TcFile
 from validation.graph import build_tc_graph
-from transform_to_laea import transform_coordinate_for_station
+from project_coordinates import project_coordinate_for_station
 
 
 def print_path(path: Dict[str, Any]) -> str:
@@ -52,7 +52,7 @@ def validate(tc_directory: PathLike | str = '..',
     known_flags = ["🇨🇭"]
 
     for station, station_obj in selected_stations:
-        transform_coordinate_for_station(station)
+        project_coordinate_for_station(station)
         if station_obj is None:
             if flag_re.search(station['ril100']):
                 for known_flag in known_flags:
@@ -188,7 +188,7 @@ def validate(tc_directory: PathLike | str = '..',
         logging.error("Das Netz ist nicht zusammenhängend.")
         for node, degree in graph.degree():
             if degree == 0:
-                print(node)
+                logging.error("Haltepunkt ohne Route: {}".format(node))
         issues += 1000
 
     # Step 4: trains

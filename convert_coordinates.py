@@ -8,4 +8,4 @@ if __name__ == '__main__':
         longitude=float(sys.argv[2].strip(','))
     )
 
-    print("x: {}\ny: {}".format(*location.to_laea()))
+    print("x: {}\ny: {}".format(*location.to_projection()))
