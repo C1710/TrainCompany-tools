@@ -17,7 +17,7 @@ from structures.station import iter_stations_by_codes_reverse
 from geo import Location
 from tc_utils import TcFile
 from validation.graph import build_tc_graph
-from transform_to_laea import project_coordinate_for_station
+from project_coordinates import project_coordinate_for_station
 
 
 def print_path(path: Dict[str, Any]) -> str:
