@@ -79,16 +79,21 @@ class Location:
         )
 
     def to_projection(self, version: int = 1) -> Tuple[int, int]:
-        if version == 1:
-            x, y = projection(longitude=self.longitude, latitude=self.latitude, errcheck=True)
-            origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: projection(longitude=lon, latitude=lat, errcheck=True))
-        elif version == 2:
-            x, y = transformer.transform(xx=self.longitude, yy=self.latitude, errcheck=True)
-            origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
-        x -= origin_x
-        y -= origin_y
-        # Note that we negate y here, as we want y to face southwards
-        return int(x * scale_x), int(-y * scale_y)
+        if version == -1:
+            return self.longitude, self.latitude
+        elif version == 0:
+            return self.to_tc()
+        else:
+            if version == 1:
+                x, y = projection(longitude=self.longitude, latitude=self.latitude, errcheck=True)
+                origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: projection(longitude=lon, latitude=lat, errcheck=True))
+            elif version == 2:
+                x, y = transformer.transform(xx=self.longitude, yy=self.latitude, errcheck=True)
+                origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
+            x -= origin_x
+            y -= origin_y
+            # Note that we negate y here, as we want y to face southwards
+            return int(x * scale_x), int(-y * scale_y)
 
     def distance(self, other: Location) -> int:
         return geopy.distance.geodesic(

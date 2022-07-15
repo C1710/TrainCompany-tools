@@ -37,12 +37,13 @@ if __name__ == '__main__':
     parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--version', metavar="VERSION", type=int, choices=(0, 1, 2),
+    parser.add_argument('--version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2),
                         default=1,
                         help="Die Version der Projektion, die verwendet werden soll:\n"
-                        "0 - Linear von WGS84"
-                        "1 - Direkte Projektion auf EPSG:3035"
-                        "2 - Von WGS84 auf EPSG:3035")
+                        "-1 - WGS84\n"
+                        " 0 - Linear von WGS84\n"
+                        " 1 - Direkte Projektion auf EPSG:3035\n"
+                        " 2 - Von WGS84 auf EPSG:3035\n")
     args = parser.parse_args()
 
     station_json = project_coordinates(tc_directory=args.tc_directory, projection_version=args.version)
