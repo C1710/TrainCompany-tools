@@ -32,11 +32,12 @@ def import_stations_into_tc(stations_codes: List[str],
 
     for station in stations:
         if not station.platform_count or not station.platform_length and station.group != 4:
-            logging.info("{} on OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T"
+            logging.warning("{}       : No platform data available".format(station.codes[0]))
+            logging.warning("{} on OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T"
                          .format(station.codes[0],
                                  station.location.latitude,
                                  station.location.longitude))
-            logging.info("{} on G/M: https://maps.google.com/@{},{},17z"
+            logging.warning("{} on G/M: https://maps.google.com/maps/@{},{},17z"
                          .format(station.codes[0],
                                  station.location.latitude,
                                  station.location.longitude))
@@ -130,7 +131,6 @@ if __name__ == '__main__':
             args.data_directory,
             args.override_stations,
             args.update_stations,
-            append=args.append,
-            trassenfinder=args.trassenfinder
+            append=args.append
         )
     station_json.save()

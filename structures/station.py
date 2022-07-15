@@ -234,11 +234,11 @@ class TcStation:
     platformLength: Optional[int]
     platforms: Optional[int]
     forRandomTasks: Optional[bool]
-    laea: Optional[bool] = None
+    laea: Optional[bool | int] = None
 
     @staticmethod
-    def from_station(station: Station) -> TcStation:
-        x, y = station.location.to_projection() if station.location else (0, 0)
+    def from_station(station: Station, projection: int = 1) -> TcStation:
+        x, y = station.location.to_projection(projection) if station.location else (0, 0)
         return TcStation(
             name=station.name,
             ril100=station.codes[0],
@@ -248,7 +248,7 @@ class TcStation:
             platformLength=int(station.platform_length) if station.platform_length != 0 else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
-            laea=True
+            laea=projection
         )
 
 
