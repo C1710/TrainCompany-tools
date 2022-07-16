@@ -233,7 +233,7 @@ class TcStation:
     platformLength: Optional[int]
     platforms: Optional[int]
     forRandomTasks: Optional[bool]
-    laea: Optional[bool | int] = None
+    proj: Optional[bool | int] = None
 
     @staticmethod
     def from_station(station: Station, projection: int = 1) -> TcStation:
@@ -248,7 +248,7 @@ class TcStation:
                                                            or station.group in (0, 1, 2, 5) else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
-            laea=projection
+            proj=projection
         )
 
 

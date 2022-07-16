@@ -229,6 +229,11 @@ class ReTask(GattungTask):
     service = ServiceLevel.REGIONAL
 
 
+class TerTask(ReTask):
+    gattung = "TER"
+    gattung_long = "TER"
+
+
 class IreTask(ReTask):
     gattung = 'IRE'
     gattung_long = 'Interregio-Express'
@@ -242,6 +247,16 @@ class IcTask(GattungTask):
     pronouns = ErIhmPronouns()
     payout_baseline = 120000
     service = ServiceLevel.INTERCITY
+
+
+class OtcTask(IcTask):
+    gattung = 'OTC'
+    gattung_long = "OUIGO Train Classique"
+
+
+class OgvTask(IcTask):
+    gattung = "OUIGO"
+    gattung_long = "OUGIO"
 
 
 class IrTask(IcTask):

@@ -53,14 +53,30 @@ def correct_ch_name(name: str) -> str:
     return name
 
 
+fr_names = {
+    'Lorraine-Louvigny': 'Lorraine-TGV',
+    'Champagne-Ardennes': 'Champagne-Ardenne-TGV',
+    "Bening": 'Béning',
+    "Amberieu": "Ambérieu",
+    "Marne-la-Vallee-Chessy": "Marne-la-Vallée-Chessy",
+    "Calais-Frethun": "Calais-Fréthun",
+    "Selestat": "Sélestat",
+    "Chalon-sur-Saone": "Chalon-sur-Saône",
+    "Macon-Ville": "Mâcon-Ville",
+    "Neufchateau": "Neufchâteau",
+    "Varangeville-St-Nicolas": "Varangéville-St-Nicolas",
+    "Blainville-Damelevie": "Blainville-Damelevières",
+    "Luneville": "Lunéville",
+    "Reding": "Réding",
+    "Pont-a-Mousson": "Pont-à-Mousson",
+    "Noveant": "Novéant",
+    "Lerouville": "Lérouville",
+    "Remilly": "Rémilly"
+}
+
+
 def correct_fr_name(name: str) -> str:
-    name = name.replace('Lorraine-Louvigny', 'Lorraine-TGV')
-    name = name.replace('Champagne-Ardennes', 'Champagne-Ardenne-TGV')
-    name = name.replace("Bening", 'Béning')
-    name = name.replace("Amberieu", "Ambérieu")
-    name = name.replace("Marne-la-Vallee-Chessy", "Marne-la-Vallée-Chessy")
-    name = name.replace("Calais-Frethun", "Calais-Fréthun")
-    name = name.replace("Selestat", "Sélestat")
-    name = name.replace("Chalon-sur-Saone", "Chalon-sur-Saône")
-    name = name.replace("Macon-Ville", "Mâcon-Ville")
-    return name
+    if name in fr_names:
+        return fr_names[name]
+    else:
+        return name

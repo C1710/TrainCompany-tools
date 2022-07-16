@@ -55,7 +55,18 @@ special_codes = {
     "Tournus": "TOS",
     "Fleurville-Pont-de-Vaux": "FLV",
     "Pontanevaux": "PNX",
-    "Anse": "ANS"
+    "Anse": "ANS",
+    "Ruffey": "RFY",
+    "Gemeaux": "GMX",
+    "Vaux-sous-Aubigny": "VXY",
+    "Andilly": "ADY",
+    "Bourmont": "BMT",
+    "Bariey-la-Côte": "BLC",
+    "Liverdun": "LDN",
+    "Igney-Avricourt": "IA",
+    "Héming": "HMG",
+    "Pompey": "PPE",
+    "Ars-sur-Moselle": "ASM"
 }
 
 

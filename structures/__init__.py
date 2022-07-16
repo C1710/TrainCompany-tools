@@ -150,6 +150,9 @@ class DataSet:
         ))
         stations_fr.append(abzw_fr("Grenay", "GRNY", 45.649041949201745, 5.081229404359257))
         stations_fr.append(abzw_fr("Bollène", "BLLN", 44.30218827489829, 4.7017237487605215))
+        stations_fr.append(stat_fr("Andilly", "ADY"))
+        stations_fr.append(stat_fr("Bourmont", "BMT"))
+        stations_fr.append(stat_fr("Thiaucourt", "THU", 8))
 
         platforms_fr = FrPlatformsImporter(stations_fr).import_data(os.path.join(data_directory, 'fr_platforms.csv'))
         add_platforms_to_stations(stations_fr, platforms_fr)
@@ -186,6 +189,15 @@ class DataSet:
         stations = merge_stations(stations, stations_uk, 'name')
 
         return stations
+
+
+def stat_fr(name: str, code: str, category: int = 5) -> Station:
+    return Station(
+        name=name,
+        number=hash("FRANKREICH:{}".format(name)),
+        codes=CodeTuple('🇫🇷' + code.upper()),
+        station_category=category
+    )
 
 
 def abzw_fr(name: str, code: str, latitude: float, longitude: float) -> Station:

@@ -77,8 +77,8 @@ if __name__ == '__main__':
     script_path = os.path.realpath(__file__)
     script_dir = os.path.dirname(script_path)
 
-    gattungen = {task.gattung: task for task in (SbahnTask, RbTask, ReTask, IreTask,
-                                                 IcTask, IrTask, EcTask,
+    gattungen = {task.gattung: task for task in (SbahnTask, RbTask, ReTask, IreTask, TerTask,
+                                                 IcTask, IrTask, EcTask, OtcTask, OgvTask,
                                                  IceTask, IceSprinterTask, EceTask, TgvTask)}
 
     parser = argparse.ArgumentParser(description='Erstelle neue Ausschreibungen')
