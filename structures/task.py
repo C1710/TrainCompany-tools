@@ -57,10 +57,12 @@ class TcTask:
             shortest_path.extend(sub_path[1:])
         return shortest_path
 
-    def to_dict(self, graph: Optional[nx.Graph], add_suggestion: bool = False) -> Dict[str, Any]:
+    def to_dict(self, graph: Optional[nx.Graph], add_suggestion: bool = False, add_plops: bool = False) -> Dict[str, Any]:
         task = self.__dict__
         if (not self.plops) and graph:
             task['plops'] = self.calculate_plops(graph)
+        if not add_plops:
+            task.pop('plops', 0)
         task.pop('payout_per_km')
         task.pop('payout_baseline')
         task['neededCapacity'] = [

@@ -13,11 +13,10 @@ special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EBILP", "EBIL")
 )
 
-
 more_whitespace_re = re.compile(r'  +')
 
 
-class _CodeList (List[str]):
+class _CodeList(List[str]):
     def append(self, __object: str):
         for code in expand_codes(__object):
             if code not in self:
@@ -245,7 +244,8 @@ class TcStation:
             group=station.group if station.group is not None else 2,
             x=x,
             y=y,
-            platformLength=int(station.platform_length) if station.platform_length != 0 else None,
+            platformLength=int(station.platform_length) if station.platform_length != 0 or station.platform_count != 0
+                                                           or station.group in (0, 1, 2, 5) else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
             laea=projection

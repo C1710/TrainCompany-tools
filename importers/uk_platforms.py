@@ -24,5 +24,7 @@ class UkPlatformImporter(CsvImporter[Platform]):
                     station=self.tiploc_to_station_number[tiploc]
                 )
                 return platform
+            else:
+                return None
         else:
             return None

@@ -18,6 +18,17 @@ from cli_utils import check_files
 emoji_flag_offset = ord('🇦') - ord('A')
 
 
+def translate_to_flag(stations_codes: List[str]):
+    for index, code in enumerate(stations_codes):
+        if ':' in code:
+            country, code = code.upper().split(':')
+            assert len(country) == 2
+            country = chr(ord(country[0]) + emoji_flag_offset) + chr(ord(country[1]) + emoji_flag_offset)
+            stations_codes[index] = country + code
+        else:
+            stations_codes[index] = code.upper()
+
+
 def import_stations_into_tc(stations_codes: List[str],
                             tc_directory: PathLike | str = '..',
                             data_directory: PathLike | str = 'data',
@@ -28,13 +39,7 @@ def import_stations_into_tc(stations_codes: List[str],
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations_codes = [code.upper() for code in stations_codes]
-    for index, code in enumerate(stations_codes):
-        if ':' in code:
-            country, code = code.split(':')
-            assert len(country) == 2
-            country = chr(ord(country[0]) + emoji_flag_offset) + chr(ord(country[1]) + emoji_flag_offset)
-            stations_codes[index] = country + code
+    translate_to_flag(stations_codes)
     stations = [code_to_station[code] for code in stations_codes]
 
     add_location_data_to_list(stations)
