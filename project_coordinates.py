@@ -24,8 +24,9 @@ def project_coordinate_for_station(station: Dict[str, Any], new_projection: int 
             current_projection = station['proj']
         else:
             current_projection = station.pop('laea')
-    location = Location.from_projection(station['x'], station['y'], version=current_projection)
-    station['x'], station['y'] = location.to_projection(new_projection)
+    if current_projection != new_projection:
+        location = Location.from_projection(station['x'], station['y'], version=current_projection)
+        station['x'], station['y'] = location.to_projection(new_projection)
     if new_projection != 0:
         station['proj'] = new_projection
     else:
