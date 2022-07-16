@@ -17,7 +17,8 @@ from tc_utils.paths import add_route_to_files
 def import_trasse_into_tc(trasse: PathLike | str,
                           tc_directory: PathLike | str = '..',
                           data_directory: PathLike | str = 'data',
-                          override_stations: bool = False
+                          override_stations: bool = False,
+                          add_annotation: bool = False
                           ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     waypoints = DbTrassenfinderImporter().import_data(trasse)
@@ -26,12 +27,13 @@ def import_trasse_into_tc(trasse: PathLike | str,
     path_json = TcFile('Path', tc_directory)
 
     route = convert_waypoints_to_route(waypoints, data_set.station_data, data_set.path_data)
-    tc_route = TcRoute.from_route(route, data_set.station_data)
+    tc_route = TcRoute.from_route(route, data_set.station_data, add_annotations=add_annotation)
 
     # Add location data from Google, if necessary
     add_location_data_to_list(tc_route.stations)
 
-    add_route_to_files(tc_route, station_json, path_json, override_stations=override_stations)
+    add_route_to_files(tc_route, station_json, path_json,
+                       override_stations=override_stations)
 
     return station_json, path_json
 
@@ -52,6 +54,8 @@ if __name__ == '__main__':
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
+    parser.add_argument('--annotate', action='store_true',
+                        help="Fügt die vollen Stationsnamen hinzu. Die müssen später wieder gelöscht werden!")
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
@@ -60,7 +64,8 @@ if __name__ == '__main__':
         args.trasse,
         args.tc_directory,
         args.data_directory,
-        args.override_stations
+        args.override_stations,
+        add_annotation=args.annotate
     )
 
     station_json.save()

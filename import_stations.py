@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-from ast import parse
 import os
 import re
 from os import PathLike
@@ -16,6 +15,9 @@ from tc_utils.stations import add_stations_to_file
 from cli_utils import check_files
 
 
+emoji_flag_offset = ord('🇦') - ord('A')
+
+
 def import_stations_into_tc(stations_codes: List[str],
                             tc_directory: PathLike | str = '..',
                             data_directory: PathLike | str = 'data',
@@ -26,7 +28,14 @@ def import_stations_into_tc(stations_codes: List[str],
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [code_to_station[code.upper()] for code in stations_codes]
+    stations_codes = [code.upper() for code in stations_codes]
+    for index, code in enumerate(stations_codes):
+        if ':' in code:
+            country, code = code.split(':')
+            assert len(country) == 2
+            country = chr(ord(country[0]) + emoji_flag_offset) + chr(ord(country[1]) + emoji_flag_offset)
+            stations_codes[index] = country + code
+    stations = [code_to_station[code] for code in stations_codes]
 
     add_location_data_to_list(stations)
 

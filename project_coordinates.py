@@ -36,7 +36,7 @@ if __name__ == '__main__':
     script_path = os.path.realpath(__file__)
     script_dir = os.path.dirname(script_path)
 
-    parser = argparse.ArgumentParser(description='Importiere neue Betriebsstellen in TrainCompany')
+    parser = argparse.ArgumentParser(description='Rechne die Koordinaten auf eine andere Projektion um')
     parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
