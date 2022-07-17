@@ -143,7 +143,7 @@ def validate(tc_directory: PathLike | str = '..',
 
         # 2.2. SFS - electrified
         if path['group'] == 2 and not path['electrified']:
-            issues_score = 1000
+            issues_score = 10000
             logging.warning("Nicht elektrifizierte SFS: {}".format(print_path(path)))
             issues += issues_score
 
@@ -234,7 +234,7 @@ def validate(tc_directory: PathLike | str = '..',
         if 'operationCosts' not in train:
             train['operationCosts'] = 0
         if train['force'] > 0 and train['operationCosts'] < 5:
-            issues_score = 1000
+            issues_score = 10000
             logging.error("+{: <6} Zug {} (ID {}) hat keine/zu geringe operationCosts: {}"
                           .format(issues_score, train['name'] if 'name' in train else 'Unbenannt', train['id'], train['operationCosts']))
             issues += issues_score

@@ -18,6 +18,8 @@ if __name__ == '__main__':
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
     parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str, default=os.path.join(script_dir, 'data'),
                         help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
+    parser.add_argument('--limit', type=int, default=700,
+                        help="Die maximal zulässige Problempunktzahl (sollte <10000 liegen)")
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
@@ -26,7 +28,7 @@ if __name__ == '__main__':
 
     logging.info("Score: {} (kleiner ist besser)".format(issues))
 
-    if issues > 500:
+    if issues > args.limit:
         raise AssertionError(issues)
 
 
