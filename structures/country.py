@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
 from functools import cached_property
-from typing import Optional, Dict, Tuple, List, Generator
+from typing import Optional, Dict, Tuple, List, Generator, TYPE_CHECKING
 
-from structures import Station
-from structures.task import Pronouns
+if TYPE_CHECKING:
+    from structures import Station
+from structures.pronouns import Pronouns
 
 flag_offset = ord('🇦') - ord('A')
 flag_re = re.compile(r'[🇦-🇿]{2}')

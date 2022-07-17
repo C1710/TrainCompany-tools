@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Optional
 
 import networkx as nx
 
+from structures.pronouns import Pronouns, ErIhmPronouns, SieIhrPronouns
 from validation.shortest_paths import without_trivial_nodes, get_shortest_path
 
 
@@ -93,47 +94,6 @@ class ServiceLevel(Enum):
     SPECIAL = 4
     FREIGHT_IMPORTANT = 10
     FREIGHT = 11
-
-
-@dataclass(frozen=True)
-class Pronouns:
-    nominative: str
-    genitive: str
-    dative: str
-    accusative: str
-    articles: Optional[Pronouns] = field(default=None)
-
-
-class ErIhmPronouns(Pronouns):
-    def __init__(self):
-        super().__init__(
-            nominative='er',
-            genitive='des',
-            dative='ihm',
-            accusative='ihn',
-            articles=Pronouns(
-                nominative='der',
-                genitive='des',
-                dative='dem',
-                accusative='den'
-            )
-        )
-
-
-class SieIhrPronouns(Pronouns):
-    def __init__(self):
-        super().__init__(
-            nominative='sie',
-            genitive='ihr',
-            dative='ihr',
-            accusative='sie',
-            articles=Pronouns(
-                nominative='die',
-                genitive='der',
-                dative='der',
-                accusative='die'
-            )
-        )
 
 
 class GattungTask(TcTask):
