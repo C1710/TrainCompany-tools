@@ -190,7 +190,7 @@ def validate(tc_directory: PathLike | str = '..',
 
         # 2.7. Don't allow annotations
         if 'start_long' in path or 'end_long' in path:
-            issues_score = 200
+            issues_score = 800
             logging.warning("+{: <6} Langer Haltestellenname immer noch vorhanden: {}"
                             .format(issues_score, print_path(path)))
             issues += issues_score
