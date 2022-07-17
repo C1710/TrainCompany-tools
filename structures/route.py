@@ -4,8 +4,10 @@ import logging
 from abc import ABCMeta
 from dataclasses import dataclass, field
 from enum import Enum
+from functools import cached_property
 from typing import List, Optional, Dict, Any, Tuple, Set
 
+from structures.country import germany
 from structures.station import Station, iter_stations_by_codes_reverse, CodeTuple, StreckenKilometer
 from geo import Location
 
@@ -101,6 +103,12 @@ class TcPath:
 
             if waypoint_end.is_stop:
                 length = waypoint_end.distance_from_start - visited_waypoints[0].distance_from_start
+                visited_countries: Set = set()
+                if code_to_station:
+                    visited_stations = (code_to_station[waypoint.code] for waypoint in visited_waypoints)
+                    visited_countries.update({station.country for station in visited_stations})
+                    visited_countries.add(code_to_station[waypoint_end.code].country)
+                needed_countries = [country.iso_3166 for country in visited_countries if country != germany]
                 if not add_annotations:
                     # Add a new path
                     path = TcPath(
@@ -112,6 +120,7 @@ class TcPath:
                         length=int(length),
                         maxSpeed=None,
                         twistingFactor=None,
+                        neededEquipments=needed_countries if needed_countries else None,
                         objects=None
                     )
                 else:
@@ -128,6 +137,7 @@ class TcPath:
                         length=int(length),
                         maxSpeed=None,
                         twistingFactor=None,
+                        neededEquipments=needed_countries if needed_countries else None,
                         objects=None
                     )
                 paths.append(path)
