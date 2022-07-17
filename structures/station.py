@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+from functools import cached_property
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
 # It will add all of them in that order if one is added
 from geo import Location
+from structures.country import Country, country_for_station
 
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
@@ -117,13 +119,17 @@ class Station:
         else:
             return 3
 
-    @property
+    @cached_property
     def platform_count(self) -> int:
         return len(self.platforms) if self.platforms is not None else 0
 
-    @property
+    @cached_property
     def platform_length(self) -> int:
         return max((platform.length for platform in self.platforms)) if self.platforms else 0
+
+    @cached_property
+    def country(self) -> Country:
+        return country_for_station(self)
 
 
 def merge_stations_on_first_code(stations: List[Station]) -> List[Station]:

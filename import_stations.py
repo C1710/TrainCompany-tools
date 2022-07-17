@@ -7,26 +7,13 @@ import re
 from os import PathLike
 from typing import List, Tuple
 
+from cli_utils import check_files
 from geo.location_data import add_location_data_to_list
 from structures import DataSet
+from structures.country import parse_codes_with_countries
 from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
 from tc_utils.stations import add_stations_to_file
-from cli_utils import check_files
-
-
-emoji_flag_offset = ord('🇦') - ord('A')
-
-
-def translate_to_flag(stations_codes: List[str]):
-    for index, code in enumerate(stations_codes):
-        if ':' in code:
-            country, code = code.upper().split(':')
-            assert len(country) == 2
-            country = chr(ord(country[0]) + emoji_flag_offset) + chr(ord(country[1]) + emoji_flag_offset)
-            stations_codes[index] = country + code
-        else:
-            stations_codes[index] = code.upper()
 
 
 def import_stations_into_tc(stations_codes: List[str],
@@ -39,7 +26,7 @@ def import_stations_into_tc(stations_codes: List[str],
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    translate_to_flag(stations_codes)
+    stations_codes = list(parse_codes_with_countries(stations_codes))
     stations = [code_to_station[code] for code in stations_codes]
 
     add_location_data_to_list(stations)

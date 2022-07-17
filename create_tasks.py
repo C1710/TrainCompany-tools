@@ -4,10 +4,10 @@ import argparse
 import os
 import sys
 from os import PathLike
-from typing import Type, Generator
+from typing import Type
 
 from cli_utils import check_files
-from import_stations import translate_to_flag
+from structures.country import parse_codes_with_countries
 from structures.task import *
 from tc_utils import TcFile
 from validation import build_tc_graph
@@ -22,8 +22,10 @@ def create_tasks(Gattung: Type,
                  add_path_suggestion: bool = False,
                  add_plops: bool = False
                  ) -> TcFile:
+    stations_translated = []
     for stations_list in stations:
-        translate_to_flag(stations_list)
+        stations_translated.append(list(parse_codes_with_countries(stations_list)))
+    stations = stations_translated
     path_json = TcFile('Path', tc_directory)
     station_json = TcFile('Station', tc_directory)
     task_model_json = TcFile('TaskModel', tc_directory)

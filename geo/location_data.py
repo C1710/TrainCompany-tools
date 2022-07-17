@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import os.path
-import re
 from functools import lru_cache
 from typing import List, Optional
 
@@ -11,6 +10,9 @@ from geopy.exc import GeopyError
 
 # https://adamj.eu/tech/2021/05/13/python-type-hints-how-to-fix-circular-imports/
 from typing import TYPE_CHECKING
+
+from structures.country import *
+
 if TYPE_CHECKING:
     from structures import Station
 
@@ -30,7 +32,7 @@ def with_location_data(station: Station) -> Station:
     from structures import Station
     if not station.location:
         geolocator = GoogleV3(api_key=load_api_key())
-        location = geolocator.geocode(create_search_query(station), region = country(station))
+        location = geolocator.geocode(create_search_query(station), region=country_from_code(station).tld)
         logging.info("Loading station location from Google Maps")
         if location is None:
             logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
@@ -56,55 +58,12 @@ def with_location_data(station: Station) -> Station:
 
 
 def create_search_query(station: Station) -> str:
-    if country(station) in ('de', 'at', 'ch', 'lu'):
+    if station.country in (countries['DE'], countries['AT'], countries['CH'], countries['LU']):
         return station.name + " Bahnhof"
-    elif country(station) in ('fr', ):
+    elif station.country in (countries['FR'], ):
         return station.name + " gare"
     else:
         return station.name + " station"
-
-
-ril100_country_codes = {
-    'A': 'at',
-    'B': 'be',
-    'C': 'ru',
-    'D': 'dk',
-    'E': 'es',
-    'F': 'fr',
-    'G': 'gr',
-    'H': 'fi',
-    'I': 'it',
-    'J': 'ba',
-    'K': 'uk',
-    'L': 'lu',
-    'M': 'hu',
-    'N': 'nl',
-    'O': 'no',
-    'P': 'pl',
-    'Q': 'tr',
-    'R': 'rs',
-    'S': 'ch',
-    'T': 'cz',
-    'U': 'ro',
-    'V': 'se',
-    'W': 'bg',
-    'X': 'pt',
-    'Y': 'sk',
-    'Z': 'si',
-}
-
-
-flag_re = re.compile(r'[🇦-🇿]{2}')
-
-
-def country(station: Station) -> Optional[str]:
-    for code in station.codes:
-        if code.startswith('X') or code.startswith('Z'):
-            country_code = code[1]
-            return ril100_country_codes[country_code]
-        elif flag_re.search(code):
-            return chr(ord(code[0]) - 127365) + chr(ord(code[1]) - 127365)
-    return 'de'
 
 
 def add_location_data_to_list(stations: List[Station]):
