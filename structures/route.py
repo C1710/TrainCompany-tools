@@ -79,6 +79,7 @@ class TcPath:
     length: Optional[int] = field(default=None)
     maxSpeed: Optional[int] = field(default=None)
     twistingFactor: Optional[float] = field(default=None)
+    neededEquipments: Optional[List[str]] = field(default=None)
     objects: Optional[List[TcPath] | List[Dict[str, Any]]] = field(default=None)
 
     @staticmethod
