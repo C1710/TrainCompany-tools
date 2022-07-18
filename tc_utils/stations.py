@@ -1,4 +1,5 @@
-from typing import List
+import random
+from typing import List, Optional
 
 from structures import Station
 from structures.station import TcStation
@@ -8,7 +9,8 @@ from tc_utils import TcFile
 def add_stations_to_file(stations: List[Station],
                          file: TcFile,
                          override_stations: bool = False,
-                         update_stations: bool = False):
+                         update_stations: bool = False,
+                         append: bool = False):
     existing_station_codes = frozenset([station['ril100'] for station in file.data])
     code_to_existing_station = {station['ril100']: station for station in file.data}
     # We only want to add new stations
@@ -27,6 +29,10 @@ def add_stations_to_file(stations: List[Station],
             if not is_existing:
                 stations.remove(station)
     # Update or append the data
+    if not append:
+        insertion_index = random.randint(0, len(file.data))
+    else:
+        insertion_index = len(file.data)
     for station in stations:
         # Convert to dict for insertion
         tc_station = TcStation.from_station(station)
@@ -41,4 +47,6 @@ def add_stations_to_file(stations: List[Station],
                 break
         # There is no station with that code there, so we need to append it
         if not updated:
-            file.data.append(tc_station_dict)
+            # Insert at a random point to prevent git conflicts
+            file.data.insert(insertion_index, tc_station_dict)
+            insertion_index += 1

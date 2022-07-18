@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
+from functools import cached_property
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
 # It will add all of them in that order if one is added
-import geopy.distance
+from geo import Location
+from structures.country import Country, country_for_station
 
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
@@ -12,25 +15,14 @@ special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EBILP", "EBIL")
 )
 
+more_whitespace_re = re.compile(r'  +')
 
-class _CodeList (List[str]):
+
+class _CodeList(List[str]):
     def append(self, __object: str):
-        if __object not in self:
-            super().append(__object)
-            if '  ' in __object:
-                while '  ' in __object:
-                    __object = __object.replace('  ', ' ')
-                if __object not in self:
-                    super().append(__object)
-            if ' ' in __object:
-                __object = __object.split(' ')[0]
-                if __object not in self:
-                    super().append(__object)
-        for special in special_codes:
-            if __object in special:
-                for other in special:
-                    if other != __object:
-                        super().append(other)
+        for code in expand_codes(__object):
+            if code not in self:
+                super().append(code)
 
     def extend(self, __iterable: Iterable[str]):
         for code in __iterable:
@@ -39,8 +31,8 @@ class _CodeList (List[str]):
 
 def expand_codes(base_code: str) -> Generator[str, None, None]:
     yield base_code
-    if '  ' in base_code:
-        base_code = base_code.replace('  ', ' ')
+    if more_whitespace_re.search(base_code):
+        base_code = more_whitespace_re.sub(' ', base_code)
         yield base_code
     if ' ' in base_code:
         base_code = base_code.split(' ')[0]
@@ -119,7 +111,7 @@ class Station:
                 # Nebenbahnhof
                 return 2
             if self.station_category == 7:
-                # Haltepunkt (unsichtbar
+                # Haltepunkt (unsichtbar)
                 return 5
         if self.kind and self.kind.lower() == 'abzw':
             # Abzweig
@@ -127,13 +119,17 @@ class Station:
         else:
             return 3
 
-    @property
+    @cached_property
     def platform_count(self) -> int:
         return len(self.platforms) if self.platforms is not None else 0
 
-    @property
+    @cached_property
     def platform_length(self) -> int:
         return max((platform.length for platform in self.platforms)) if self.platforms else 0
+
+    @cached_property
+    def country(self) -> Country:
+        return country_for_station(self)
 
 
 def merge_stations_on_first_code(stations: List[Station]) -> List[Station]:
@@ -243,56 +239,23 @@ class TcStation:
     platformLength: Optional[int]
     platforms: Optional[int]
     forRandomTasks: Optional[bool]
+    proj: Optional[bool | int] = None
 
     @staticmethod
-    def from_station(station: Station) -> TcStation:
-        x, y = station.location.convert_to_tc() if station.location else (0, 0)
+    def from_station(station: Station, projection: int = 1) -> TcStation:
+        x, y = station.location.to_projection(projection) if station.location else (0, 0)
         return TcStation(
             name=station.name,
             ril100=station.codes[0],
             group=station.group if station.group is not None else 2,
             x=x,
             y=y,
-            platformLength=int(station.platform_length),
-            platforms=station.platform_count,
-            forRandomTasks=None
+            platformLength=int(station.platform_length) if station.platform_length != 0 or station.platform_count != 0
+                                                           or station.group in (0, 1, 2, 5) else None,
+            platforms=station.platform_count if station.platform_count != 0 else None,
+            forRandomTasks=None,
+            proj=projection
         )
-
-
-origin_x: float = 6.482451
-origin_y: float = 51.766433
-scale_x: float = 625.0 / (11.082989 - origin_x)
-scale_y: float = 385.0 / (49.445616 - origin_y)
-
-
-@dataclass(frozen=True)
-class Location:
-    __slots__ = 'latitude', 'longitude'
-    latitude: float
-    longitude: float
-
-    def convert_to_tc(self) -> (int, int):
-        x = int((self.longitude - origin_x) * scale_x)
-        y = int((self.latitude - origin_y) * scale_y)
-        return x, y
-
-    @staticmethod
-    def from_tc(x: int, y: int) -> Location:
-        longitude = (x / scale_x) + origin_x
-        latitude = (y / scale_y) + origin_y
-        return Location(
-            latitude,
-            longitude
-        )
-
-    def distance(self, other: Location) -> int:
-        return geopy.distance.geodesic(
-            (self.latitude, self.longitude),
-            (other.latitude, other.longitude)
-        ).kilometers
-
-    def __hash__(self):
-        return ('location', self.latitude, self.longitude).__hash__()
 
 
 @dataclass(frozen=True)

@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import List, Dict, Any, Optional
 
 import networkx as nx
 
+from structures.pronouns import Pronouns, ErIhmPronouns, SieIhrPronouns
 from validation.shortest_paths import without_trivial_nodes, get_shortest_path
 
 
@@ -31,6 +33,7 @@ class TcTask:
     group: int = field(default=1)
     payout_per_km: float = field(default=300)
     payout_baseline: int = field(default=80000)
+    service: int = field(default=4)
 
     def calculate_plops(self, graph: nx.Graph) -> int:
         length = self.shortest_path_length(graph)
@@ -55,10 +58,12 @@ class TcTask:
             shortest_path.extend(sub_path[1:])
         return shortest_path
 
-    def to_dict(self, graph: Optional[nx.Graph], add_suggestion: bool = False) -> Dict[str, Any]:
+    def to_dict(self, graph: Optional[nx.Graph], add_suggestion: bool = False, add_plops: bool = False) -> Dict[str, Any]:
         task = self.__dict__
         if (not self.plops) and graph:
             task['plops'] = self.calculate_plops(graph)
+        if not add_plops:
+            task.pop('plops', 0)
         task.pop('payout_per_km')
         task.pop('payout_baseline')
         task['neededCapacity'] = [
@@ -81,52 +86,21 @@ class TcTask:
             return False
 
 
-@dataclass(frozen=True)
-class Pronouns:
-    nominative: str
-    genitive: str
-    dative: str
-    accusative: str
-    articles: Optional[Pronouns] = field(default=None)
-
-
-class ErIhmPronouns(Pronouns):
-    def __init__(self):
-        super().__init__(
-            nominative='er',
-            genitive='des',
-            dative='ihm',
-            accusative='ihn',
-            articles=Pronouns(
-                nominative='der',
-                genitive='des',
-                dative='dem',
-                accusative='den'
-            )
-        )
-
-
-class SieIhrPronouns(Pronouns):
-    def __init__(self):
-        super().__init__(
-            nominative='sie',
-            genitive='ihr',
-            dative='ihr',
-            accusative='sie',
-            articles=Pronouns(
-                nominative='die',
-                genitive='der',
-                dative='der',
-                accusative='die'
-            )
-        )
+class ServiceLevel(Enum):
+    HIGH_SPEED = 0
+    INTERCITY = 1
+    REGIONAL = 2
+    COMMUTER = 3
+    SPECIAL = 4
+    FREIGHT_IMPORTANT = 10
+    FREIGHT = 11
 
 
 class GattungTask(TcTask):
     gattung: str = ''
     gattung_long: str = ''
-    # Nominativ, Genitiv, Dativ, Akkusativ
     pronouns: Pronouns
+    service: ServiceLevel = ServiceLevel.SPECIAL
 
     def __init__(self,
                  line: str,
@@ -145,6 +119,7 @@ class GattungTask(TcTask):
                 )
             ],
             payout_per_km=self.__class__.payout_per_km,
+            service=self.__class__.service.value,
             *args, **kwargs
         )
         if 'payout_baseline' in self.__class__.__dict__:
@@ -193,6 +168,7 @@ class SbahnTask(GattungTask):
     payout_per_km = 360
     payout_baseline = 90000
     pronouns = SieIhrPronouns()
+    service = ServiceLevel.COMMUTER
 
 
 class RbTask(GattungTask):
@@ -201,6 +177,7 @@ class RbTask(GattungTask):
     payout_per_km = 360
     payout_baseline = 90000
     pronouns = SieIhrPronouns()
+    service = ServiceLevel.COMMUTER
 
 
 class ReTask(GattungTask):
@@ -209,6 +186,12 @@ class ReTask(GattungTask):
     payout_per_km = 420
     payout_baseline = 85000
     pronouns = ErIhmPronouns()
+    service = ServiceLevel.REGIONAL
+
+
+class TerTask(ReTask):
+    gattung = "TER"
+    gattung_long = "TER"
 
 
 class IreTask(ReTask):
@@ -223,6 +206,22 @@ class IcTask(GattungTask):
     payout_per_km = 400
     pronouns = ErIhmPronouns()
     payout_baseline = 120000
+    service = ServiceLevel.INTERCITY
+
+
+class OtcTask(IcTask):
+    gattung = 'OTC'
+    gattung_long = "OUIGO Train Classique"
+
+
+class OgvTask(IcTask):
+    gattung = "OUIGO"
+    gattung_long = "OUGIO"
+
+
+class IrTask(IcTask):
+    gattung = 'IR'
+    gattung_long = 'Interregio'
 
 
 class EcTask(IcTask):
@@ -239,6 +238,12 @@ class IceTask(GattungTask):
     payout_per_km = 400
     pronouns = ErIhmPronouns()
     payout_baseline = 130000
+    service = ServiceLevel.HIGH_SPEED
+
+
+class TgvTask(IceTask):
+    gattung = 'TGV'
+    gattung_long = 'TGV'
 
 
 class IceSprinterTask(IceTask):

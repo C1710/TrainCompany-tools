@@ -1,7 +1,8 @@
 from typing import List
 
 from importer import CsvImporter
-from structures.station import Station, Location, PathLocation, CodeTuple, StreckenKilometer
+from structures.station import Station, PathLocation, CodeTuple, StreckenKilometer
+from geo import Location
 
 
 class DbBetriebsstellenImporter (CsvImporter[Station]):

@@ -1,21 +1,20 @@
 from __future__ import annotations
 
 import logging
-import random
-import time
-import timeit
+import re
 from os import PathLike
 from typing import Dict, Any
 
-import networkx as nx
 from networkx import is_connected
 
-from geo.location_data import with_location_data
+from geo import Location
+from project_coordinates import project_coordinate_for_station
 import tc_utils
 from structures import DataSet, Station
-from structures.station import iter_stations_by_codes_reverse, Location
+from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
 from validation.graph import build_tc_graph
+from structures.country import country_from_code, countries, germany
 
 
 def print_path(path: Dict[str, Any]) -> str:
@@ -43,23 +42,39 @@ def validate(tc_directory: PathLike | str = '..',
     # Step 1: Validate stations
     logging.info(" --- Station.json --- ")
     selected_codes = [station['ril100'] for station in station_json.data]
-    selected_stations = [(station, stations[station['ril100']]) for station in station_json.data]
+    selected_stations = [(station, stations[station['ril100']] if station['ril100'] in stations else None)
+                         for station in station_json.data]
+
+    known_countries = (countries['CH'], germany)
 
     for station, station_obj in selected_stations:
+        project_coordinate_for_station(station)
+        if station_obj is None:
+            country = country_from_code(station['ril100'])
+            if country in known_countries:
+                issues_score = 50
+                logging.warning("+{: <6} Unbekannte Haltestelle: {}".format(issues_score, station['ril100']))
+                issues += issues_score
+            else:
+                logging.info("+{: <6} Betriebsstelle in unbekanntem Land: {}".format(0, station['ril100']))
+            continue
         # 1.1. location check
+        # Currently not done because the new coordinates are not yet supported
         real_location = station_obj.location
-        if real_location:
+        if real_location and False:
             data_location = Location.from_tc(station['x'], station['y'])
             delta = real_location.distance(data_location)
-            if delta > 20:
-                logging.warning("Haltepunkt {} ist über 20 km vom echten Punkt entfernt.".format(station['ril100']))
-                issues += 5
-            if delta > 60:
-                logging.warning("Haltepunkt {} ist über 60 km vom echten Punkt entfernt.".format(station['ril100']))
-                issues += 10
+            issues_score = 0
             if delta > 300:
-                logging.error("Haltepunkt {} ist über 300 km vom echten Punkt entfernt.".format(station['ril100']))
-                issues += 10000
+                issues_score = 35
+                logging.warning("+{: <6} Haltepunkt {} ist über 300 km vom echten Punkt entfernt.".format(issues_score, station['ril100']))
+            elif delta > 60:
+                issues_score = 15
+                logging.warning("+{: <6} Haltepunkt {} ist über 60 km vom echten Punkt entfernt.".format(issues_score, station['ril100']))
+            elif delta > 20:
+                issues_score = 5
+                logging.warning("+{: <6} Haltepunkt {} ist über 20 km vom echten Punkt entfernt.".format(issues_score, station['ril100']))
+            issues += issues_score
 
         # 1.2. Platforms
         real_platforms = station_obj.platforms
@@ -68,20 +83,25 @@ def validate(tc_directory: PathLike | str = '..',
             if False:
                 data_platform_length = station['platformLength']
                 delta = abs(station_obj.platform_length - data_platform_length)
-                if delta > 20:
-                    logging.warning("Haltepunkt {} hat eine um > 20 m abweichende Bahnsteiglänge."
-                                    .format(station['ril100']))
-                    issues += 10
+                issues_score = 0
                 if delta > 100:
-                    logging.warning("Haltepunkt {} hat eine um > 100 m abweichende Bahnsteiglänge."
-                                    .format(station['ril100']))
-                    issues += 100
+                    issues_score = 100
+                    logging.warning("+{: <6} Haltepunkt {} hat eine um > 100 m abweichende Bahnsteiglänge."
+                                    .format(issues_scorestation['ril100']))
+                elif delta > 20:
+                    issues_score = 10
+                    logging.warning("+{: <6} Haltepunkt {} hat eine um > 20 m abweichende Bahnsteiglänge."
+                                    .format(issues_score, station['ril100']))
+                issues += issues_score
 
-            data_platforms = station['platforms']
-            delta = abs(station_obj.platform_count - data_platforms)
-            if delta > 2:
-                # Platform count is not used anyway
-                issues += 10
+                data_platforms = station['platforms']
+                delta = abs(station_obj.platform_count - data_platforms)
+                if delta > 2:
+                    # Platform count is not used anyway
+                    issues_score = 10
+                    logging.warning("+{: <6} Haltepunkt {} hat eine falsche Bahnsteiganzahl. Soll: {} - Ist: {}"
+                                    .format(issues_score, station['ril100']))
+                    issues += issues_score
 
         # 1.3. group - Not used at the moment
         pass
@@ -108,54 +128,73 @@ def validate(tc_directory: PathLike | str = '..',
 
         # 2.0. has speed and length
         if 'maxSpeed' not in path:
-            logging.warning("Pfad hat keine vMax: {}".format(print_path(path)))
-            issues += 10000
+            issues_score = 10000
+            logging.warning("+{: <6} Pfad hat keine vMax: {}".format(issues_score, print_path(path)))
+            issues += issues_score
         if 'length' not in path:
-            logging.warning("Pfad hat keine Länge: {}".format(print_path(path)))
-            issues += 10000
+            issues_score = 10000
+            logging.warning("+{: <6} Pfad hat keine Länge: {}".format(issues_score, print_path(path)))
+            issues += issues_score
 
         # 2.1. Speed - group
         if 'maxSpeed' in path and path['maxSpeed'] >= 250 and path['group'] != 2:
-            logging.warning("Nicht-SFS mit >= 250 km/h: {}".format(print_path(path)))
-            issues += 50
+            issues_score = 50
+            logging.warning("+{: <6} Nicht-SFS mit >= 250 km/h: {}".format(issues_score, print_path(path)))
+            issues += issues_score
 
         # 2.2. SFS - electrified
         if path['group'] == 2 and not path['electrified']:
+            issues_score = 10000
             logging.warning("Nicht elektrifizierte SFS: {}".format(print_path(path)))
-            issues += 1000
+            issues += issues_score
 
+        issues_score = 0
         # 2.3. Path length for Non-SFS
-        if path['group'] != 2 and path['length'] > 40:
-            logging.warning(">40 km langer Streckenabschnitt auf Nicht-SFS: {}".format(print_path(path)))
-            issues += 5
         if path['group'] != 2 and path['length'] > 80:
-            logging.warning(">80 km langer Streckenabschnitt auf Nicht-SFS: {}".format(print_path(path)))
-            issues += 40
+            issues_score = 45
+            logging.warning("+{: <6} >80 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
+        elif path['group'] != 2 and path['length'] > 40:
+            issues_score = 5
+            logging.warning("+{: <6} >40 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
+        issues += issues_score
 
         # 2.4. realistic twistingFactor
         if path['twistingFactor'] > 0.5:
-            logging.info("twistingFactor > 0.5: {}".format(
+            issues_score = 5
+            logging.info("+{: <6} twistingFactor > 0.5: {}".format(
+                issues_score,
                 print_path(path)
             ))
-            issues += 5
+            issues += issues_score
 
         # 2.5. Only cover existing stations
         if path['start'] not in selected_codes:
-            logging.error("Nicht existierender Start-Bahnhof: {}".format(path['start']))
-            issues += 10000
+            issues_score = 10000
+            logging.error("+{: <6} Nicht existierender Start-Bahnhof: {}".format(issues_score, path['start']))
+            issues += issues_score
         if path['end'] not in selected_codes:
-            logging.error("Nicht existierender End-Bahnhof: {}".format(path['start']))
-            issues += 10000
+            issues_score = 10000
+            logging.error("+{: <6} Nicht existierender End-Bahnhof: {}".format(issues_score, path['start']))
+            issues += issues_score
 
         # 2.6. SFS-name for non-SFS
         if 'name' in path:
             if 'SFS' in path['name'] and not path['group'] == 2:
-                logging.warning("Strecke hat SFS im Namen, ist aber keine: {}".format(print_path(path)))
-                issues += 20
+                issues_score = 20
+                logging.warning("+{: <6} Strecke hat SFS im Namen, ist aber keine: {}".format(issues_score, print_path(path)))
+                issues += issues_score
             if 'SFS' in path['name']:
-                logging.warning("Strecke hat SFS im Namen, obwohl es als Kategorie bereits angezeigt wird: {}"
-                                .format(print_path(path)))
-                issues += 5
+                issues_score = 5
+                logging.warning("+{: <6} Strecke hat SFS im Namen, obwohl es als Kategorie bereits angezeigt wird: {}"
+                                .format(issues_score, print_path(path)))
+                issues += issues_score
+
+        # 2.7. Don't allow annotations
+        if 'start_long' in path or 'end_long' in path:
+            issues_score = 800
+            logging.warning("+{: <6} Langer Haltestellenname immer noch vorhanden: {}"
+                            .format(issues_score, print_path(path)))
+            issues += issues_score
 
     # Step 3: graph-based validation
     logging.info(" --- Routing --- ")
@@ -164,8 +203,12 @@ def validate(tc_directory: PathLike | str = '..',
 
     graph = build_tc_graph(selected_codes, path_edges)
     if not is_connected(graph):
-        logging.error("Das Netz ist nicht zusammenhängend.")
-        issues += 1000
+        issues_score = 10000
+        logging.error("+{: <6} Das Netz ist nicht zusammenhängend.".format(issues_score))
+        for node, degree in graph.degree():
+            if degree == 0:
+                logging.error(" {: <6} Haltepunkt ohne Route: {}".format('', node))
+        issues += issues_score
 
     # Step 4: trains
     logging.info(" --- Train.json --- ")
@@ -174,8 +217,9 @@ def validate(tc_directory: PathLike | str = '..',
     train_ids.sort()
     for train_id, next_id in zip(train_ids, train_ids[1:]):
         if train_id == next_id:
-            logging.error("Doppelte Train-ID: {}".format(train_id))
-            issues += 10000
+            issues_score = 10000
+            logging.error("+{: <6} Doppelte Train-ID: {}".format(issues_score, train_id))
+            issues += issues_score
 
     # 4.2. realistic acceleration
     # TODO: -
@@ -187,7 +231,21 @@ def validate(tc_directory: PathLike | str = '..',
         if 'equipments' in train:
             for used_equipment in train['equipments']:
                 if used_equipment not in train_equipments:
-                    logging.error("Zug {} hat nicht existierendes Equipment: {}".format(train['id'], used_equipment))
+                    issues_score = 10000
+                    logging.error("+{: <6} Zug {} hat nicht existierendes Equipment: {}"
+                                  .format(issues_score, train['id'], used_equipment))
+                    issues += issues_score
+
+    # 4.4. operationCosts
+    # TODO: Better validation (e.g., high force = high costs)
+    for train in train_json.data:
+        if 'operationCosts' not in train:
+            train['operationCosts'] = 0
+        if train['force'] > 0 and train['operationCosts'] < 5:
+            issues_score = 10000
+            logging.error("+{: <6} Zug {} (ID {}) hat keine/zu geringe operationCosts: {}"
+                          .format(issues_score, train['name'] if 'name' in train else 'Unbenannt', train['id'], train['operationCosts']))
+            issues += issues_score
 
     # Step 5: task model
     logging.info(" --- TaskModel.json --- ")
@@ -207,8 +265,9 @@ def validate(tc_directory: PathLike | str = '..',
         if 'stations' in task:
             for station in task['stations']:
                 if station not in selected_codes:
-                    logging.error("Nicht existierender Haltepunkt: {}".format(station))
-                    issues += 10000
+                    issues_score = 10000
+                    logging.error("+{: <6} Nicht existierender Haltepunkt: {}".format(issues_score, station))
+                    issues += issues_score
 
     return issues
 

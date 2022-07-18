@@ -4,9 +4,12 @@ import logging
 from abc import ABCMeta
 from dataclasses import dataclass, field
 from enum import Enum
+from functools import cached_property
 from typing import List, Optional, Dict, Any, Tuple, Set
 
+from structures.country import germany
 from structures.station import Station, iter_stations_by_codes_reverse, CodeTuple, StreckenKilometer
+from geo import Location
 
 
 @dataclass(frozen=True)
@@ -56,30 +59,38 @@ class TcRoute:
     path: TcPath
 
     @staticmethod
-    def from_route(route: Route, station_data: List[Station]) -> TcRoute:
+    def from_route(route: Route, station_data: List[Station],
+                   add_annotations: bool = False) -> TcRoute:
         # Because we add the last (i.e. least precise) codes first, the "better" ones will override them at the end
         code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(station_data)}
         stations = [code_to_station[waypoint.code] if waypoint.code in code_to_station else invalid_station(waypoint.code)
                     for waypoint in route.waypoints if waypoint.is_stop]
-        paths = TcPath.merge(TcPath.from_route(route))
+        paths = TcPath.merge(TcPath.from_route(route, add_annotations=add_annotations, code_to_station=code_to_station))
         return TcRoute(stations, paths)
 
 
 @dataclass
 class TcPath:
     start: Optional[str] = field(default=None)
+    start_long: Optional[str] = field(default=None)
     end: Optional[str] = field(default=None)
+    end_long: Optional[str] = field(default=None)
     name: Optional[str] = field(default=None)
     electrified: Optional[bool] = field(default=None)
     group: Optional[int] = field(default=None)
     length: Optional[int] = field(default=None)
     maxSpeed: Optional[int] = field(default=None)
     twistingFactor: Optional[float] = field(default=None)
+    neededEquipments: Optional[List[str]] = field(default=None)
     objects: Optional[List[TcPath] | List[Dict[str, Any]]] = field(default=None)
 
     @staticmethod
-    def from_route(route: Route) -> List[TcPath]:
+    def from_route(route: Route,
+                   add_annotations: bool = False,
+                   code_to_station: Optional[Dict[str, Station]] = None) -> List[TcPath]:
         paths = []
+        if add_annotations:
+            assert code_to_station is not None
         visited_waypoints: List[CodeWaypoint] = []
         visited_tracks: List[Track] = []
         for (waypoint_start, tracks, waypoint_end) in zip(route.waypoints, route.tracks, route.waypoints[1:]):
@@ -92,18 +103,43 @@ class TcPath:
 
             if waypoint_end.is_stop:
                 length = waypoint_end.distance_from_start - visited_waypoints[0].distance_from_start
-                # Add a new path
-                path = TcPath(
-                    name=None,
-                    start=visited_waypoints[0].code,
-                    end=waypoint_end.code,
-                    electrified=all((track.electrified for track in visited_tracks)),
-                    group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
-                    length=int(length),
-                    maxSpeed=None,
-                    twistingFactor=None,
-                    objects=None
-                )
+                visited_countries: Set = set()
+                if code_to_station:
+                    visited_stations = (code_to_station[waypoint.code] for waypoint in visited_waypoints)
+                    visited_countries.update({station.country for station in visited_stations})
+                    visited_countries.add(code_to_station[waypoint_end.code].country)
+                needed_countries = [country.iso_3166 for country in visited_countries if country != germany]
+                if not add_annotations:
+                    # Add a new path
+                    path = TcPath(
+                        name=None,
+                        start=visited_waypoints[0].code,
+                        end=waypoint_end.code,
+                        electrified=all((track.electrified for track in visited_tracks)),
+                        group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
+                        length=int(length),
+                        maxSpeed=None,
+                        twistingFactor=None,
+                        neededEquipments=needed_countries if needed_countries else None,
+                        objects=None
+                    )
+                else:
+                    start_code = visited_waypoints[0].code
+                    end_code = waypoint_end.code
+                    path = TcPath(
+                        name=None,
+                        start=start_code,
+                        start_long=code_to_station[start_code].name if start_code in code_to_station else '',
+                        end=end_code,
+                        end_long=code_to_station[end_code].name if end_code in code_to_station else '',
+                        electrified=all((track.electrified for track in visited_tracks)),
+                        group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
+                        length=int(length),
+                        maxSpeed=None,
+                        twistingFactor=None,
+                        neededEquipments=needed_countries if needed_countries else None,
+                        objects=None
+                    )
                 paths.append(path)
                 # We will add this one the next time anyway
                 visited_waypoints = []

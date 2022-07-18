@@ -1,3 +1,8 @@
+# The README is currently outdated.
+The current tools are:
+- `convert_coordinates.py`: Converts longitude, latitude to TC-coordinates (you can simply paste e.g. Google Maps coordinates as the arguments, a trailing comma will be ignored)
+- `create_tasks.py`: Create new tasks for Ausschreibungen
+- `import_stations.py`: Imports new stations (not all countries are supported)
 # How to use
 
 First, this repository needs to be the `tools` directory in `TrainCompany-Data`. You can use the scripts from both this

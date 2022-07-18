@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import List, Optional
 
 from importer import CsvImporter
@@ -18,7 +19,7 @@ class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
     def deserialize(self, entry: List[str]) -> Optional[Station]:
         assert entry[1]
         station = Station(
-            name=correct_ch_name(entry[2]),
+            name=correct_name(entry[2], entry[1]),
             number=None,
             codes=CodeTuple(entry[1]),
             location=None,
@@ -28,7 +29,54 @@ class DbBetriebsstellenverzeichnisImporter (CsvImporter[Station]):
         return station
 
 
+ch_re = re.compile(r' +\(CH\)')
+
+
+def correct_name(name: str, ril100: str) -> str:
+    if ril100.startswith('XF'):
+        return correct_fr_name(name)
+    elif ril100.startswith('XS'):
+        return correct_ch_name(name)
+    else:
+        return name
+
+
 def correct_ch_name(name: str) -> str:
     if name == "St Gallen":
         return "St. Gallen"
+    name = ch_re.sub(' (CH)', name)
+    name = name.replace('Geneve', 'Genève')
+    name = name.replace(" / ", "/")
+    name = name.replace("Neuchatel", "Neuchâtel")
+    name = name.replace("Yverdon", "Yverdon-les-Bains")
+    name = name.replace("Delemont", "Delémont")
     return name
+
+
+fr_names = {
+    'Lorraine-Louvigny': 'Lorraine-TGV',
+    'Champagne-Ardennes': 'Champagne-Ardenne-TGV',
+    "Bening": 'Béning',
+    "Amberieu": "Ambérieu",
+    "Marne-la-Vallee-Chessy": "Marne-la-Vallée-Chessy",
+    "Calais-Frethun": "Calais-Fréthun",
+    "Selestat": "Sélestat",
+    "Chalon-sur-Saone": "Chalon-sur-Saône",
+    "Macon-Ville": "Mâcon-Ville",
+    "Neufchateau": "Neufchâteau",
+    "Varangeville-St-Nicolas": "Varangéville-St-Nicolas",
+    "Blainville-Damelevie": "Blainville-Damelevières",
+    "Luneville": "Lunéville",
+    "Reding": "Réding",
+    "Pont-a-Mousson": "Pont-à-Mousson",
+    "Noveant": "Novéant",
+    "Lerouville": "Lérouville",
+    "Remilly": "Rémilly"
+}
+
+
+def correct_fr_name(name: str) -> str:
+    if name in fr_names:
+        return fr_names[name]
+    else:
+        return name

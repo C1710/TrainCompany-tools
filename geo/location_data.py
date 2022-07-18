@@ -1,14 +1,22 @@
+from __future__ import annotations
+
 import logging
 import os.path
 from functools import lru_cache
-from time import sleep
-from typing import List, Union
+from typing import List, Optional
 
 from geopy import GoogleV3
 from geopy.exc import GeopyError
 
-from structures import Station
-from structures.station import Location
+# https://adamj.eu/tech/2021/05/13/python-type-hints-how-to-fix-circular-imports/
+from typing import TYPE_CHECKING
+
+from structures.country import *
+
+if TYPE_CHECKING:
+    from structures import Station
+
+from geo import Location
 
 
 @lru_cache
@@ -21,28 +29,41 @@ def load_api_key() -> str:
 
 
 def with_location_data(station: Station) -> Station:
-    geolocator = GoogleV3(api_key=load_api_key())
-    location = geolocator.geocode(station.name + " Bahnhof")
-    logging.info("Loading station location from Google Maps")
-    if location is None:
-        logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
-        location = geolocator.geocode(station.name)
+    from structures import Station
+    if not station.location:
+        geolocator = GoogleV3(api_key=load_api_key())
+        location = geolocator.geocode(create_search_query(station), region=country_from_code(station).tld)
+        logging.info("Loading station location from Google Maps")
         if location is None:
-            logging.warning("Couldn't find station {}.".format(station.name))
-    station = Station(
-        name=station.name,
-        codes=station.codes,
-        locations_path=station.locations_path,
-        station_category=station.station_category,
-        platforms=station.platforms,
-        number=station.number,
-        kind=station.kind,
-        location=Location(
-            latitude=location.latitude,
-            longitude=location.longitude
-        ) if location else None
-    )
-    return station
+            logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
+            location = geolocator.geocode(station.name)
+            if location is None:
+                logging.warning("Couldn't find station {}.".format(station.name))
+        station = Station(
+            name=station.name,
+            codes=station.codes,
+            locations_path=station.locations_path,
+            station_category=station.station_category,
+            platforms=station.platforms,
+            number=station.number,
+            kind=station.kind,
+            location=Location(
+                latitude=location.latitude,
+                longitude=location.longitude
+            ) if location else None
+        )
+        return station
+    else:
+        return station
+
+
+def create_search_query(station: Station) -> str:
+    if station.country in (countries['DE'], countries['AT'], countries['CH'], countries['LU']):
+        return station.name + " Bahnhof"
+    elif station.country in (countries['FR'], ):
+        return station.name + " gare"
+    else:
+        return station.name + " station"
 
 
 def add_location_data_to_list(stations: List[Station]):

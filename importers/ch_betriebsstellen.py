@@ -1,8 +1,10 @@
+import re
 from typing import List
 
 from importer import CsvImporter
 from structures import Station
-from structures.station import Location, CodeTuple
+from structures.station import CodeTuple
+from geo import Location
 
 
 class ChBetriebsstellenImporter (CsvImporter[Station]):
@@ -21,7 +23,7 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
             # We want to use international identifieres here to prevent conflicts with German stations
             number=int(entry[1]),
             # Subsitute the code with BPUIC if not available
-            codes=CodeTuple('CH:' + entry[3], entry[1]) if entry[3] else CodeTuple(entry[1]),
+            codes=CodeTuple('🇨🇭' + entry[3],  'CH:' + entry[3], entry[1]) if entry[3] else CodeTuple(entry[1]),
             location=Location(
                 latitude=float(entry[25]),
                 longitude=float(entry[24])
@@ -35,7 +37,13 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
 
 
 def normalize_name(name: str) -> str:
-    name = name.replace(" SG", "")
+    # name = name.replace(" SG", "")
     name = name.replace("Zürich Oerlikon", "Zürich-Oerlikon")
     name = name.replace("Horn", "Horn (Bodensee)")
+    name = name.replace("Zug", "Zug (CH)")
+    name = name.replace("Altdorf UR", "Altdorf")
+    name = name.replace("Bodio TI", "Bodio")
+    name = name.replace("Fribourg/Freiburg", "Fribourg")
+    name = name.replace("Cornaux NE", "Cornaux")
+    name = name.replace("Münsingen", "Münsingen (CH)")
     return name
