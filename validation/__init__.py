@@ -11,6 +11,7 @@ import networkx as nx
 from networkx import is_connected
 
 from geo.location_data import with_location_data
+import tc_utils
 from structures import DataSet, Station
 from structures.station import iter_stations_by_codes_reverse, Location
 from tc_utils import TcFile
@@ -181,7 +182,7 @@ def validate(tc_directory: PathLike | str = '..',
     pass
 
     # 4.3. only existing train equipments
-    train_equipments = [equipment['idString'] for equipment in train_equipment_json.data]
+    train_equipments = [sub_equipment['idString'] for train_equipment in train_equipment_json.data for sub_equipment in tc_utils.expand_objects(train_equipment)]
     for train in train_json.data:
         if 'equipments' in train:
             for used_equipment in train['equipments']:
