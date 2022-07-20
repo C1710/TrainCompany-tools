@@ -13,7 +13,7 @@ from structures.pronouns import Pronouns
 flag_offset = ord('🇦') - ord('A')
 flag_re = re.compile(r'[🇦-🇿]{2}')
 country_colon = re.compile(r'[A-Z]{2}:')
-uic_country = re.compile(r'[1-9][0-9]')
+uic_country = re.compile(r'[1-9][0-9]\d{6,7}')
 
 
 @dataclass(frozen=True)
@@ -170,7 +170,8 @@ def country_from_code(code: str) -> Tuple[Optional[Country], CountryRepresentati
             return tld_to_country[iso_3166.lower()], CountryRepresentation.COLON
     elif uic_country.match(code):
         uic_code = int(code[:2])
-        return uic_to_country[uic_code], CountryRepresentation.UIC
+        if uic_code in uic_to_country:
+            return uic_to_country[uic_code], CountryRepresentation.UIC
     elif code.startswith(':'):
         return None, CountryRepresentation.NONE
     else:
@@ -193,7 +194,7 @@ def strip_country(code: str, strip_ril100: bool = False) -> str:
     elif country_colon.match(code):
         return country_colon.sub('', code, 1)
     elif uic_country.match(code):
-        return uic_country.sub('', code, 1)
+        return code[2:]
     else:
         return code
 

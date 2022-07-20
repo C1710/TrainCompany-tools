@@ -12,20 +12,9 @@ def export_station_list(country: str,
                         data_directory: PathLike | str = '..') -> List[str]:
     from structures import DataSet
 
-    if country == 'DE':
-        station_data = DataSet.load_station_data_de(data_directory)
-    else:
-        station_data_de = DataSet.load_station_data_de(data_directory)
-        if country == 'CH':
-            station_data = DataSet.load_station_data_ch(data_directory)
-            station_data_de = [station for station in station_data_de if any((code.startswith("XS") for code in station.codes))]
-        if country == 'FR':
-            station_data = DataSet.load_station_data_fr(data_directory)
-            station_data_de = [station for station in station_data_de if any((code.startswith("XF") for code in station.codes))]
-        if country == 'UK':
-            station_data = DataSet.load_station_data_uk(data_directory)
-            station_data_de = [station for station in station_data_de if any((code.startswith("XK") for code in station.codes))]
-        station_data.extend(station_data_de)
+    station_data = DataSet.load_station_data(data_directory)
+    station_data = (station for station in station_data if station.country.uic_str == country.upper()
+                    or station.country.tld == country.lower())
 
     return ["{}\t{}\n".format(station.name, ' - '.join(station.codes)) for station in station_data]
 
@@ -35,7 +24,7 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(script_path)
 
     parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
-    parser.add_argument('country', metavar="LAND", type=str, choices=('UK', 'FR', 'CH', 'DE'),
+    parser.add_argument('country', metavar="LAND", type=str,
                         help="Das Land, für das die Stationsliste exportiert werden soll.")
     parser.add_argument('--out_file', metavar='DATEI', type=str,
                         help="Die Datei, in die gespeichert werden soll. Standard: stations_<Land>.tsv")

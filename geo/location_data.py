@@ -32,7 +32,7 @@ def with_location_data(station: Station) -> Station:
     from structures import Station
     if not station.location:
         geolocator = GoogleV3(api_key=load_api_key())
-        location = geolocator.geocode(create_search_query(station), region=country_from_code(station).tld)
+        location = geolocator.geocode(create_search_query(station), region=country_for_station(station).tld)
         logging.info("Loading station location from Google Maps")
         if location is None:
             logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))

@@ -66,7 +66,31 @@ special_codes = {
     "Igney-Avricourt": "IA",
     "Héming": "HMG",
     "Pompey": "PPE",
-    "Ars-sur-Moselle": "ASM"
+    "Ars-sur-Moselle": "ASM",
+    "Champigny-sur-Yonne": "CSY",
+    "Sens": "SES",
+    "St-Julien-du-Sault": "SJX",
+    "St-Florentin-Vergigny": "SIF",
+    "Tonnerre": "TNN",
+    "St-Clair-les-Roches": "SKR",
+    "Le Péage-de-Roussillon": "PGR",
+    "Tain-l'Hermitage-Tournon": "TAI",
+    "Livron": "LIV",
+    "Pierrelatte": "PRL",
+    "Bollène-la-Croisière": "BLN",
+    "Bédarrides": "BDR",
+    "St-Martin-de-Crau": "SMD",
+    "La Penne-sur-Huveaune": "PHE",
+    "Aubagne": "AUB",
+    "Cassis": "CSI",
+    "Bandol": "BND",
+    "St-Cyr-les-Lècques-La Cadière": "SAQ",
+    "La Seyne-Six-Fours": "LSM",
+    "Solliès-Pont": "SIP",
+    "Vidauban": "VUB",
+    "Théoule-sur-Mer": "THM",
+    "Biot": "BJO",
+    "St-Laurent-du-Var": "SNV"
 }
 
 
@@ -92,4 +116,5 @@ def normalize_french_station_name(name: str) -> str:
     name = name.replace('Lille-Europe', 'Lille Europe')
     name = name.replace('Dole', 'Dole-Ville')
     name = name.replace('Bellegarde', 'Bellegarde (Ain)')
+    name = name.replace('Fréjus', "Fréjus-St-Raphaël")
     return name

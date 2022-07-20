@@ -71,7 +71,11 @@ fr_names = {
     "Pont-a-Mousson": "Pont-à-Mousson",
     "Noveant": "Novéant",
     "Lerouville": "Lérouville",
-    "Remilly": "Rémilly"
+    "Remilly": "Rémilly",
+    "Nuits-sous-Ravieres": "Nuits-sous-Ravières",
+    "Chasse-sur-Rhone": "Chasse-sur-Rhône",
+    "Montelimar": "Montélimar",
+    "St-Raphael-Valescure": "St-Raphaël-Valescure"
 }
 
 

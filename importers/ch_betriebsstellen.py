@@ -23,7 +23,7 @@ class ChBetriebsstellenImporter (CsvImporter[Station]):
             # We want to use international identifieres here to prevent conflicts with German stations
             number=int(entry[1]),
             # Subsitute the code with BPUIC if not available
-            codes=CodeTuple('🇨🇭' + entry[3],  'CH:' + entry[3], entry[1]) if entry[3] else CodeTuple(entry[1]),
+            codes=CodeTuple('🇨🇭' + entry[3],  'CH:' + entry[3], "85" + entry[1]) if entry[3] else CodeTuple("85" + entry[1]),
             location=Location(
                 latitude=float(entry[25]),
                 longitude=float(entry[24])
