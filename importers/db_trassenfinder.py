@@ -78,13 +78,26 @@ def track_from_path(route_number: int,
 def convert_waypoints_to_route(waypoints: List[CodeWaypoint],
                                station_data: List[Station],
                                path_data: List[Path]) -> Route:
+    from structures.station import CodeTuple
     codes_to_station = {code: station for code, station in iter_stations_by_codes_reverse(station_data)}
     route_number_to_path = {path.route_numer: path for path in path_data}
     tracks_used = []
     for (waypoint, next_waypoint) in zip(waypoints, waypoints[1:]):
         tracks_between_waypoints = []
-        station = codes_to_station[waypoint.code]
-        next_station = codes_to_station[next_waypoint.code]
+        if waypoint.code in codes_to_station:
+            station = codes_to_station[waypoint.code]
+        else:
+            logging.warning("Unbekannte Haltestelle: {}".format(next_waypoint.code))
+            station = Station(
+                codes=CodeTuple(next_waypoint.code)
+            )
+        if next_waypoint.code in codes_to_station:
+            next_station = codes_to_station[next_waypoint.code]
+        else:
+            logging.warning("Unbekannte Haltestelle: {}".format(next_waypoint.code))
+            next_station = Station(
+                codes=CodeTuple(next_waypoint.code)
+            )
         if waypoint.next_route_number and waypoint.next_route_number in route_number_to_path:
             if station.locations_path and next_station.locations_path:
                 path_used: Path = route_number_to_path[waypoint.next_route_number]

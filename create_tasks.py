@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     gattungen = {task.gattung: task for task in (SbahnTask, RbTask, ReTask, IreTask, TerTask,
                                                  IcTask, IrTask, EcTask, OtcTask, OgvTask,
-                                                 IceTask, IceSprinterTask, EceTask, TgvTask)}
+                                                 IceTask, IceSprinterTask, EceTask, TgvTask, FrTask)}
 
     parser = argparse.ArgumentParser(description='Erstelle neue Ausschreibungen')
     parser.add_argument('task_type', choices=list(gattungen), type=str, help="Die Zuggattung")

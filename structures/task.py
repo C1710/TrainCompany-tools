@@ -246,6 +246,11 @@ class TgvTask(IceTask):
     gattung_long = 'TGV'
 
 
+class FrTask(IceTask):
+    gattung = "FR"
+    gattung_long = "Frecciarossa"
+
+
 class IceSprinterTask(IceTask):
     gattung = 'ICE-Sprinter'
     gattung_long = 'ICE-Sprinter'

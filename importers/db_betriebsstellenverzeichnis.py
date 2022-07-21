@@ -75,7 +75,8 @@ fr_names = {
     "Nuits-sous-Ravieres": "Nuits-sous-Ravières",
     "Chasse-sur-Rhone": "Chasse-sur-Rhône",
     "Montelimar": "Montélimar",
-    "St-Raphael-Valescure": "St-Raphaël-Valescure"
+    "St-Raphael-Valescure": "St-Raphaël-Valescure",
+    "Besancon TGV": "Besançon-Franche-Comté-TGV"
 }
 
 

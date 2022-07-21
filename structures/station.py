@@ -7,7 +7,7 @@ from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, F
 
 # It will add all of them in that order if one is added
 from geo import Location
-from structures.country import Country, country_for_station
+from structures.country import Country, country_for_station, country_from_code, split_country
 
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
@@ -37,6 +37,11 @@ def expand_codes(base_code: str) -> Generator[str, None, None]:
     if ' ' in base_code:
         base_code = base_code.split(' ')[0]
         yield base_code
+    if base_code.isnumeric():
+        # Replace UIC code prefix by country flag, if applicable
+        country, code_without_country, _ = split_country(base_code)
+        flag_code = country.flag + code_without_country
+        yield flag_code
     for special in special_codes:
         if base_code in special:
             for other in special:

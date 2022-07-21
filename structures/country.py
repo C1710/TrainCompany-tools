@@ -13,7 +13,7 @@ from structures.pronouns import Pronouns
 flag_offset = ord('🇦') - ord('A')
 flag_re = re.compile(r'[🇦-🇿]{2}')
 country_colon = re.compile(r'[A-Z]{2}:')
-uic_country = re.compile(r'[1-9][0-9]\d{6,7}')
+uic_country = re.compile(r'[1-9][0-9]\d{5,7}')
 
 
 @dataclass(frozen=True)
