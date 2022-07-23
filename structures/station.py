@@ -7,7 +7,7 @@ from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, F
 
 # It will add all of them in that order if one is added
 from geo import Location
-from structures.country import Country, country_for_station, country_from_code, split_country
+from structures.country import Country, country_for_station, country_for_code, split_country
 
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
@@ -102,27 +102,31 @@ class Station:
     kind: Optional[str] = field(default=None)
     platforms: Tuple[Platform] = field(default_factory=tuple)
     station_category: Optional[int] = field(default=None)
+    _group: Optional[int] = field(default=None)
 
     @property
     def group(self) -> int:
-        if self.station_category is not None:
-            if 1 <= self.station_category <= 2:
-                # Knotenbahnhof
-                return 0
-            if self.station_category == 3:
-                # Hauptbahnhof
-                return 1
-            if 4 <= self.station_category < 7:
-                # Nebenbahnhof
-                return 2
-            if self.station_category == 7:
-                # Haltepunkt (unsichtbar)
-                return 5
-        if self.kind and self.kind.lower() == 'abzw':
-            # Abzweig
-            return 4
+        if not self._group:
+            if self.station_category is not None:
+                if 1 <= self.station_category <= 2:
+                    # Knotenbahnhof
+                    return 0
+                if self.station_category == 3:
+                    # Hauptbahnhof
+                    return 1
+                if 4 <= self.station_category < 7:
+                    # Nebenbahnhof
+                    return 2
+                if self.station_category == 7:
+                    # Haltepunkt (unsichtbar)
+                    return 5
+            if self.kind and self.kind.lower() == 'abzw':
+                # Abzweig
+                return 4
+            else:
+                return 3
         else:
-            return 3
+            return self._group
 
     @cached_property
     def platform_count(self) -> int:

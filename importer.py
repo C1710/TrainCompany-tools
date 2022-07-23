@@ -46,6 +46,7 @@ class CsvImporter(Importer[T], metaclass=ABCMeta):
     def deserialize(self, entry: List[str]) -> Optional[T]:
         pass
 
+
 class JsonImporter(Importer[T], metaclass=ABCMeta):
     encoding: str
     top_level_entry: List[str]

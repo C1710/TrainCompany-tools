@@ -4,7 +4,7 @@ import logging
 
 import os.path
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from structures.route import Track, Path, merge_tracks
 from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code, \
@@ -178,15 +178,29 @@ class DataSet:
         return stations_uk
 
     @staticmethod
+    def load_station_data_trainline(data_directory: str = 'data') -> Optional[List[Station]]:
+        from importers.trainline import TrainlineImporter
+
+        trainline_csv = os.path.join(data_directory, "trainline", "stations.csv")
+        if os.path.isfile(trainline_csv):
+            stations_trainline = TrainlineImporter().import_data(trainline_csv)
+            return stations_trainline
+        else:
+            logging.warning("Trainline-Daten nicht gefunden: {} - Ist das Repository vorhanden?".format(trainline_csv))
+            return None
+
+    @staticmethod
     def load_station_data(data_directory: str = 'data') -> List[Station]:
         stations = DataSet.load_station_data_de(data_directory)
         stations_ch = DataSet.load_station_data_ch(data_directory)
         stations_fr = DataSet.load_station_data_fr(data_directory)
         stations_uk = DataSet.load_station_data_uk(data_directory)
+        stations_trainline = DataSet.load_station_data_trainline(data_directory)
 
         stations = merge_stations(stations, stations_ch, 'name')
         stations = merge_stations(stations, stations_fr, 'name')
         stations = merge_stations(stations, stations_uk, 'name')
+        stations = merge_stations(stations, stations_trainline, 'number')
 
         return stations
 

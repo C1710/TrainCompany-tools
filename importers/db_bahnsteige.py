@@ -45,6 +45,7 @@ def add_platforms_to_stations(stations: List[Station], platforms: List[Platform]
                 location=station.location,
                 locations_path=station.locations_path,
                 station_category=station.station_category,
+                _group=station._group,
                 kind=station.kind,
                 platforms=tuple(station_to_plattforms[station])
             )

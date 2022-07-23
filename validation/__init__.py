@@ -14,7 +14,7 @@ from structures import DataSet, Station
 from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
 from validation.graph import build_tc_graph
-from structures.country import country_from_code, countries, germany
+from structures.country import country_for_code, countries, germany
 
 
 def print_path(path: Dict[str, Any]) -> str:
@@ -50,7 +50,7 @@ def validate(tc_directory: PathLike | str = '..',
     for station, station_obj in selected_stations:
         project_coordinate_for_station(station)
         if station_obj is None:
-            country = country_from_code(station['ril100'])
+            country = country_for_code(station['ril100'])
             if country in known_countries:
                 issues_score = 50
                 logging.warning("+{: <6} Unbekannte Haltestelle: {}".format(issues_score, station['ril100']))

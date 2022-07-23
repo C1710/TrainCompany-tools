@@ -7,7 +7,7 @@ from enum import Enum
 from functools import cached_property
 from typing import List, Optional, Dict, Any, Tuple, Set
 
-from structures.country import germany, country_from_code
+from structures.country import germany, country_for_code
 from structures.station import Station, iter_stations_by_codes_reverse, CodeTuple, StreckenKilometer
 from geo import Location
 
@@ -104,8 +104,8 @@ class TcPath:
             if waypoint_end.is_stop:
                 length = waypoint_end.distance_from_start - visited_waypoints[0].distance_from_start
                 visited_countries: Set = set()
-                visited_countries.update({country_from_code(waypoint.code)[0] for waypoint in visited_waypoints})
-                visited_countries.add(country_from_code(waypoint_end.code)[0])
+                visited_countries.update({country_for_code(waypoint.code)[0] for waypoint in visited_waypoints})
+                visited_countries.add(country_for_code(waypoint_end.code)[0])
                 needed_countries = [country.iso_3166 for country in visited_countries]
                 if not add_annotations:
                     # Add a new path

@@ -1,0 +1,3 @@
+[submodule "data/trainline"]
+	path = data/trainline
+	url = https://github.com/trainline-eu/stations

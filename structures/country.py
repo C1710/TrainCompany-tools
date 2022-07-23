@@ -151,7 +151,7 @@ class CountryRepresentation(Enum):
     NONE = ''
 
 
-def country_from_code(code: str) -> Tuple[Optional[Country], CountryRepresentation]:
+def country_for_code(code: str) -> Tuple[Optional[Country], CountryRepresentation]:
     code = code.upper()
     if code.startswith('X') or code.startswith('Z'):
         country_ril100 = code[1]
@@ -168,19 +168,31 @@ def country_from_code(code: str) -> Tuple[Optional[Country], CountryRepresentati
             return iso_3166_to_country[iso_3166], CountryRepresentation.COLON
         elif iso_3166.lower() in tld_to_country:
             return tld_to_country[iso_3166.lower()], CountryRepresentation.COLON
+        else:
+            raise KeyError("Unbekanntes Land: {}".format(iso_3166))
     elif uic_country.match(code):
         uic_code = int(code[:2])
         if uic_code in uic_to_country:
             return uic_to_country[uic_code], CountryRepresentation.UIC
+        else:
+            raise KeyError("Unbekanntes Land: {}".format(uic_code))
     elif code.startswith(':'):
         return None, CountryRepresentation.NONE
     else:
         return germany, CountryRepresentation.NONE
 
 
+def country_for_uic(uic: int) -> Optional[Country]:
+    uic_code = int(str(uic)[:2])
+    if uic_code in uic_to_country:
+        return uic_to_country[uic_code]
+    else:
+        return None
+
+
 def country_for_station(station: Station) -> Country:
     for code in station.codes:
-        country, _ = country_from_code(code)
+        country, _ = country_for_code(code)
         if country != germany:
             return country
     return germany
@@ -200,7 +212,7 @@ def strip_country(code: str, strip_ril100: bool = False) -> str:
 
 
 def split_country(code: str, strip_ril100: bool = False) -> Tuple[Optional[Country], str, CountryRepresentation]:
-    country, representation = country_from_code(code)
+    country, representation = country_for_code(code)
     bare_code = strip_country(code, strip_ril100)
     return country, bare_code, representation
 

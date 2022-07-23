@@ -44,6 +44,7 @@ def with_location_data(station: Station) -> Station:
             codes=station.codes,
             locations_path=station.locations_path,
             station_category=station.station_category,
+            _group=station._group,
             platforms=station.platforms,
             number=station.number,
             kind=station.kind,
