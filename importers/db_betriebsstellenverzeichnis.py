@@ -81,7 +81,9 @@ fr_names = {
     "Vitry-le-Francois": "Vitry-le-François",
     "Chalons-en-Champagne": "Châlons-en-Champagne",
     "Chateau-Thierry": "Château-Thierry",
-    "La Ferte-sous-Jouarre": "La Ferté-sous-Jouarre"
+    "La Ferte-sous-Jouarre": "La Ferté-sous-Jouarre",
+    "Montauban-Ville-Bourbon": "Montauban Ville Bourbon",
+    "Toulouse-Matabiau": "Toulouse Matabiau"
 }
 
 
