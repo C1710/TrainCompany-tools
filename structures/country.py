@@ -218,8 +218,7 @@ def split_country(code: str, strip_ril100: bool = False) -> Tuple[Optional[Count
 
 
 def parse_code_to_compatible_format(country: Country, code: str, representation: CountryRepresentation) -> str:
-    if representation not in (CountryRepresentation.UIC,
-                              CountryRepresentation.NONE,
+    if representation not in (CountryRepresentation.NONE,
                               CountryRepresentation.RIL100_X,
                               CountryRepresentation.RIL100_Z):
         # Everything else gets translated to flag + code
