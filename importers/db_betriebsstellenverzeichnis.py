@@ -90,7 +90,8 @@ fr_names = {
     "St-Pierre-d'Albigny": "St-Pierre-d’Albigny",
     "Epierre-St-Leger": "Épierre—St-Léger",
     "St-Avre-la-Chambre": "St-Avre—La Chambre",
-    "St-Jean-de-Maurienne-Arvan": "St-Jean-de-Maurienne—Arvan"
+    "St-Jean-de-Maurienne-Arvan": "St-Jean-de-Maurienne—Arvan",
+    "Nogent-le-Retrou": "Nogent-le-Rotrou"
 }
 
 

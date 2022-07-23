@@ -130,4 +130,5 @@ def normalize_french_station_name(name: str) -> str:
     name = name.replace('Dole', 'Dole-Ville')
     name = name.replace('Bellegarde', 'Bellegarde (Ain)')
     name = name.replace('Fréjus', "Fréjus-St-Raphaël")
+    name = name.replace("Brest", "Brest (FR)")
     return name
