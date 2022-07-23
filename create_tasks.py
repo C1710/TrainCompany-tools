@@ -92,7 +92,7 @@ if __name__ == '__main__':
     parser.add_argument('--stations', metavar='RIL100', type=str, nargs='+', action='append', required=True,
                         help='Die RIL100-Codes der angefahrenen bahnhöfe, die hinzugefügt werden sollen')
     parser.add_argument('--no_add_suggestion', action='store_true',
-                        help="Fügt der Task einen Hinweis auf den kürzesten Pfad hinzu.")
+                        help="Fügt der Task keinen Hinweis auf den kürzesten Pfad hinzu.")
     parser.add_argument('--add_plops', action='store_true',
                         help="Berechnet die Auszahlung und fügt sie hinzu.")
     parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,

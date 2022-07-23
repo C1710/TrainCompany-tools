@@ -151,7 +151,8 @@ class GattungTask(TcTask):
                 "Bringe {} {} von %s nach %s.".format(self.__class__.pronouns.articles.accusative,
                                                       self.__class__.gattung_long),
                 "Bring die Fahrgäste in {} {} pünktlich nach %2$s.".format(self.__class__.pronouns.articles.dative,
-                                                                           self.__class__.gattung),
+                                                                           self.__class__.gattung)
+                                                                    .replace('in dem', 'im'),
                 "Fahre {} {} störungsfrei nach %2$s.".format(self.__class__.pronouns.articles.accusative,
                                                              self.__class__.gattung)
             ]
