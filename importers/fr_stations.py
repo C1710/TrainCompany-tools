@@ -90,7 +90,11 @@ special_codes = {
     "Vidauban": "VUB",
     "Théoule-sur-Mer": "THM",
     "Biot": "BJO",
-    "St-Laurent-du-Var": "SNV"
+    "St-Laurent-du-Var": "SNV",
+    "Commercy": "CCY",
+    "Oiry": "OIR",
+    "Nogent-l'Artaud-Charly": "NAA",
+    "St-Médard-d'Eyrans": "SYS"
 }
 
 

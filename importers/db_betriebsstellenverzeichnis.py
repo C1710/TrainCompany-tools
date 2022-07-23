@@ -76,7 +76,12 @@ fr_names = {
     "Chasse-sur-Rhone": "Chasse-sur-Rhône",
     "Montelimar": "Montélimar",
     "St-Raphael-Valescure": "St-Raphaël-Valescure",
-    "Besancon TGV": "Besançon-Franche-Comté-TGV"
+    "Besancon TGV": "Besançon-Franche-Comté-TGV",
+    "Nancois-Tronville": "Nançois-Tronville",
+    "Vitry-le-Francois": "Vitry-le-François",
+    "Chalons-en-Champagne": "Châlons-en-Champagne",
+    "Chateau-Thierry": "Château-Thierry",
+    "La Ferte-sous-Jouarre": "La Ferté-sous-Jouarre"
 }
 
 
