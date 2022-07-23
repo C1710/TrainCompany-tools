@@ -30,6 +30,11 @@ class _CodeList(List[str]):
 
 
 def expand_codes(base_code: str) -> Generator[str, None, None]:
+    if base_code.isnumeric():
+        # Replace UIC code prefix by country flag, if applicable
+        country, code_without_country, _ = split_country(base_code)
+        flag_code = country.flag + code_without_country
+        yield flag_code
     yield base_code
     if more_whitespace_re.search(base_code):
         base_code = more_whitespace_re.sub(' ', base_code)
@@ -37,11 +42,6 @@ def expand_codes(base_code: str) -> Generator[str, None, None]:
     if ' ' in base_code:
         base_code = base_code.split(' ')[0]
         yield base_code
-    if base_code.isnumeric():
-        # Replace UIC code prefix by country flag, if applicable
-        country, code_without_country, _ = split_country(base_code)
-        flag_code = country.flag + code_without_country
-        yield flag_code
     for special in special_codes:
         if base_code in special:
             for other in special:
@@ -155,6 +155,19 @@ def merge_stations_on_first_code(stations: List[Station]) -> List[Station]:
     return list(merged_stations.values())
 
 
+def normalize(value: str, merge_key: str) -> str:
+    if merge_key == 'name':
+        value = value.replace('—', '-')
+        value = value.replace('-', ' ')
+        value = value.replace('’', "'")
+        value = value.replace('é', 'e')
+        value = value.replace('è', 'e')
+        value = value.replace('ô', 'o')
+        return value
+    else:
+        return value
+
+
 def merge_stations(onto: List[Station],
                    new_data: List[Station],
                    on: str,
@@ -165,10 +178,10 @@ def merge_stations(onto: List[Station],
         assert_unique_first_code(new_data)
     merged_stations = []
     if on != "codes":
-        id_to_station = {station.__getattribute__(on): station for station in onto}
+        id_to_station = {normalize(station.__getattribute__(on), on): station for station in onto}
         id_to_wip: Dict[Any, Dict[str, Any]] = {}
         for new_station in new_data:
-            key = new_station.__getattribute__(on)
+            key = normalize(new_station.__getattribute__(on), on)
             if key in id_to_station:
                 # It's a match!
                 # Move the station into the WIP state

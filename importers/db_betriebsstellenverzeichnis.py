@@ -83,7 +83,14 @@ fr_names = {
     "Chateau-Thierry": "Château-Thierry",
     "La Ferte-sous-Jouarre": "La Ferté-sous-Jouarre",
     "Montauban-Ville-Bourbon": "Montauban Ville Bourbon",
-    "Toulouse-Matabiau": "Toulouse Matabiau"
+    "Toulouse-Matabiau": "Toulouse Matabiau",
+    "Aix-les-Bains-le-Revard": "Aix-les-Bains—Le Revard",
+    "Chambery-Challes-les-Eaux": "Chambéry Challes-les-Eaux",
+    "Montmelian": "Montmélian",
+    "St-Pierre-d'Albigny": "St-Pierre-d’Albigny",
+    "Epierre-St-Leger": "Épierre—St-Léger",
+    "St-Avre-la-Chambre": "St-Avre—La Chambre",
+    "St-Jean-de-Maurienne-Arvan": "St-Jean-de-Maurienne—Arvan"
 }
 
 

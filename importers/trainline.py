@@ -17,10 +17,11 @@ class TrainlineImporter (CsvImporter[Station]):
 
     def deserialize(self, entry: List[str]) -> Optional[Station]:
         name = entry[1]
+        name = name.replace("’", "'")
         uic: Optional[int] = int(entry[3]) if entry[3] else None
         if uic is None:
             return None
-        # We don't want stations in unknown coutnries (at least for now)
+        # We don't want stations in unknown countries (at least for now)
         if country_for_uic(uic):
             latitude = float(entry[5]) if entry[5] else None
             longitude = float(entry[6]) if entry[6] else None
