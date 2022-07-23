@@ -157,6 +157,8 @@ def merge_stations_on_first_code(stations: List[Station]) -> List[Station]:
 
 def normalize(value: str, merge_key: str) -> str:
     if merge_key == 'name':
+        value = value.lower()
+        value = more_whitespace_re.sub(' ', value)
         value = value.replace('—', '-')
         value = value.replace('-', ' ')
         value = value.replace('’', "'")
