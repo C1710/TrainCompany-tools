@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import logging
 from typing import List, Optional
 
 from importer import CsvImporter
@@ -17,9 +19,14 @@ class FrStationsImporter (CsvImporter[Station]):
         )
 
     def deserialize(self, entry: List[str]) -> Optional[Station]:
+        uic = entry[0]
+        if len(uic) == 8:
+            uic = uic[:7]
+        elif len(uic) != 7:
+            logging.warning("UIC-Code hat falsche Länge: {}".format(uic))
         station = Station(
             name=normalize_french_station_name(entry[1]),
-            number=int(entry[0]),
+            number=int(uic),
             codes=generate_code_tuple(entry),
             location=Location(
                 latitude=float(entry[14]),
@@ -99,7 +106,9 @@ special_codes = {
 
 
 def generate_code_tuple(entry: List[str]) -> CodeTuple:
-    number = entry[0]
+    uic_number = entry[0]
+    if len(uic_number) == 8:
+        uic_number = uic_number[:7]
     name = entry[1]
     codes = []
     for stations_name, code in special_codes.items():
@@ -109,7 +118,7 @@ def generate_code_tuple(entry: List[str]) -> CodeTuple:
 
     for index, code in enumerate(codes):
         codes[index] = '🇫🇷' + code
-    codes.append(number)
+    codes.append(uic_number)
 
     return CodeTuple(*codes)
 

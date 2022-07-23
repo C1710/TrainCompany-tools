@@ -197,10 +197,10 @@ class DataSet:
         stations_uk = DataSet.load_station_data_uk(data_directory)
         stations_trainline = DataSet.load_station_data_trainline(data_directory)
 
-        stations = merge_stations(stations, stations_ch, 'name')
-        stations = merge_stations(stations, stations_fr, 'name')
-        stations = merge_stations(stations, stations_uk, 'name')
-        stations = merge_stations(stations, stations_trainline, 'number')
+        stations = merge_stations(stations, stations_trainline, 'name')
+        stations = merge_stations(stations, stations_ch, 'number')
+        stations = merge_stations(stations, stations_fr, 'number')
+        stations = merge_stations(stations, stations_uk, 'number')
 
         return stations
 
