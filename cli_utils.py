@@ -6,6 +6,7 @@ from os import PathLike
 from os.path import isfile
 from typing import List, Tuple, Generator
 
+from structures import DataSet
 from structures.country import CodeParser
 
 
@@ -30,4 +31,14 @@ def parse_station_input(stations: List[str]) -> Generator[Tuple[str], None, None
         code_parser = CodeParser(equivalent_codes, current_country)
         equivalent_parsed_codes = tuple(iter(code_parser))
         current_country = code_parser.current_country
-        yield equivalent_parsed_codes
+        if len(equivalent_parsed_codes):
+            yield equivalent_parsed_codes
+
+
+def process_station_input(stations: List[str], dataset: DataSet) -> List[str]:
+    parsed_station_codes = parse_station_input(stations)
+    station_codes = []
+    for equivalent_stations in parsed_station_codes:
+        dataset.merge_station(equivalent_stations)
+        station_codes.append(equivalent_stations[0])
+    return station_codes

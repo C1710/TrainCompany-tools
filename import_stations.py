@@ -7,10 +7,9 @@ import re
 from os import PathLike
 from typing import List, Tuple
 
-from cli_utils import check_files, parse_station_input
+from cli_utils import check_files, process_station_input
 from geo.location_data import add_location_data_to_list
 from structures import DataSet
-from structures.country import parse_codes_with_countries
 from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
 from tc_utils.stations import add_stations_to_file
@@ -25,8 +24,8 @@ def import_stations_into_tc(station_codes: List[str],
                             trassenfinder: bool = False
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
+    station_codes = process_station_input(station_codes, data_set)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    station_codes = list(parse_codes_with_countries(station_codes))
     stations = [code_to_station[code] for code in station_codes]
 
     add_location_data_to_list(stations)

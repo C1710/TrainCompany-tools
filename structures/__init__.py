@@ -4,11 +4,12 @@ import logging
 
 import os.path
 from dataclasses import dataclass
-from typing import List, Tuple, Optional
+from functools import cached_property
+from typing import List, Tuple, Optional, Set, Iterable
 
 from structures.route import Track, Path, merge_tracks
 from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code, \
-    CodeTuple
+    CodeTuple, iter_stations_by_codes_reverse, _merge_station_dicts_inplace
 from geo import Location
 
 
@@ -16,6 +17,10 @@ from geo import Location
 class DataSet:
     station_data: List[Station]
     path_data: List[Path]
+
+    @property
+    def codes_to_stations(self):
+        return {code: station for code, station in iter_stations_by_codes_reverse(self.station_data)}
 
     @staticmethod
     def load_data(
@@ -203,6 +208,21 @@ class DataSet:
         stations = merge_stations(stations, stations_uk, 'number')
 
         return stations
+
+    def merge_station(self, codes_to_merge: Iterable[str]):
+        """codes_to_merge also needs to be Sized"""
+        if len(codes_to_merge) > 1:
+            stations_to_merge = [self.codes_to_stations[code] for code in codes_to_merge]
+            for station in stations_to_merge:
+                try:
+                    self.station_data.remove(station)
+                except ValueError:
+                    logging.warning("Station nicht im Datensatz: {}".format(station.codes[0]))
+            station_dict = stations_to_merge.pop(0).__dict__.copy()
+            for other_station in stations_to_merge:
+                _merge_station_dicts_inplace(station_dict, other_station.__dict__, '')
+            merged_station = Station(**station_dict)
+            self.station_data.append(merged_station)
 
 
 def stat_fr(name: str, code: str, category: int = 5) -> Station:
