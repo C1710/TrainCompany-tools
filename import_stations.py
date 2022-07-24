@@ -7,7 +7,7 @@ import re
 from os import PathLike
 from typing import List, Tuple
 
-from cli_utils import check_files
+from cli_utils import check_files, parse_station_input
 from geo.location_data import add_location_data_to_list
 from structures import DataSet
 from structures.country import parse_codes_with_countries
@@ -16,7 +16,7 @@ from tc_utils import TcFile
 from tc_utils.stations import add_stations_to_file
 
 
-def import_stations_into_tc(stations_codes: List[str],
+def import_stations_into_tc(station_codes: List[str],
                             tc_directory: PathLike | str = '..',
                             data_directory: PathLike | str = 'data',
                             override_stations: bool = False,
@@ -26,8 +26,8 @@ def import_stations_into_tc(stations_codes: List[str],
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations_codes = list(parse_codes_with_countries(stations_codes))
-    stations = [code_to_station[code] for code in stations_codes]
+    station_codes = list(parse_codes_with_countries(station_codes))
+    stations = [code_to_station[code] for code in station_codes]
 
     add_location_data_to_list(stations)
 
@@ -47,7 +47,7 @@ def import_stations_into_tc(stations_codes: List[str],
     add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
 
     if trassenfinder:
-        create_trassenfinder([(code, code_to_station[code.upper()].name) for code in stations_codes], tc_directory)
+        create_trassenfinder([(code, code_to_station[code.upper()].name) for code in station_codes], tc_directory)
 
     return station_json
 
