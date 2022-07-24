@@ -43,6 +43,15 @@ A longer example:
 FR: XFCZ XFAI CSK AEB XFEI XFSAC XFJMA IT: 8300205 XITU
 ```
 
+With the `import_stations`-tool, you can set two station codes as equivalent with `=`.
+For example, there are two entries for Orléans main station:
+```tsv
+Orleans	XFOL
+Orléans Centre	🇫🇷ORL - 🇫🇷54300 - 8754300
+```
+We now want to use data from both entries (i.e., the RIL100 code of the first entry and the platform data of the latter one).
+In that case we can write `XFOL=FR:ORL` to indicate that both of them are the same station.
+
 ## The tools
 ### `create_tasks.py`
 With this tool, you can easily create new tasks with default descriptions and `pathSuggestion`s.
@@ -61,8 +70,7 @@ It will contain station names and the available codes, in the order in which the
 Please note, that for many stations you will find multiple entries, e.g., with different spelling, etc.
 In these cases, the toolset did not recognize that these are the same stations; usually there is one entry with a flag-code and/or UIC-code
 (e.g., `🇫🇷BRT`) and one with a RIL100 code (e.g., `XFBRT`).
-Right now, there is no simple way to manually merge such stations, therefore you should prefer the RIL100-coded entries.
-In these cases, you will need to add platform (and possibly location) data yourself.
+`import_stations.py` now has a way to use data from both entries. It is described in the section "Station lists".
 
 ### `import_stations.py`
 With this tool, you can add new stations to the files.
