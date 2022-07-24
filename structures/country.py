@@ -235,8 +235,35 @@ def parse_code_to_compatible_format(country: Country, code: str, representation:
         return country.__getattribute__(representation.value) + code
 
 
-def parse_codes_with_countries(codes: List[str]) -> Generator[str, None, None]:
-    current_country = None
+class CodeParser:
+    current_country: Optional[Country]
+    codes: List[str]
+
+    def __init__(self, codes: List[str], current_country: Optional[Country] = None):
+        self.current_country = current_country
+        self.codes = codes
+
+    def __iter__(self):
+        return self._parse_codes_with_countries()
+
+    def _parse_codes_with_countries(self) -> Generator[str, None, None]:
+        for code in self.codes:
+            country, code, representation = split_country(code, strip_ril100=True)
+            if code == '':
+                # No code given, (only) update current country
+                self.current_country = country if country != germany else None
+            elif representation == CountryRepresentation.NONE:
+                # There was no country explicitly given
+                # This means, we will need to add the current flag as a prefix
+                current_flag = self.current_country.flag if self.current_country else ''
+                yield current_flag + code
+            else:
+                # There is already a country prefix given, use that
+                # But first we need to strip of the Germany prefix as it does not exist
+                yield parse_code_to_compatible_format(country, code, representation)
+
+
+def parse_codes_with_countries(codes: List[str], current_country: Optional[Country] = None) -> Generator[str, None, None]:
     for code in codes:
         country, code, representation = split_country(code, strip_ril100=True)
         if code == '':

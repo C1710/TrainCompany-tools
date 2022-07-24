@@ -227,6 +227,20 @@ def merge_stations(onto: List[Station],
     return merged_stations
 
 
+def merge_station(data: List[Station], first_codes_to_merge: Set[str]):
+    if len(first_codes_to_merge) > 1:
+        stations_to_merge = []
+        for index, station in enumerate(data):
+            if station.codes[0] in first_codes_to_merge:
+                stations_to_merge.append(data.pop(index))
+        if len(stations_to_merge) > 1:
+            station_dict = stations_to_merge[0].__dict__.copy()
+            for other_station in stations_to_merge[1:]:
+                _merge_station_dicts_inplace(station_dict, other_station.__dict__, '')
+            # Add back to the list
+            data.append(Station(**station_dict))
+
+
 def assert_unique_first_code(stations: List[Station]):
     first_codes = sorted([station.codes[0] for station in stations])
     for last_code, code in zip(first_codes, first_codes[1:]):
