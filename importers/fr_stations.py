@@ -101,7 +101,8 @@ special_codes = {
     "Commercy": "CCY",
     "Oiry": "OIR",
     "Nogent-l'Artaud-Charly": "NAA",
-    "St-Médard-d'Eyrans": "SYS"
+    "St-Médard-d'Eyrans": "SYS",
+    "Tours": "TO"
 }
 
 
