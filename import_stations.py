@@ -7,9 +7,12 @@ import re
 from os import PathLike
 from typing import List, Tuple
 
+import gpxpy.gpx
+
 from cli_utils import check_files, process_station_input
 from geo.location_data import add_location_data_to_list
 from structures import DataSet
+from structures.country import split_country, CountryRepresentation
 from structures.station import iter_stations_by_codes_reverse, Station
 from tc_utils import TcFile
 from tc_utils.stations import add_stations_to_file
@@ -27,7 +30,7 @@ def import_stations_into_tc(station_codes: List[str],
     data_set = DataSet.load_data(data_directory)
     station_codes = process_station_input(station_codes, data_set)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [code_to_station[code] for code in station_codes]
+    stations = [code_to_station[code.upper()] for code in station_codes]
 
     add_location_data_to_list(stations)
 
@@ -35,13 +38,13 @@ def import_stations_into_tc(station_codes: List[str],
         if not station.platform_count or not station.platform_length and station.group != 4:
             logging.warning("{}       : No platform data available".format(station.codes[0]))
             logging.warning("{} on OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T"
-                         .format(station.codes[0],
-                                 station.location.latitude,
-                                 station.location.longitude))
+                             .format(station.codes[0],
+                                     station.location.latitude,
+                                     station.location.longitude))
             logging.warning("{} on G/M: https://maps.google.com/maps/@{},{},17z"
-                         .format(station.codes[0],
-                                 station.location.latitude,
-                                 station.location.longitude))
+                             .format(station.codes[0],
+                                     station.location.latitude,
+                                     station.location.longitude))
 
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
@@ -49,9 +52,24 @@ def import_stations_into_tc(station_codes: List[str],
     if trassenfinder:
         create_trassenfinder([(code, code_to_station[code.upper()].name) for code in station_codes], tc_directory)
     if gpx:
-        create_gpx(stations, tc_directory)
+        create_gpx([code_to_station[code.upper()] for code in station_codes], tc_directory)
 
     return station_json
+
+
+def get_filename(code_start: str, code_end: str, extension: str, tc_directory: PathLike | str = '..'):
+    country_start, code_start, representation = split_country(code_start)
+    if country_start is not None and representation not in (CountryRepresentation.RIL100_X, CountryRepresentation.RIL100_Z):
+        code_start = country_start.iso_3166 + "_" + code_start
+    country_end, code_end, _ = split_country(code_end)
+    if country_end is not None and representation not in (CountryRepresentation.RIL100_X, CountryRepresentation.RIL100_Z):
+        code_end = country_end.iso_3166 + "_" + code_end
+    filename = "{}-{}.{}".format(code_start, code_end, extension)
+    index = 1
+    while os.path.exists(os.path.join(tc_directory, filename)):
+        filename = "{}-{}-{}.{}".format(code_start, code_end, index, extension)
+        index += 1
+    return os.path.join(tc_directory, filename)
 
 
 def create_trassenfinder(stations: List[Tuple[str, str]], tc_directory: PathLike | str = '..'):
@@ -59,17 +77,27 @@ def create_trassenfinder(stations: List[Tuple[str, str]], tc_directory: PathLike
     for index, (code, station_name) in enumerate(stations):
         lines.append('"{}";;"{}";"0";;;;;;;;;;;;;;"{}; Kundenhalt"\n'.format("0,0" if index == 0 else "", code, station_name))
     assert len(lines) == len(stations) + 1
-    filename = "{}-{}.csv".format(stations[0][0], stations[-1][0])
-    index = 1
-    while os.path.exists(os.path.join(tc_directory, filename)):
-        filename = "{}-{}-{}.csv".format(index,stations[0][0], stations[-1][0])
-        index += 1
-    with open(os.path.join(tc_directory, filename), 'w', encoding='utf-8', newline='\n') as outfile:
+    filename = get_filename(stations[0][0], stations[-1][0], "csv", tc_directory)
+    with open(filename, 'w', encoding='utf-8', newline='\n') as outfile:
         outfile.writelines(lines)
 
 
 def create_gpx(stations: List[Station], tc_directory: PathLike | str = '..'):
-    pass
+    gpx = gpxpy.gpx.GPX()
+    for station in stations:
+        if not station.location:
+            logging.warning("Haltestelle ohne Standortdaten: {}. Bitte manuell hinzufügen.".format(station.codes[0]))
+    trackpoints = [gpxpy.gpx.GPXTrackPoint(latitude=station.location.latitude,
+                                           longitude=station.location.longitude,
+                                           name=station.name) for station in stations if station.location]
+    track = gpxpy.gpx.GPXTrack()
+    segment = gpxpy.gpx.GPXTrackSegment()
+    segment.points.extend(trackpoints)
+    track.segments.append(segment)
+    gpx.tracks.append(track)
+    filename = get_filename(stations[0].codes[0], stations[-1].codes[0], "gpx", tc_directory)
+    with open(filename, 'w', encoding='utf-8', newline='\n') as outfile:
+        outfile.write(gpx.to_xml(prettyprint=True))
 
 
 if __name__ == '__main__':
