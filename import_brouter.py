@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 import argparse
-import logging
 import os.path
-import pathlib
 from os import PathLike
 from typing import Tuple
 
 from cli_utils import check_files
 from geo.location_data import add_location_data_to_list
-from import_brouter import import_gpx_into_tc
+from importers.brouter import BrouterImporter
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
 from structures import DataSet
 from structures.route import TcRoute
@@ -17,20 +15,14 @@ from tc_utils import TcFile
 from tc_utils.paths import add_route_to_files
 
 
-def import_trasse_into_tc(trasse: PathLike | str,
-                          tc_directory: PathLike | str = '..',
-                          data_directory: PathLike | str = 'data',
-                          override_stations: bool = False,
-                          add_annotation: bool = False
-                          ) -> Tuple[TcFile, TcFile]:
-    if pathlib.Path(trasse).suffix.lower() == 'gpx':
-        logging.warning("GPX-Dateiendung. Versuche als Brouter-Export zu laden.")
-        try:
-            import_gpx_into_tc(trasse, tc_directory, data_directory, override_stations, add_annotation)
-        except Exception as e:
-            logging.error("Fehlgeschlagen.  Versuche als Trassenfinder-Export.", exc_info=e)
+def import_gpx_into_tc(gpx: PathLike | str,
+                       tc_directory: PathLike | str = '..',
+                       data_directory: PathLike | str = 'data',
+                       override_stations: bool = False,
+                       add_annotation: bool = False
+                       ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
-    waypoints = DbTrassenfinderImporter().import_data(trasse)
+    waypoints = BrouterImporter().import_data(gpx)
 
     station_json = TcFile('Station', tc_directory)
     path_json = TcFile('Path', tc_directory)
@@ -51,9 +43,9 @@ if __name__ == '__main__':
     script_path = os.path.realpath(__file__)
     script_dir = os.path.dirname(script_path)
 
-    parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
-    parser.add_argument('trasse', metavar='TRASSENFINDER_DATEI', type=str,
-                        help="Die CSV-Datei, die aus Trassenfinder exportiert wurde")
+    parser = argparse.ArgumentParser(description='Importiere neue Routen von brouter.de in TrainCompany')
+    parser.add_argument('brouter', metavar='GPX', type=str,
+                        help="Die aus brouter MIT WAYPOINTS exportierte GPX-Datei")
     parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str,
                         default=os.path.dirname(script_dir),
                         help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
@@ -69,8 +61,8 @@ if __name__ == '__main__':
 
     check_files(args.tc_directory, args.data_directory)
 
-    path_json, station_json = import_trasse_into_tc(
-        args.trasse,
+    path_json, station_json = import_gpx_into_tc(
+        args.brouter,
         args.tc_directory,
         args.data_directory,
         args.override_stations,

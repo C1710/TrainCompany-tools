@@ -1,47 +1,60 @@
+import logging
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict, Set
 
-from importer import CsvImporter
-from structures.station import Station
+import geopy.distance
+import gpxpy
+
 from geo import Location
+from importer import Importer
+from structures.route import CodeWaypoint
+from structures.station import Station
 
 
-@dataclass(frozen=True)
-class GeoWaypoint:
-    distance_from_last_waypoint: int
-    location: Location
+class BrouterImporter(Importer[CodeWaypoint]):
+    stations: List[Station]
 
+    def __init__(self, station_data: List[Station]):
+        self.stations = station_data
 
-class BrouterImporter (CsvImporter[GeoWaypoint]):
-    def __init__(self):
-        super().__init__(
-            delimiter='\t',
-            encoding='utf-8',
-            skip_first_line=True
-        )
+    def import_data(self, file_name: str) -> List[CodeWaypoint]:
+        with open(file_name, encoding='utf-8') as input_file:
+            gpx = gpxpy.parse(input_file)
+        waypoint_locations = [(waypoint, Location(
+            longitude=waypoint.longitude,
+            latitude=waypoint.latitude)) for waypoint in gpx.waypoints]
+        stops: List[Station] = [None for _ in range(len(waypoint_locations))]
+        # First, we need to figure out the codes for the waypoints
+        for station in self.stations:
+            for index, waypoint, location in enumerate(waypoint_locations):
+                if station.location.distance(location) < 0.08:
+                    if stops[index]:
+                        logging.warning("Multiple stations in the same location: {}, {}".format(
+                            stops[index].codes[0],
+                            station.codes[0]
+                        ))
+                    else:
+                        stops[index] = station
 
-    def deserialize(self, entry: List[str]) -> Optional[GeoWaypoint]:
-        longitude = float(entry[0][:-6]) + float(entry[0][-6:]) * 0.000001
-        latitude = float(entry[1][:-6]) + float(entry[1][-6:]) * 0.000001
-
-        waypoint = GeoWaypoint(
-            distance_from_last_waypoint=int(entry[3]),
-            location=Location(
-                longitude=longitude,
-                latitude=latitude
+        # Now we go through the file, accumulate distances and create the new waypoints
+        distance_total = 0
+        code_waypoints = []
+        last_location: Optional[Location] = None
+        for trackpoint in gpx.tracks[0].segments[0].points:
+            location = Location(
+                latitude=trackpoint.latitude,
+                longitude=trackpoint.longitude
             )
-        )
-
-        return waypoint
-
-
-def which_stations(waypoints: List[GeoWaypoint], stations: List[Station]) -> List[Tuple[int, Station]]:
-    """Returns the indices of the waypoints that are stations and the respective stations"""
-    station_waypoints = []
-    for station in stations:
-        location = station.location
-        for index, waypoint in enumerate(waypoints):
-            if location.distance(waypoint.location) < 1.0:
-                station_waypoints.append((index, station))
-    assert len(dict(station_waypoints)) == len(station_waypoints), "Found multiple stations for one waypoint"
-    return station_waypoints
+            if last_location:
+                distance_total += location.distance(last_location)
+            # Check if we have a stop here
+            for stop in stops:
+                if stop.location.distance(location) < 0.08:
+                    # We have a stop here - add the CodeWaypoint
+                    code_waypoints.append(CodeWaypoint(
+                        code=stop.codes[0],
+                        distance_from_start=distance_total,
+                        is_stop=True,
+                        next_route_number=0
+                    ))
+        return code_waypoints
