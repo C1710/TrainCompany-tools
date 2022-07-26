@@ -27,6 +27,7 @@ def check_files(tc_directory: PathLike | str, data_directory: PathLike | str):
 def parse_station_input(stations: List[str]) -> Generator[Tuple[str], None, None]:
     current_country = None
     for station in stations:
+        station = station.upper()
         equivalent_codes = station.split('=')
         code_parser = CodeParser(equivalent_codes, current_country)
         equivalent_parsed_codes = tuple(iter(code_parser))

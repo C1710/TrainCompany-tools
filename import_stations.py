@@ -41,7 +41,7 @@ def import_stations_into_tc(station_codes: List[str],
                              .format(station.codes[0],
                                      station.location.latitude,
                                      station.location.longitude))
-            logging.warning("{} on G/M: https://maps.google.com/maps/@{},{},17z"
+            logging.warning("{} on G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3"
                              .format(station.codes[0],
                                      station.location.latitude,
                                      station.location.longitude))
