@@ -80,6 +80,8 @@ It will create a trassenfinder-like file with all the stations you added (in tha
 In this file, you can then easily enter the distances from the start station to later import the new path.
 If you try to add a station that already exists (or at least its code/RIL100 is already in the game), it will ignore it.
 This is especially useful with the `--trassenfinder` option as you can start the route at an existing station.
+
+You can also use the `--gpx` option to create a GPX-file which you can import e.g., in brouter.
 #### Imported data
 It will import the station name, code/RIL100, and (if available) location and platform data.
 The group will be automatically deduced from the available data.
