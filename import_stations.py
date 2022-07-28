@@ -59,10 +59,10 @@ def import_stations_into_tc(station_codes: List[str],
 
 def get_filename(code_start: str, code_end: str, extension: str, tc_directory: PathLike | str = '..'):
     country_start, code_start, representation = split_country(code_start)
-    if country_start is not None and representation not in (CountryRepresentation.RIL100_X, CountryRepresentation.RIL100_Z):
+    if country_start is not None and representation in (CountryRepresentation.FLAG,):
         code_start = country_start.iso_3166 + "_" + code_start
     country_end, code_end, _ = split_country(code_end)
-    if country_end is not None and representation not in (CountryRepresentation.RIL100_X, CountryRepresentation.RIL100_Z):
+    if country_end is not None and representation in (CountryRepresentation.FLAG,):
         code_end = country_end.iso_3166 + "_" + code_end
     filename = "{}-{}.{}".format(code_start, code_end, extension)
     index = 1

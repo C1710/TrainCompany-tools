@@ -73,7 +73,7 @@ def plot_map_old(save: bool = False):
 
 def flag_to_colon(code: str) -> str:
     country, code, representation = split_country(code, strip_ril100=False)
-    if country is not None and representation not in (CountryRepresentation.RIL100_X, CountryRepresentation.RIL100_Z):
+    if country is not None and representation in (CountryRepresentation.FLAG,):
         return country.colon_prefix + code
     else:
         return code
