@@ -78,7 +78,7 @@ def fix_locations(stations: Optional[List[str]] = None):
                 print("Konnte Position von {} nicht bestimmen.".format(station['ril100']))
     with open("Station.json", 'w', encoding='utf-8', newline='\n') as output:
         json.dump(data, output, ensure_ascii=False, indent='\t')
-    plot.plot_map()
+    plot.plot_map_old()
 
 
 if __name__ == '__main__':
