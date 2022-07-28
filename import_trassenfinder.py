@@ -7,7 +7,7 @@ import pathlib
 from os import PathLike
 from typing import Tuple
 
-from cli_utils import check_files
+from cli_utils import check_files, add_default_cli_args
 from geo.location_data import add_location_data_to_list
 from import_brouter import import_gpx_into_tc
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
@@ -48,18 +48,11 @@ def import_trasse_into_tc(trasse: PathLike | str,
 
 
 if __name__ == '__main__':
-    script_path = os.path.realpath(__file__)
-    script_dir = os.path.dirname(script_path)
 
     parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
     parser.add_argument('trasse', metavar='TRASSENFINDER_DATEI', type=str,
                         help="Die CSV-Datei, die aus Trassenfinder exportiert wurde")
-    parser.add_argument('--tc_directory', dest='tc_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.dirname(script_dir),
-                        help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--data_directory', dest='data_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.join(script_dir, 'data'),
-                        help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
+    add_default_cli_args(parser)
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")

@@ -6,7 +6,7 @@ import sys
 from os import PathLike
 from typing import Type
 
-from cli_utils import check_files
+from cli_utils import check_files, add_default_cli_args
 from structures.country import parse_codes_with_countries
 from structures.task import *
 from tc_utils import TcFile
@@ -76,9 +76,6 @@ def create_tasks(Gattung: Type,
 
 
 if __name__ == '__main__':
-    script_path = os.path.realpath(__file__)
-    script_dir = os.path.dirname(script_path)
-
     gattungen = {task.gattung: task for task in (SbahnTask, RbTask, ReTask, IreTask, TerTask,
                                                  IcTask, IrTask, EcTask, OtcTask, OgvTask,
                                                  IceTask, IceSprinterTask, EceTask, TgvTask, FrTask)}
@@ -95,12 +92,7 @@ if __name__ == '__main__':
                         help="Fügt der Task keinen Hinweis auf den kürzesten Pfad hinzu.")
     parser.add_argument('--add_plops', action='store_true',
                         help="Berechnet die Auszahlung und fügt sie hinzu.")
-    parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.dirname(script_dir),
-                        help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--data-dir', dest='data_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.join(script_dir, 'data'),
-                        help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
+    add_default_cli_args(parser)
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)

@@ -5,6 +5,7 @@ import os
 from os import PathLike
 from typing import Any, Dict
 
+from cli_utils import add_default_cli_args
 from tc_utils import TcFile
 
 
@@ -24,13 +25,9 @@ def remove_annotations_from_path(path: Dict[str, Any]):
 
 
 if __name__ == '__main__':
-    script_path = os.path.realpath(__file__)
-    script_dir = os.path.dirname(script_path)
 
     parser = argparse.ArgumentParser(description='Entferne nicht mehr benötigte Daten')
-    parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.dirname(script_dir),
-                        help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
+    add_default_cli_args(parser, data_directory=False)
     args = parser.parse_args()
 
     path_json = cleanup(tc_directory=args.tc_directory)

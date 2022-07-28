@@ -4,6 +4,7 @@ import argparse
 import os
 from os import PathLike
 
+from cli_utils import add_default_cli_args
 from structures.task import *
 from tc_utils import TcFile
 from validation import build_tc_graph
@@ -51,13 +52,8 @@ def update_path_suggestion(task: Dict[str, Any],
 
 
 if __name__ == '__main__':
-    script_path = os.path.realpath(__file__)
-    script_dir = os.path.dirname(script_path)
-
     parser = argparse.ArgumentParser(description='Füge pathSuggestions hinzu')
-    parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.dirname(script_dir),
-                        help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
+    add_default_cli_args(parser, data_directory=False)
     args = parser.parse_args()
 
     tasks_json = update_path_suggestions(tc_directory=args.tc_directory)

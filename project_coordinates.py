@@ -5,6 +5,7 @@ import os
 from os import PathLike
 from typing import Dict, Any
 
+from cli_utils import add_default_cli_args
 from geo import Location
 from tc_utils import TcFile
 
@@ -34,13 +35,8 @@ def project_coordinate_for_station(station: Dict[str, Any], new_projection: int 
 
 
 if __name__ == '__main__':
-    script_path = os.path.realpath(__file__)
-    script_dir = os.path.dirname(script_path)
-
     parser = argparse.ArgumentParser(description='Rechne die Koordinaten auf eine andere Projektion um')
-    parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.dirname(script_dir),
-                        help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
+    add_default_cli_args(parser, data_directory=False)
     parser.add_argument('--version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2),
                         default=1,
                         help="Die Version der Projektion, die verwendet werden soll:\n"

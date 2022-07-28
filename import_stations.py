@@ -9,7 +9,7 @@ from typing import List, Tuple
 
 import gpxpy.gpx
 
-from cli_utils import check_files, process_station_input
+from cli_utils import check_files, process_station_input, add_default_cli_args
 from geo.location_data import add_location_data_to_list
 from structures import DataSet
 from structures.country import split_country, CountryRepresentation
@@ -101,18 +101,10 @@ def create_gpx(stations: List[Station], tc_directory: PathLike | str = '..'):
 
 
 if __name__ == '__main__':
-    script_path = os.path.realpath(__file__)
-    script_dir = os.path.dirname(script_path)
-
     parser = argparse.ArgumentParser(description='Importiere neue Betriebsstellen in TrainCompany')
     parser.add_argument('--stations', metavar='RIL100', type=str, nargs='+', required=True,
                         help='Die RIL100-Codes, die hinzugefügt werden sollen')
-    parser.add_argument('--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.dirname(script_dir),
-                        help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
-    parser.add_argument('--data-dir', dest='data_directory', metavar='VERZEICHNIS', type=str,
-                        default=os.path.join(script_dir, 'data'),
-                        help="Das Verzeichnis, in dem sich die DB OpenData-Datensätze befinden")
+    add_default_cli_args(parser)
     update_or_override = parser.add_mutually_exclusive_group()
     update_or_override.add_argument('--override-stations', action='store_true',
                                     help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
