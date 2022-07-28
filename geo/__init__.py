@@ -80,7 +80,7 @@ class Location:
 
     def to_projection(self, version: int = 1) -> Tuple[int, int]:
         if version == -1:
-            return self.longitude, self.latitude
+            return int(self.longitude), int(self.latitude)
         elif version == 0:
             return self.to_tc()
         else:

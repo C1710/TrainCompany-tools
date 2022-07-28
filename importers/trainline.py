@@ -25,6 +25,8 @@ class TrainlineImporter (CsvImporter[Station]):
         if country_for_uic(uic):
             latitude = float(entry[5]) if entry[5] else None
             longitude = float(entry[6]) if entry[6] else None
+            if longitude is None or latitude is None:
+                logging.info("Haltestelle ohne Trainline-Standort: {} (UIC {})".format(name, uic))
             main_station: bool = entry[11] == 't'
             sncf_id = entry[16]
             french_code = entry[17]
@@ -40,7 +42,7 @@ class TrainlineImporter (CsvImporter[Station]):
                 location=Location(
                     latitude=latitude,
                     longitude=longitude
-                ),
+                ) if longitude is not None and latitude is not None else None,
                 _group=1 if main_station else 2
             )
         else:
