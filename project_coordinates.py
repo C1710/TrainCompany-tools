@@ -1,7 +1,8 @@
+#!/usr/bin/env python
+
 from __future__ import annotations
 
 import argparse
-import os
 from os import PathLike
 from typing import Dict, Any
 

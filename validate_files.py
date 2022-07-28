@@ -1,8 +1,9 @@
+#!/usr/bin/env python
+
 from __future__ import annotations
 
 import argparse
 import logging
-import os
 
 from cli_utils import check_files, add_default_cli_args
 from validation import validate
