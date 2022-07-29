@@ -12,7 +12,7 @@ from typing import List, Tuple
 import gpxpy.gpx
 
 from cli_utils import check_files, process_station_input, add_default_cli_args
-from geo.location_data import add_location_data_to_list
+from geo.location_data import add_location_data_to_list, with_location_data
 from structures import DataSet
 from structures.country import split_country, CountryRepresentation
 from structures.station import iter_stations_by_codes_reverse, Station
@@ -32,7 +32,7 @@ def import_stations_into_tc(station_codes: List[str],
     data_set = DataSet.load_data(data_directory)
     station_codes = process_station_input(station_codes, data_set)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [code_to_station[code.upper()] for code in station_codes]
+    stations = [with_location_data(code_to_station[code.upper()]) for code in station_codes]
 
     add_location_data_to_list(stations)
 
@@ -49,12 +49,12 @@ def import_stations_into_tc(station_codes: List[str],
                                      station.location.longitude))
 
     station_json = TcFile('Station', tc_directory)
-    add_stations_to_file(stations, station_json, override_stations, update_stations, append=append)
+    add_stations_to_file(stations.copy(), station_json, override_stations, update_stations, append=append)
 
     if trassenfinder:
         create_trassenfinder([(code, code_to_station[code.upper()].name) for code in station_codes], tc_directory)
     if gpx:
-        create_gpx([code_to_station[code.upper()] for code in station_codes], tc_directory)
+        create_gpx(stations, tc_directory)
 
     return station_json
 
