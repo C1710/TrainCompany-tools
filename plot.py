@@ -57,7 +57,7 @@ def plot_points(points: List[Tuple[str, Tuple[int, int]]],
         plt.show()
     else:
         plt.rcParams['font.family'] = ['sans-serif']
-        plt.rcParams['font.sans-serif'] = ['Arial']
+        plt.rcParams['font.sans-serif'] = ['Arial', 'Roboto', 'Noto Emoji']
         plt.rcParams['text.usetex'] = False
         plt.savefig("map_plot.svg")
 
