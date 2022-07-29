@@ -27,7 +27,8 @@ def import_stations_into_tc(station_codes: List[str],
                             update_stations: bool = False,
                             append: bool = False,
                             trassenfinder: bool = False,
-                            gpx: bool = False
+                            gpx: bool = False,
+                            annotate: bool = False
                             ) -> TcFile:
     data_set = DataSet.load_data(data_directory)
     station_codes = process_station_input(station_codes, data_set)
@@ -47,7 +48,12 @@ def import_stations_into_tc(station_codes: List[str],
                              .format(station.codes[0],
                                      station.location.latitude,
                                      station.location.longitude))
-
+            if annotate:
+                station['google_maps'] = "https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
+                    station.location.latitude, station.location.longitude)
+                station['osm'] = "https://openstreetmap.org/#map=17/{}/{}&layers=T".format(
+                    station.location.latitude, station.location.longitude
+                )
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations.copy(), station_json, override_stations, update_stations, append=append)
 
@@ -114,6 +120,8 @@ if __name__ == '__main__':
                                     help="Aktualisiert existierende Haltestellen, fügt aber keine hinzu")
     parser.add_argument('--append', action='store_true',
                         help="Fügt alles am Ende ein")
+    parser.add_argument('--annotate', action='store_true',
+                        help="Fügt Links zu Google Maps/OSM hinzu, wenn Bahnsteigdaten fehlen")
     parser.add_argument('--trassenfinder', action='store_true',
                         help="Legt eine Trassenfinder-ähnliche Datei mit den Haltestellen an.")
     parser.add_argument('--gpx', action='store_true',
@@ -128,6 +136,7 @@ if __name__ == '__main__':
         args.override_stations,
         args.update_stations,
         append=args.append,
+        annotate=args.annotate,
         trassenfinder=args.trassenfinder,
         gpx=args.gpx
     )

@@ -15,8 +15,9 @@ def export_station_list(country: str,
     from structures import DataSet
 
     station_data = DataSet.load_station_data(data_directory)
-    station_data = (station for station in station_data if station.country.uic_str == country.upper()
-                    or station.country.tld == country.lower())
+    if country.lower() != 'all':
+        station_data = (station for station in station_data if station.country.uic_str == country.upper()
+                        or station.country.tld == country.lower())
 
     return ["{}\t{}\n".format(station.name, ' - '.join(station.codes)) for station in station_data]
 
@@ -24,7 +25,7 @@ def export_station_list(country: str,
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Importiere neue Routen vom Trassenfinder in TrainCompany')
     parser.add_argument('country', metavar="LAND", type=str,
-                        help="Das Land, für das die Stationsliste exportiert werden soll.")
+                        help="Das Land, für das die Stationsliste exportiert werden soll. \"all\" wählt alle Länder aus.")
     parser.add_argument('--out_file', metavar='DATEI', type=str,
                         help="Die Datei, in die gespeichert werden soll. Standard: stations_<Land>.tsv")
     add_default_cli_args(parser)
