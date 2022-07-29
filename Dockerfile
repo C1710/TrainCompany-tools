@@ -3,7 +3,7 @@ FROM python:3.9
 RUN apt-get -y update && apt-get install -y git dos2unix less sudo fonts-roboto && rm -rf /var/lib/apt/lists/*
 
 COPY . /tools
-RUN dos2unix /tools/*.üy
+RUN dos2unix /tools/*.py
 RUN bash -c 'chmod a+rx /tools/{cleanup,convert_coordinates,create_tasks,export_station_list,import_{brouter,stations,trassenfinder},plot,project_coordinates,validate_files}.py'
 RUN useradd -m traincompany
 USER traincompany
