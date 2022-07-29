@@ -1,5 +1,7 @@
 FROM python:3.9
 
+RUN apt-get -y update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
 COPY . /tools
 # https://stackoverflow.com/a/38742545/5070653
 # https://stackoverflow.com/questions/27093612/in-a-dockerfile-how-to-update-path-environment-variable#comment105601130_38742545
