@@ -1,8 +1,10 @@
 FROM python:3.9
 
-RUN apt-get -y update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update && apt-get install -y git less sudo fonts-roboto && rm -rf /var/lib/apt/lists/*
 
 COPY . /tools
+RUN chmod a+rx /tools/{cleanup,convert_coordinates,create_tasks,export_station_list,import_{brouter,stations,trassenfinder},plot,project_coordinates,validate_files}.py
+USER traincompany
 # https://stackoverflow.com/a/38742545/5070653
 # https://stackoverflow.com/questions/27093612/in-a-dockerfile-how-to-update-path-environment-variable#comment105601130_38742545
 ENV PATH="/tools:$PATH"
