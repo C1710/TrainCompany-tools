@@ -39,21 +39,23 @@ def import_stations_into_tc(station_codes: List[str],
 
     for station in stations:
         if not station.platform_count or not station.platform_length and station.group != 4:
-            logging.warning("{}       : No platform data available".format(station.codes[0]))
-            logging.warning("{} on OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T"
-                             .format(station.codes[0],
-                                     station.location.latitude,
-                                     station.location.longitude))
-            logging.warning("{} on G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3"
-                             .format(station.codes[0],
-                                     station.location.latitude,
-                                     station.location.longitude))
-            if annotate:
-                station['google_maps'] = "https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
-                    station.location.latitude, station.location.longitude)
-                station['osm'] = "https://openstreetmap.org/#map=17/{}/{}&layers=T".format(
-                    station.location.latitude, station.location.longitude
-                )
+            logging.warning("{}        : Keine Bahnsteigdaten bekannt".format(station.codes[0]))
+            if station.location:
+                logging.warning("{} auf OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T"
+                                 .format(station.codes[0],
+                                         station.location.latitude,
+                                         station.location.longitude))
+                logging.warning("{} auf G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3"
+                                 .format(station.codes[0],
+                                         station.location.latitude,
+                                         station.location.longitude))
+                if annotate:
+                    station['google_maps'] = "https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
+                        station.location.latitude, station.location.longitude)
+                    station['osm'] = "https://openstreetmap.org/#map=17/{}/{}&layers=T".format(
+                        station.location.latitude, station.location.longitude)
+            else:
+                "{} ohne bekannten Standort".format(station.codes[0])
     station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations.copy(), station_json, override_stations, update_stations, append=append)
 

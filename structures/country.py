@@ -79,7 +79,9 @@ countries = {country.iso_3166: country for country in (
     Country(db_ril100='G', iso_3166='GR', uic=73, name="Griechenland"),
     Country(db_ril100='H', iso_3166='FI', uic=10, name="Finnland"),
     Country(db_ril100='I', iso_3166='IT', uic=83, name="Italien"),
-    Country(db_ril100='J', iso_3166='BA', uic=49, name="Bosnien und Herzegovina"),
+    # Country(db_ril100='J', iso_3166='BA', uic=49, name="Bosnien und Herzegovina"),
+    # FIXME: Bosnia and Serbia have the same RIL100 code
+    Country(db_ril100='J', iso_3166='RS', uic=72, name="Serbien"),
     Country(db_ril100='K', iso_3166='GB', uic=70, name="Vereinigtes Königreich", _tld='uk',
             _name_forms=Pronouns(
                 nominative="das Vereinigte Königreich",
@@ -105,7 +107,7 @@ countries = {country.iso_3166: country for country in (
                 dative="der Türkei",
                 accusative="die Türkei"
             )),
-    Country(db_ril100='R', iso_3166='RS', uic=72, name="Serbien"),
+    Country(db_ril100='R', iso_3166='HR', uic=78, name="Kroatien"),
     Country(db_ril100='S', iso_3166='CH', uic=85, name="Schweiz",
             _name_forms=Pronouns(
                 nominative="die Schweiz",
@@ -153,7 +155,7 @@ class CountryRepresentation(Enum):
 
 def country_for_code(code: str) -> Tuple[Optional[Country], CountryRepresentation]:
     code = code.upper()
-    if code.startswith('X') or code.startswith('Z'):
+    if code.startswith('X'):
         country_ril100 = code[1]
         return ril100_to_country[country_ril100], CountryRepresentation.RIL100_X
     elif code.startswith('Z'):
