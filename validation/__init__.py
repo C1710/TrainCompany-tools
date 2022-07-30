@@ -119,6 +119,9 @@ def validate(tc_directory: PathLike | str = '..',
                 new_task.update(sub_task)
                 paths.append(new_task)
 
+    train_equipments = [sub_equipment['idString'] for train_equipment in train_equipment_json.data for sub_equipment in
+                        tc_utils.expand_objects(train_equipment)]
+
     for path in paths:
         # Add default values if necessary
         if 'group' not in path:
@@ -196,6 +199,15 @@ def validate(tc_directory: PathLike | str = '..',
                             .format(issues_score, print_path(path)))
             issues += issues_score
 
+        # 2.8. Check for unknown equipments
+        if 'neededEquipments' in path:
+            for used_equipment in path['neededEquipments']:
+                if used_equipment not in train_equipments:
+                    issues_score = 10000
+                    logging.error("+{: <6} Strecke {} hat nicht existierendes Equipment: {}"
+                                  .format(issues_score, print_path(path), used_equipment))
+                    issues += issues_score
+
     # Step 3: graph-based validation
     logging.info(" --- Routing --- ")
     path_edges = [(path['start'], path['end'], path) for path in paths
@@ -226,7 +238,6 @@ def validate(tc_directory: PathLike | str = '..',
     pass
 
     # 4.3. only existing train equipments
-    train_equipments = [sub_equipment['idString'] for train_equipment in train_equipment_json.data for sub_equipment in tc_utils.expand_objects(train_equipment)]
     for train in train_json.data:
         if 'equipments' in train:
             for used_equipment in train['equipments']:
