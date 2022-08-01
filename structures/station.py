@@ -277,8 +277,7 @@ class TcStation:
             group=station.group if station.group is not None else 2,
             x=x,
             y=y,
-            platformLength=int(station.platform_length) if station.platform_length != 0 or station.platform_count != 0
-                                                           or station.group in (0, 1, 2, 5) else None,
+            platformLength=int(station.platform_length) if station.platform_length != 0 or station.platform_count != 0 else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
             proj=projection

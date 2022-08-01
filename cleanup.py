@@ -33,8 +33,8 @@ def remove_annotations_from_station(station: Dict[str, Any], force: bool = False
     if 'group' not in station or station['group'] not in (4,):
         if force or ('platforms' in station and 'platformLength' in station
                      and station['platforms'] and station['platformLength']):
-            station.pop('google_maps')
-            station.pop('osm')
+            station.pop('google_maps', '')
+            station.pop('osm', '')
 
 
 if __name__ == '__main__':
