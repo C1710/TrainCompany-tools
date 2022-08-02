@@ -30,6 +30,11 @@ class TcFile:
             output_file.write(format_json(self.content))
 
 
+def flatten_objects(data: List[Dict[str, Any]]) -> Generator(Dict[str, Any], None, None):
+    for thing in data:
+        yield from expand_objects(thing)
+
+
 def expand_objects(thing: Dict[str, Any]) -> Generator[Dict[str, Any], None, None]:
     if 'objects' not in thing:
         yield thing
