@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Generator
 
 import networkx as nx
 
@@ -40,4 +40,18 @@ def get_shortest_path_distance(graph: nx.Graph,
 
 
 def without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str]) -> List[str]:
-    return [node for node, degree in graph.degree(path) if degree > 2 or node in stations]
+    return list(_without_trivial_nodes(graph, stations, path))
+
+
+def _without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str]) -> Generator[str, None, None]:
+    yield path[0]
+    for last_node, this_node, next_node in zip(path, path[1:], path[2:]):
+        if this_node in stations:
+            yield this_node
+            continue
+        # We want to yield all nodes that have degree != 2 themselves or an adjacent one.
+        # However, we do not care if one of the other nodes has degree 1, because it would still be trivial
+        if graph.degree[last_node] > 2 or graph.degree[this_node] != 2 or graph.degree[next_node] > 2:
+            yield this_node
+    yield path[-1]
+
