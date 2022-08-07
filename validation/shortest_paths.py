@@ -1,17 +1,35 @@
-from typing import Dict, Any, List, Optional, Generator
+from typing import Dict, Any, List, Optional, Generator, Set
 
 import networkx as nx
 
 
 def get_shortest_path(graph: nx.Graph,
                       stations: List[str],
-                      train: Optional[Dict[str, Any]] = None) -> Optional[List[str]]:
+                      train: Optional[Dict[str, Any]] = None,
+                      use_sfs: bool = True,
+                      non_electrified: bool = True,
+                      avoid_equipments: Optional[Set[str]] = None) -> Optional[List[str]]:
     if len(stations) >= 2:
+        if avoid_equipments is None:
+            avoid_equipments = set()
         # Only use the track's maxSpeed if there is no train
         train_max_speed = train['speed'] if train and 'speed' in train else 5000
+
+        def edge_weight(start: str, end: str, edge: Dict[str, Any]) -> float:
+            weight = edge['length'] / min(edge['maxSpeed'], train_max_speed)
+            penalty = 0
+            if not non_electrified and not edge.get('electrified'):
+                # We simply set the weight to something very large
+                penalty = max(1000, penalty * 1000)
+            if not use_sfs and edge.get('group') == 2:
+                penalty = max(100, penalty * 100)
+            needed_equipments = set(edge.get('neededEquipments')) if 'neededEquipments' in edge else set()
+            if not needed_equipments.isdisjoint(avoid_equipments):
+                penalty = max(100, penalty * 100)
+            return weight + penalty
         shortest_paths = (
             nx.dijkstra_path(graph, station_from, station_to,
-                             weight=lambda start, end, edge: edge['length'] / min(edge['maxSpeed'], train_max_speed))
+                             weight=edge_weight)
             for station_from, station_to in zip(stations, stations[1:])
         )
         shortest_path = list(shortest_paths.__next__())
