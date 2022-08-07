@@ -45,6 +45,10 @@ def get_shortest_path(graph: nx.Graph,
         shortest_paths = []
         for station_from, station_to in zip(stations, stations[1:]):
             try:
+                if station_from not in graph.nodes:
+                    station_from = station_from.upper()
+                if station_to not in graph.nodes:
+                    station_to = station_to.upper()
                 if graph.has_edge(station_from, station_to):
                     path = [station_from, station_to]
                 else:
