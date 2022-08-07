@@ -70,3 +70,6 @@ def add_default_cli_args(parser: ArgumentParser,
                         default=default_data_directory,
                         help="Das Verzeichnis, in dem sich die OpenData-Datensätze befinden")
 
+
+def format_list_double_quotes(things: List[str]) -> str:
+    return "[ {} ]".format(', '.join(("\"{}\"".format(thing) for thing in things)))

@@ -15,9 +15,9 @@ def build_tc_graph(stations: List[str], paths: List[Tuple[str, str] | Tuple[str,
 
 
 def graph_from_files(station_json: TcFile, path_json: TcFile) -> nx.Graph:
-    station_codes = [station['ril100'] for station in flatten_objects(station_json.data)]
-    path_edges = [(path['start'], path['end'], path) for path in flatten_objects(path_json.data)
-                  if path['start'] in station_codes and path['end'] in station_codes]
+    station_codes = [station['ril100'].upper() for station in flatten_objects(station_json.data)]
+    path_edges = [(path['start'].upper(), path['end'].upper(), path) for path in flatten_objects(path_json.data)
+                  if path['start'].upper() in station_codes and path['end'].upper() in station_codes]
 
     return build_tc_graph(station_codes, path_edges)
 
@@ -25,11 +25,16 @@ def graph_from_files(station_json: TcFile, path_json: TcFile) -> nx.Graph:
 def get_path_suggestion(graph: nx.Graph, stations: List[str],
                         use_sfs: bool = True,
                         non_electrified: bool = True,
-                        avoid_equipments: Optional[Set[str]] = None) -> List[str]:
+                        avoid_equipments: Optional[Set[str]] = None,
+                        station_groups: Optional[Dict[str, int]] = None,
+                        full_path: bool = False) -> List[str]:
     path_complete = get_shortest_path(graph, stations,
                                       use_sfs=use_sfs,
-                                      non_electrified=non_electrified,
+                                      accept_non_electrified=non_electrified,
                                       avoid_equipments=avoid_equipments)
-    assert nx.is_path(graph, path_complete)
-    path_without_trivial_nodes = without_trivial_nodes(graph, stations, path_complete)
-    return path_without_trivial_nodes
+    assert nx.is_simple_path(graph, path_complete)
+    if not full_path:
+        path_without_trivial_nodes = without_trivial_nodes(graph, stations, path_complete, station_groups)
+        return path_without_trivial_nodes
+    else:
+        return path_complete

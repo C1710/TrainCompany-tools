@@ -17,7 +17,8 @@ def print_path_suggestion(station_codes: List[str],
                           data_directory: PathLike | str = 'data',
                           use_sfs: bool = True,
                           non_electrified: bool = True,
-                          avoid_equipments: Optional[Set[str]] = None
+                          avoid_equipments: Optional[Set[str]] = None,
+                          full_path: bool = False
                           ):
     data_set = DataSet.load_data(data_directory)
     station_codes = process_station_input(station_codes, data_set)
@@ -27,7 +28,11 @@ def print_path_suggestion(station_codes: List[str],
 
     graph = graph_from_files(station_json, path_json)
 
-    path_suggestion = get_path_suggestion(graph, station_codes, use_sfs, non_electrified, avoid_equipments)
+    station_groups = {station['ril100']: station.get('group') for station in station_json.data}
+
+    path_suggestion = get_path_suggestion(graph, station_codes, use_sfs, non_electrified, avoid_equipments,
+                                          station_groups=station_groups,
+                                          full_path=full_path)
     print(", ".join(("\"{}\"".format(code) for code in path_suggestion)))
 
 
@@ -41,6 +46,8 @@ if __name__ == '__main__':
                         help="Versucht, SFS zu meiden.")
     parser.add_argument('--avoid-equipments', metavar='EQUIPMENT', type=str, nargs='+',
                         help="Equipments, die gemieden werden sollen")
+    parser.add_argument('--full', action='store_true',
+                        help="Gibt den vollständigen Pfad aus")
     add_default_cli_args(parser)
     args = parser.parse_args()
 
@@ -50,5 +57,6 @@ if __name__ == '__main__':
         data_directory=args.data_directory,
         use_sfs=not args.avoid_sfs,
         non_electrified=not args.electrified,
-        avoid_equipments=args.avoid_equipments
+        avoid_equipments=args.avoid_equipments,
+        full_path=args.full
     )
