@@ -35,7 +35,7 @@ if __name__ == '__main__':
     add_station_cli_args(parser,
                          help="Die (RIL100-)Codes der Haltestellen auf dem Pfad",
                          required=True,
-                         allow_countries=False)
+                         allow_unordered=False)
     PathSuggestionConfig.add_cli_args(parser)
 
     args = parser.parse_args()

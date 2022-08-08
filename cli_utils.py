@@ -79,7 +79,7 @@ def add_station_cli_args(parser: ArgumentParser,
                          help: str = "Die (RIL100-)Codes der betroffenen Haltestellen",
                          help_countries: str = "Die ISO-Kürzel der betroffenen Länder",
                          required: bool = False,
-                         allow_countries: bool = True,
+                         allow_unordered: bool = True,
                          allow_multiple_stations: bool = False):
     """Adds CLI arguments for station input. Use parse_station_args later.
     Attributes:
@@ -87,7 +87,7 @@ def add_station_cli_args(parser: ArgumentParser,
         help: The help-string for the stations-option
         help_countries: The help-string for the countries-option
         required: Whether one of the options is required
-        allow_countries: Whether the input of countries should be allowed
+        allow_unordered: Whether the input methods without an explicit order should be allowed
         allow_multiple_stations: Whether multiple --stations or --countries options should be required
     """
     if not allow_multiple_stations:
@@ -95,10 +95,12 @@ def add_station_cli_args(parser: ArgumentParser,
     else:
         import_strategy = parser.add_argument_group("Arten der Stations-Eingabe")
     action = 'store' if not allow_multiple_stations else 'append'
-    import_strategy.add_argument('--stations', metavar='RIL100', type=str, nargs='+', help=help, action=action)
+
     parser.add_argument('--case-sensitive', action='store_true',
                         help="Berücksichtigt Groß-/Kleinschreibung der Stations-Kürzel")
-    if allow_countries:
+
+    import_strategy.add_argument('--stations', metavar='RIL100', type=str, nargs='+', help=help, action=action)
+    if allow_unordered:
         import_strategy.add_argument('--countries', type=str, nargs='+', help=help_countries, action=action)
 
 

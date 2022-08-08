@@ -130,7 +130,7 @@ if __name__ == '__main__':
                              " 1 - Direkte Projektion auf EPSG:3035\n"
                              " 2 - Von WGS84 auf EPSG:3035\n")
     add_station_cli_args(parser,
-                         allow_countries=False,
+                         allow_unordered=False,
                          help="Ein Pfad, der hervorgehoben werden soll",
                          allow_multiple_stations=False)
     # TODO: Allow to highlight multiple paths at once

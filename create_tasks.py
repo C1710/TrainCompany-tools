@@ -84,7 +84,7 @@ if __name__ == '__main__':
     add_default_cli_args(parser)
     add_station_cli_args(parser,
                          help="Die (RIL100-)Codes der angefahrenen Haltestellen, die hinzugefügt werden sollen",
-                         allow_countries=False,
+                         allow_unordered=False,
                          allow_multiple_stations=True,
                          required=True)
     PathSuggestionConfig.add_cli_args(parser)
