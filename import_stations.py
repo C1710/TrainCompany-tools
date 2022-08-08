@@ -29,7 +29,8 @@ def import_stations_into_tc(station_codes: List[str],
                             trassenfinder: bool = False,
                             gpx: bool = False,
                             annotate: bool = False,
-                            data_set: Optional[DataSet] = None) -> TcFile:
+                            data_set: Optional[DataSet] = None,
+                            station_json: TcFile | None = None) -> TcFile:
     if not data_set:
         data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
@@ -56,7 +57,8 @@ def import_stations_into_tc(station_codes: List[str],
                         station.location.latitude, station.location.longitude)
             else:
                 "{} ohne bekannten Standort".format(station.codes[0])
-    station_json = TcFile('Station', tc_directory)
+    if not station_json:
+        station_json = TcFile('Station', tc_directory)
     add_stations_to_file(stations.copy(), station_json, override_stations, update_stations, append=append)
 
     if trassenfinder:
@@ -114,9 +116,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Importiere neue Betriebsstellen in TrainCompany')
     add_default_cli_args(parser)
     add_station_cli_args(parser,
-                         help="(Die RIL100-)Codes der Haltestellen, die hinzugefügt werden sollen",
+                         help="Die (RIL100-)Codes der Haltestellen, die hinzugefügt werden sollen",
                          help_countries="Die Länder, deren Haltestellen hinzugefügt werden sollen",
-                         required=True)
+                         required=True,
+                         # TODO: Allow this
+                         allow_multiple_stations=True)
 
     update_or_override = parser.add_mutually_exclusive_group()
     update_or_override.add_argument('--override-stations', action='store_true',
@@ -134,6 +138,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
-    parse_station_args(args, required=True)
-    station_json = import_stations_into_tc(**args.__dict__)
+    stations = parse_station_args(args, required=True, inplace=False)
+    station_json = TcFile("Station", args.tc_directory)
+    for station_codes in stations:
+        station_json = import_stations_into_tc(**args.__dict__, station_json=station_json, station_codes=station_codes)
     station_json.save()
