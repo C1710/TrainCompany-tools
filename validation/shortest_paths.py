@@ -88,7 +88,7 @@ def without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str],
 
 
 def _without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str],
-                           station_groups: Optional[Dict[str, int]] = None,
+                           station_to_group: Optional[Dict[str, int]] = None,
                            add_adjacent_2_degree: bool = False) -> Generator[str, None, None]:
     yield path[0]
     for last_node, this_node, next_node in zip(path, path[1:], path[2:]):
@@ -99,6 +99,6 @@ def _without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str]
         # However, we do not care if one of the other nodes has degree 1, because it would still be trivial
         if graph.degree[this_node] != 2 \
                 or (add_adjacent_2_degree and (graph.degree[last_node] > 2 or graph.degree[next_node] > 2)):
-            if not station_groups or station_groups.get(this_node) not in (5, 6):
+            if not station_to_group or station_to_group.get(this_node) not in (5, 6):
                 yield this_node
     yield path[-1]

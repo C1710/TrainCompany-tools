@@ -11,7 +11,7 @@ from typing import List, Tuple, Optional
 
 import gpxpy.gpx
 
-from cli_utils import check_files, process_station_input, add_default_cli_args
+from cli_utils import check_files, process_station_input, add_default_cli_args, add_station_cli_args, parse_station_args
 from geo.location_data import add_location_data_to_list, with_location_data
 from structures import DataSet
 from structures.country import split_country, CountryRepresentation, iso_3166_to_country, tld_to_country
@@ -21,31 +21,6 @@ from tc_utils.stations import add_stations_to_file
 
 
 def import_stations_into_tc(station_codes: List[str],
-                            tc_directory: PathLike | str = '..',
-                            data_directory: PathLike | str = 'data',
-                            override_stations: bool = False,
-                            update_stations: bool = False,
-                            append: bool = False,
-                            trassenfinder: bool = False,
-                            gpx: bool = False,
-                            annotate: bool = False,
-                            **kwargs
-                            ) -> TcFile:
-    data_set = DataSet.load_data(data_directory)
-    station_codes = process_station_input(station_codes, data_set)
-    return _import_stations_into_tc(station_codes=station_codes,
-                                    tc_directory=tc_directory,
-                                    data_directory=data_directory,
-                                    override_stations=override_stations,
-                                    update_stations=update_stations,
-                                    append=append,
-                                    trassenfinder=trassenfinder,
-                                    gpx=gpx,
-                                    annotate=annotate,
-                                    data_set=data_set)
-
-
-def _import_stations_into_tc(station_codes: List[str],
                             tc_directory: PathLike | str = '..',
                             data_directory: PathLike | str = 'data',
                             override_stations: bool = False,
@@ -135,30 +110,14 @@ def create_gpx(stations: List[Station], tc_directory: PathLike | str = '..'):
         outfile.write(gpx.to_xml(prettyprint=True))
 
 
-def import_countries(countries: List[str],
-                     tc_directory: PathLike | str = '..',
-                     data_directory: PathLike | str = 'data',
-                     *args, **kwargs) -> TcFile:
-    data_set = DataSet.load_data(data_directory)
-    countries = (country.upper() for country in countries)
-    countries = [iso_3166_to_country[country] if country in iso_3166_to_country else tld_to_country[country]
-                 for country in countries]
-    stations = (station for station in data_set.station_data if station.country in countries)
-    station_codes = [station.codes[0] for station in stations]
-    return import_stations_into_tc(station_codes=station_codes,
-                                   tc_directory=tc_directory,
-                                   data_directory=data_directory,
-                                   *args, **kwargs)
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Importiere neue Betriebsstellen in TrainCompany')
-    import_strategy = parser.add_mutually_exclusive_group()
-    import_strategy.add_argument('--stations', dest='station_codes', metavar='RIL100', type=str, nargs='+',
-                        help='Die RIL100-Codes, die hinzugefügt werden sollen')
-    import_strategy.add_argument('--countries', type=str, nargs='*',
-                                 help="Die Länder, deren Haltestellen hinzugefügt werden sollen")
     add_default_cli_args(parser)
+    add_station_cli_args(parser,
+                         help="(Die RIL100-)Codes der Haltestellen, die hinzugefügt werden sollen",
+                         help_countries="Die Länder, deren Haltestellen hinzugefügt werden sollen",
+                         required=True)
+
     update_or_override = parser.add_mutually_exclusive_group()
     update_or_override.add_argument('--override-stations', action='store_true',
                                     help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
@@ -175,11 +134,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
-    if args.station_codes:
-        station_json = import_stations_into_tc(**args.__dict__)
-    elif args.countries:
-        args.__delattr__('station_codes')
-        station_json = import_countries(**args.__dict__)
-    else:
-        raise NotImplementedError
+    parse_station_args(args, required=True)
+    station_json = import_stations_into_tc(**args.__dict__)
     station_json.save()

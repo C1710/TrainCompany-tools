@@ -6,23 +6,17 @@ import argparse
 from os import PathLike
 from typing import List, Optional, Set
 
-from cli_utils import process_station_input, add_default_cli_args
+from cli_utils import process_station_input, add_default_cli_args, add_station_cli_args, parse_station_args
 from structures import DataSet
 from tc_utils import TcFile
-from validation.graph import graph_from_files, get_path_suggestion
+from validation.graph import graph_from_files, get_path_suggestion, PathSuggestionConfig
 
 
 def print_path_suggestion(station_codes: List[str],
                           tc_directory: PathLike | str = '..',
                           data_directory: PathLike | str = 'data',
-                          use_sfs: bool = True,
-                          non_electrified: bool = True,
-                          avoid_equipments: Optional[Set[str]] = None,
-                          full_path: bool = False
+                          config: PathSuggestionConfig = PathSuggestionConfig
                           ):
-    data_set = DataSet.load_data(data_directory)
-    station_codes = process_station_input(station_codes, data_set)
-
     station_json = TcFile("Station", tc_directory)
     path_json = TcFile("Path", tc_directory)
 
@@ -30,33 +24,27 @@ def print_path_suggestion(station_codes: List[str],
 
     station_groups = {station['ril100']: station.get('group') for station in station_json.data}
 
-    path_suggestion = get_path_suggestion(graph, station_codes, use_sfs, non_electrified, avoid_equipments,
-                                          station_groups=station_groups,
-                                          full_path=full_path)
+    path_suggestion = get_path_suggestion(graph, station_codes, config=config,
+                                          station_to_group=station_groups)
     print(", ".join(("\"{}\"".format(code) for code in path_suggestion)))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Berechne die pathSuggestion')
-    parser.add_argument('--stations', metavar='RIL100', type=str, nargs='+', required=True,
-                        help='Die RIL100-Codes des Pfads')
-    parser.add_argument('--electrified', action='store_true',
-                        help="Versucht, eine nur elektrifizierte Strecke zu finden.")
-    parser.add_argument('--avoid-sfs', action='store_true',
-                        help="Versucht, SFS zu meiden.")
-    parser.add_argument('--avoid-equipments', metavar='EQUIPMENT', type=str, nargs='+',
-                        help="Equipments, die gemieden werden sollen")
-    parser.add_argument('--full', action='store_true',
-                        help="Gibt den vollständigen Pfad aus")
     add_default_cli_args(parser)
+    add_station_cli_args(parser,
+                         help="Die (RIL100-)Codes der Haltestellen auf dem Pfad",
+                         required=True,
+                         allow_countries=False)
+    PathSuggestionConfig.add_cli_args(parser)
+
     args = parser.parse_args()
+    stations = parse_station_args(args, required=True)
+    config = PathSuggestionConfig.from_cli_args(args)
 
     print_path_suggestion(
-        station_codes=args.stations,
+        station_codes=stations,
         tc_directory=args.tc_directory,
         data_directory=args.data_directory,
-        use_sfs=not args.avoid_sfs,
-        non_electrified=not args.electrified,
-        avoid_equipments=args.avoid_equipments,
-        full_path=args.full
+        config=config
     )

@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, InitVar
 from enum import Enum
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Set
 
 import networkx as nx
 
 from structures.pronouns import Pronouns, ErIhmPronouns, SieIhrPronouns
+from validation.graph import get_path_suggestion, PathSuggestionConfig
 from validation.shortest_paths import without_trivial_nodes, get_shortest_path
 
 
@@ -24,57 +25,36 @@ class TcNeededCapacity:
 
 
 @dataclass
-class TcTask:
+class Task:
     name: str
     descriptions: List[str]
     stations: List[str]
     neededCapacity: List[TcNeededCapacity]
-    plops: Optional[int] = field(default=None)
     group: int = field(default=1)
-    payout_per_km: float = field(default=300)
-    payout_baseline: int = field(default=80000)
     service: int = field(default=4)
+    graph: InitVar[Optional[nx.Graph]] = None
+    path_suggestion_config: InitVar[PathSuggestionConfig] = None
 
-    def calculate_plops(self, graph: nx.Graph) -> int:
-        length = self.shortest_path_length(graph)
-        return int(self.payout_per_km * length + self.payout_baseline)
+    pathSuggestion: Optional[List[str]] = field(default=None, repr=False, hash=False, init=False)
 
-    def shortest_path_length(self, graph: nx.Graph) -> float:
-        shortest_paths = (
-            nx.dijkstra_path_length(graph, station_from, station_to,
-                                    weight=lambda start, end, edge: edge['length'])
-            for station_from, station_to in zip(self.stations, self.stations[1:])
-        )
-        return sum(shortest_paths)
+    def __post_init__(self, graph: Optional[nx.Graph], path_suggestion_config: PathSuggestionConfig):
+        if not path_suggestion_config:
+            path_suggestion_config = PathSuggestionConfig()
+        if graph:
+            object.__setattr__(self, 'path_suggestion', get_path_suggestion(graph, self.stations,
+                                                                            config=path_suggestion_config))
 
-    def shortest_path(self, graph: nx.Graph) -> List[str]:
-        shortest_paths = (
-            nx.dijkstra_path(graph, station_from, station_to,
-                             weight=lambda start, end, edge: edge['length'])
-            for station_from, station_to in zip(self.stations, self.stations[1:])
-        )
-        shortest_path = list(shortest_paths.__next__())
-        for sub_path in shortest_paths:
-            shortest_path.extend(sub_path[1:])
-        return shortest_path
-
-    def to_dict(self, graph: Optional[nx.Graph], add_suggestion: bool = False, add_plops: bool = False) -> Dict[str, Any]:
+    def to_dict(self, add_suggestion: bool = False) -> Dict[str, Any]:
         task = self.__dict__
-        if (not self.plops) and graph:
-            task['plops'] = self.calculate_plops(graph)
-        if not add_plops:
-            task.pop('plops', 0)
-        task.pop('payout_per_km')
-        task.pop('payout_baseline')
         task['neededCapacity'] = [
             needed_capacity.__dict__ for needed_capacity in self.neededCapacity
         ]
-        if add_suggestion:
-            task['pathSuggestion'] = without_trivial_nodes(graph, self.stations, get_shortest_path(graph, self.stations))
+        if not add_suggestion:
+            task.pop('pathSuggestion', None)
         return task
 
     def uses_sfs(self, graph: nx.Graph) -> bool:
-        stations = self.shortest_path(graph)
+        stations = get_shortest_path(graph, self.stations)
         for station_from, station_to in zip(stations, stations[1:]):
             edge = graph[station_from][station_to]
             if 'group' not in edge:
@@ -96,7 +76,7 @@ class ServiceLevel(Enum):
     FREIGHT = 11
 
 
-class GattungTask(TcTask):
+class GattungTask(Task):
     gattung: str = ''
     gattung_long: str = ''
     pronouns: Pronouns
@@ -118,14 +98,9 @@ class GattungTask(TcTask):
                     value=0
                 )
             ],
-            payout_per_km=self.__class__.payout_per_km,
             service=self.__class__.service.value,
             *args, **kwargs
         )
-        if 'payout_baseline' in self.__class__.__dict__:
-            self.payout_baseline = self.__class__.payout_baseline
-        if 'payout_per_km' in self.__class__.__dict__:
-            self.payout_per_km = self.__class__.payout_per_km
 
     def add_sfs_description(self, graph: nx.Graph):
         if self.uses_sfs(graph):
@@ -166,8 +141,6 @@ class GattungTask(TcTask):
 class SbahnTask(GattungTask):
     gattung = 'S'
     gattung_long = 'S-Bahn'
-    payout_per_km = 360
-    payout_baseline = 90000
     pronouns = SieIhrPronouns()
     service = ServiceLevel.COMMUTER
 
@@ -175,8 +148,6 @@ class SbahnTask(GattungTask):
 class RbTask(GattungTask):
     gattung = 'RB'
     gattung_long = 'Regionalbahn'
-    payout_per_km = 360
-    payout_baseline = 90000
     pronouns = SieIhrPronouns()
     service = ServiceLevel.COMMUTER
 
@@ -184,8 +155,6 @@ class RbTask(GattungTask):
 class ReTask(GattungTask):
     gattung = 'RE'
     gattung_long = 'Regionalexpress'
-    payout_per_km = 420
-    payout_baseline = 85000
     pronouns = ErIhmPronouns()
     service = ServiceLevel.REGIONAL
 
@@ -204,9 +173,7 @@ class IreTask(ReTask):
 class IcTask(GattungTask):
     gattung = 'IC'
     gattung_long = 'Intercity'
-    payout_per_km = 400
     pronouns = ErIhmPronouns()
-    payout_baseline = 120000
     service = ServiceLevel.INTERCITY
 
 
@@ -228,17 +195,13 @@ class IrTask(IcTask):
 class EcTask(IcTask):
     gattung = 'EC'
     gattung_long = 'Eurocity'
-    payout_per_km = IcTask.payout_per_km * 1.1
-    payout_baseline = TcTask.payout_per_km * 1.1
     pronouns = ErIhmPronouns()
 
 
 class IceTask(GattungTask):
     gattung = 'ICE'
     gattung_long = 'Intercity-Express'
-    payout_per_km = 400
     pronouns = ErIhmPronouns()
-    payout_baseline = 130000
     service = ServiceLevel.HIGH_SPEED
 
 
@@ -261,8 +224,6 @@ class IceSprinterTask(IceTask):
 class EceTask(IceTask):
     gattung = 'ECE'
     gattung_long = 'Eurocity-Express'
-    payout_per_km = IceTask.payout_per_km * 1.1
-    payout_baseline = IceTask.payout_baseline * 1.1
     pronouns = ErIhmPronouns()
 
 

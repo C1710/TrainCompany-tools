@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import json
 import os
 
-from cli_utils import add_default_cli_args, process_station_input
+from cli_utils import add_default_cli_args, process_station_input, add_station_cli_args, parse_station_args
 from geo import Location
 from project_coordinates import project_coordinate_for_station
 from structures import DataSet
@@ -17,6 +17,7 @@ from structures.country import split_country, CountryRepresentation
 from tc_utils import TcFile, expand_objects, flatten_objects
 from validation import get_shortest_path
 from validation.graph import graph_from_files
+from validation.shortest_paths import get_shortest_path_distance
 
 
 def get_routes_plot_data(station_data: List[dict], path_data: List[dict],
@@ -128,16 +129,20 @@ if __name__ == '__main__':
                              " 0 - Linear von WGS84\n"
                              " 1 - Direkte Projektion auf EPSG:3035\n"
                              " 2 - Von WGS84 auf EPSG:3035\n")
-    parser.add_argument('--stations', metavar='RIL100', type=str, nargs='+',
-                        help="Ein Pfad, der hervorgehoben werden soll")
+    add_station_cli_args(parser,
+                         allow_countries=False,
+                         help="Ein Pfad, der hervorgehoben werden soll",
+                         allow_multiple_stations=False)
+    # TODO: Allow to highlight multiple paths at once
     parser.add_argument('--hide-text', action='store_true',
                         help="Fügt keine Stationscodes hinzu")
     args = parser.parse_args()
+    highlight_path = parse_station_args(args)
     if args.out_file is None:
         args.out_file = os.path.join(args.tc_directory, "map_plot.svg")
     plot_map(tc_directory=args.tc_directory,
              data_directory=args.data_directory,
              out_file=args.out_file,
-             highlight_path=args.stations,
+             highlight_path=highlight_path,
              add_text=not args.hide_text)
 
