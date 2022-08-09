@@ -24,7 +24,8 @@ class DataSet:
 
     @staticmethod
     def load_data(
-            data_directory: str = 'data'
+            data_directory: str = 'data',
+            case_sensitive: bool = False
     ) -> DataSet:
         from importers.db_strecken import DbStreckenImporter
 

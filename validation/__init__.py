@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import logging
-import re
 from os import PathLike
 from typing import Dict, Any
 
+import networkx as nx
 from networkx import is_connected
 
 from geo import Location
@@ -15,6 +15,8 @@ from structures.station import iter_stations_by_codes_reverse
 from tc_utils import TcFile
 from validation.graph import build_tc_graph
 from structures.country import country_for_code, countries, germany
+from validation.shortest_paths import get_shortest_path
+from cli_utils import format_list_double_quotes
 
 
 def print_path(path: Dict[str, Any]) -> str:
@@ -26,8 +28,11 @@ def print_path(path: Dict[str, Any]) -> str:
 
 
 def validate(tc_directory: PathLike | str = '..',
-             data_directory: PathLike | str = 'data'
+             data_directory: PathLike | str = 'data',
+             experimental: str = "false"
              ) -> int:
+    enforce_experimental = experimental == "enforce"
+    enable_experimental = experimental != "false"
     data_set = DataSet.load_data(data_directory)
     stations: Dict[str, Station] = {code: station
                                     for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
@@ -278,6 +283,30 @@ def validate(tc_directory: PathLike | str = '..',
                 if station not in selected_codes:
                     issues_score = 10000
                     logging.error("+{: <6} Nicht existierender Haltepunkt: {}".format(issues_score, station))
+                    issues += issues_score
+        # 5.2. pathSuggestions
+        if 'pathSuggestion' in task:
+            if enable_experimental:
+                # First, we need to recreate the full path
+                # For this, we need treat the suggestions as the stations for a new pathSuggestion
+                try:
+                    path = get_shortest_path(graph=graph, stations=task['pathSuggestion'], log=False)
+                    if not nx.is_simple_path(graph, path):
+                        issues_score = 10000 if enforce_experimental else 0
+                        logging.error("+{: <6} pathSuggestion enthält Kreis: {}".format(
+                            issues_score,
+                            format_list_double_quotes(task['pathSuggestion'])
+                        ))
+                        logging.error("       {}".format(format_list_double_quotes(path)))
+                        issues += issues_score
+                except nx.exception.NetworkXNoPath as e:
+                    issues_score = 40 if enforce_experimental else 0
+                    logging.warning(
+                        "+{: <6} Konnte keinen Pfad für pathSuggestion finden. {}\n       Betroffene pathSuggestion: {}".format(
+                            issues_score,
+                            e.args[0],
+                            format_list_double_quotes(task['pathSuggestion'])
+                        ))
                     issues += issues_score
 
     return issues
