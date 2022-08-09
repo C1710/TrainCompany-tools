@@ -118,7 +118,7 @@ def parse_station_args(args: Namespace,
             data_set = DataSet.load_data(data_directory=args.data_directory)
         else:
             raise ValueError("Missing both data_set and data_directory")
-    if 'countries' in args:
+    if 'countries' in args and args.countries:
         countries = args.countries
         if isinstance(countries[0], str):
             # We need to collect the stations of the countries
@@ -135,7 +135,7 @@ def parse_station_args(args: Namespace,
         else:
             raise TypeError("countries must be a list of strings or lists (of strings), but is list of {}"
                             .format(type(countries[0])))
-    if 'stations' in args:
+    if 'stations' in args and args.stations:
         stations = args.stations
         case_sensitive = args.case_sensitive
         if not isinstance(stations[0], list):
@@ -144,7 +144,8 @@ def parse_station_args(args: Namespace,
                 args.station_codes = station_codes
             return station_codes
         elif isinstance(stations[0], list):
-            all_station_codes = [process_station_input(entry, dataset=data_set, case_sensitive=case_sensitive) for entry in stations]
+            all_station_codes = [process_station_input(entry, dataset=data_set, case_sensitive=case_sensitive) for entry
+                                 in stations]
             if inplace:
                 args.station_codes = all_station_codes
             return all_station_codes

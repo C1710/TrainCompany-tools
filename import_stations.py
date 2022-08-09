@@ -30,7 +30,8 @@ def import_stations_into_tc(station_codes: List[str],
                             gpx: bool = False,
                             annotate: bool = False,
                             data_set: Optional[DataSet] = None,
-                            station_json: TcFile | None = None) -> TcFile:
+                            station_json: TcFile | None = None,
+                            **kwargs) -> TcFile:
     if not data_set:
         data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
@@ -140,6 +141,8 @@ if __name__ == '__main__':
     check_files(args.tc_directory, args.data_directory)
     stations = parse_station_args(args, required=True, inplace=False)
     station_json = TcFile("Station", args.tc_directory)
+    data_set = DataSet.load_data(args.data_directory)
     for station_codes in stations:
-        station_json = import_stations_into_tc(**args.__dict__, station_json=station_json, station_codes=station_codes)
+        station_json = import_stations_into_tc(**args.__dict__, data_set=data_set, station_json=station_json,
+                                               station_codes=station_codes)
     station_json.save()
