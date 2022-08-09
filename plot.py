@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import itertools
 from typing import List, Tuple, Dict, Any, Optional
 
 import matplotlib.pyplot as plt
@@ -92,15 +93,22 @@ def plot_map(tc_directory: os.PathLike | str = '..',
     point_data = [(station['x'], station['y'],
                    station_sizes[station['group']],
                    flag_to_colon(station['ril100']),
-                   'maroon' if highlight_path and station['ril100'] in highlight_path else '#1f77b4') for station in station_json.data]
+                   'maroon' if highlight_path and station['ril100'] in highlight_path else '#1f77b4') for station in
+                  station_json.data]
 
     if highlight_path is not None:
         graph = graph_from_files(station_json, path_json)
         highlight_path = get_shortest_path(graph, highlight_path)
 
-    _, path_data, colors, line_widths = get_routes_plot_data(station_json.data, path_json.data, highlighted_path=highlight_path)
+    _, path_data, colors, line_widths = get_routes_plot_data(station_json.data, path_json.data,
+                                                             highlighted_path=highlight_path)
+    if not isinstance(colors, list):
+        colors = itertools.repeat(colors)
+    if not isinstance(line_widths, list):
+        line_widths = itertools.repeat(line_widths)
 
-    route_xy = [(*tuple(zip(*waypoints)), color, line_width) for waypoints, color, line_width in zip(path_data, colors, line_widths)]
+    route_xy = [(*tuple(zip(*waypoints)), color, line_width) for waypoints, color, line_width in
+                zip(path_data, colors, line_widths)]
 
     x, y, s, codes, colors = zip(*point_data)
     plt.scatter(x=x, y=y, s=s, marker=".", linewidths=0, c=colors)
