@@ -15,15 +15,19 @@ if __name__ == '__main__':
     add_default_cli_args(parser)
     parser.add_argument('--limit', type=int, default=700,
                         help="Die maximal zulässige Problempunktzahl (sollte <10000 liegen)")
+    parser.add_argument('--experimental', nargs='?', choices=["false", "enforce", "warn"],
+                        default="false",
+                        const="enforce",
+                        type=str,
+                        help="Führt auch noch nicht ganz stabile Checks durch.\n"
+                             "Bei warn wird der Issue-Score nicht erhöht")
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)
 
-    issues = validate(args.tc_directory, args.data_directory)
+    issues = validate(args.tc_directory, args.data_directory, experimental=args.experimental)
 
     logging.info("Score: {} (kleiner ist besser)".format(issues))
 
     if issues > args.limit:
         raise AssertionError(issues)
-
-

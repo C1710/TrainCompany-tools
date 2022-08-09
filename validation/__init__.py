@@ -28,8 +28,11 @@ def print_path(path: Dict[str, Any]) -> str:
 
 
 def validate(tc_directory: PathLike | str = '..',
-             data_directory: PathLike | str = 'data'
+             data_directory: PathLike | str = 'data',
+             experimental: str = "false"
              ) -> int:
+    enforce_experimental = experimental == "enforce"
+    enable_experimental = experimental != "false"
     data_set = DataSet.load_data(data_directory)
     stations: Dict[str, Station] = {code: station
                                     for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
@@ -283,26 +286,28 @@ def validate(tc_directory: PathLike | str = '..',
                     issues += issues_score
         # 5.2. pathSuggestions
         if 'pathSuggestion' in task:
-            # First, we need to recreate the full path
-            # For this, we need treat the suggestions as the stations for a new pathSuggestion
-            try:
-                path = get_shortest_path(graph=graph, stations = task['pathSuggestion'], log=False)
-                if not nx.is_simple_path(graph, path):
-                    issues_score = 10000
-                    logging.error("+{: <6} pathSuggestion enthält Kreis: {}".format(
-                        issues_score,
-                        format_list_double_quotes(task['pathSuggestion'])
-                    ))
-                    logging.error("       {}".format(format_list_double_quotes(path)))
+            if enable_experimental:
+                # First, we need to recreate the full path
+                # For this, we need treat the suggestions as the stations for a new pathSuggestion
+                try:
+                    path = get_shortest_path(graph=graph, stations=task['pathSuggestion'], log=False)
+                    if not nx.is_simple_path(graph, path):
+                        issues_score = 10000 if enforce_experimental else 0
+                        logging.error("+{: <6} pathSuggestion enthält Kreis: {}".format(
+                            issues_score,
+                            format_list_double_quotes(task['pathSuggestion'])
+                        ))
+                        logging.error("       {}".format(format_list_double_quotes(path)))
+                        issues += issues_score
+                except nx.exception.NetworkXNoPath as e:
+                    issues_score = 40 if enforce_experimental else 0
+                    logging.warning(
+                        "+{: <6} Konnte keinen Pfad für pathSuggestion finden. {}\n       Betroffene pathSuggestion: {}".format(
+                            issues_score,
+                            e.args[0],
+                            format_list_double_quotes(task['pathSuggestion'])
+                        ))
                     issues += issues_score
-            except nx.exception.NetworkXNoPath as e:
-                issues_score = 40
-                logging.warning("+{: <6} Konnte keinen Pfad für pathSuggestion finden. {}\n       Betroffene pathSuggestion: {}".format(
-                    issues_score,
-                    e.args[0],
-                    format_list_double_quotes(task['pathSuggestion'])
-                ))
-                issues += issues_score
 
     return issues
 
