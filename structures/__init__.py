@@ -18,7 +18,7 @@ class DataSet:
     station_data: List[Station]
     path_data: List[Path]
 
-    @property
+    @cached_property
     def codes_to_stations(self):
         return {code: station for code, station in iter_stations_by_codes_reverse(self.station_data)}
 

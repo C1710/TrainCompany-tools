@@ -30,16 +30,24 @@ class CsvImporter(Importer[T], metaclass=ABCMeta):
         self.skip_first_line = skip_first_line
 
     def import_data(self, file_name: str) -> List[T]:
-        with open(file_name, encoding=self.encoding) as csv_file:
-            reader = csv.reader(csv_file, delimiter=self.delimiter)
-            if self.skip_first_line:
-                first_line = reader.__next__()
-                if first_line[0] == "utf-8" and self.encoding != 'utf-8':
-                    self.encoding = 'utf-8'
-                    logging.info("Reopening with UTF-8 encoding")
-                    return self.import_data(file_name)
-            data = (self.deserialize(entry) for entry in reader)
-            data = [entry for entry in data if entry is not None]
+        try:
+            with open(file_name, encoding=self.encoding) as csv_file:
+                reader = csv.reader(csv_file, delimiter=self.delimiter)
+                if self.skip_first_line:
+                    first_line = reader.__next__()
+                    if first_line[0] == "utf-8" and self.encoding != 'utf-8':
+                        self.encoding = 'utf-8'
+                        logging.info("Reopening with UTF-8 encoding")
+                        return self.import_data(file_name)
+                data = (self.deserialize(entry) for entry in reader)
+                data = [entry for entry in data if entry is not None]
+        except UnicodeDecodeError as e:
+            if self.encoding != "utf-8":
+                self.encoding = "utf-8"
+                logging.info("Reopening with UTF-8 encoding")
+                return self.import_data(file_name)
+            else:
+                raise e
         return data
 
     @abstractmethod

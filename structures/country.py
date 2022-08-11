@@ -59,83 +59,100 @@ class Country:
 
     @cached_property
     def x_ril100(self) -> str:
-        return 'X' + self.db_ril100
+        return 'X' + self.db_ril100[-1]
 
     @cached_property
     def z_ril100(self) -> str:
-        return 'Z' + self.db_ril100
+        return 'Z' + self.db_ril100[-1]
 
 
 # We add a special RIL100 country code for Germany
 germany = Country(db_ril100='-', iso_3166='DE', uic=80, name="Deutschland")
 
 countries = {country.iso_3166: country for country in (
-    Country(db_ril100='A', iso_3166='AT', uic=81, name="Österreich"),
-    Country(db_ril100='B', iso_3166='BE', uic=88, name="Belgien"),
-    Country(db_ril100='C', iso_3166='RU', uic=20, name="Russland"),
-    Country(db_ril100='D', iso_3166='DK', uic=86, name="Dänemark"),
-    Country(db_ril100='E', iso_3166='ES', uic=71, name="Spanien"),
-    Country(db_ril100='F', iso_3166='FR', uic=87, name="Frankreich"),
-    Country(db_ril100='G', iso_3166='GR', uic=73, name="Griechenland"),
-    Country(db_ril100='H', iso_3166='FI', uic=10, name="Finnland"),
-    Country(db_ril100='I', iso_3166='IT', uic=83, name="Italien"),
-    # Country(db_ril100='J', iso_3166='BA', uic=49, name="Bosnien und Herzegovina"),
-    # FIXME: Bosnia and Serbia have the same RIL100 code
-    Country(db_ril100='J', iso_3166='RS', uic=72, name="Serbien"),
-    Country(db_ril100='K', iso_3166='GB', uic=70, name="Vereinigtes Königreich", _tld='uk',
+    Country(db_ril100='XA', iso_3166='AT', uic=81, name="Österreich"),
+    Country(db_ril100='ZA', iso_3166='MK', uic=65, name="Nordmazedonien"),
+    Country(db_ril100='XB', iso_3166='BE', uic=88, name="Belgien"),
+    Country(db_ril100='ZB', iso_3166='BA', uic=44, name="Bosnien-Herzegowina"),
+    Country(db_ril100='XC', iso_3166='RU', uic=20, name="Russland"),
+    Country(db_ril100='XD', iso_3166='DK', uic=86, name="Dänemark"),
+    Country(db_ril100='XE', iso_3166='ES', uic=71, name="Spanien"),
+    Country(db_ril100='ZE', iso_3166='EE', uic=26, name="Estland"),
+    Country(db_ril100='XF', iso_3166='FR', uic=87, name="Frankreich"),
+    Country(db_ril100='XG', iso_3166='GR', uic=73, name="Griechenland"),
+    Country(db_ril100='XH', iso_3166='FI', uic=10, name="Finnland"),
+    Country(db_ril100='XI', iso_3166='IT', uic=83, name="Italien"),
+    Country(db_ril100='ZI', iso_3166='IE', uic=60, name="Irland"),
+    # FIXME: Bosnia and Serbia have partially the same RIL100 code
+    Country(db_ril100='XJ', iso_3166='RS', uic=72, name="Serbien"),
+    Country(db_ril100='XK', iso_3166='GB', uic=70, name="Vereinigtes Königreich", _tld='uk',
             _name_forms=Pronouns(
                 nominative="das Vereinigte Königreich",
                 genitive="des Vereinigten Königreichs",
                 dative="dem Vereinigten Königreich",
                 accusative="das Vereinigte Königreich"
             )),
-    Country(db_ril100='L', iso_3166='LU', uic=82, name="Luxemburg"),
-    Country(db_ril100='M', iso_3166='HU', uic=55, name="Ungarn"),
-    Country(db_ril100='N', iso_3166='NL', uic=84, name="Niederlande",
+    Country(db_ril100='ZK', iso_3166='KZ', uic=27, name="Kasachstan"),
+    Country(db_ril100='XL', iso_3166='LU', uic=82, name="Luxemburg"),
+    Country(db_ril100='ZL', iso_3166='LT', uic=24, name="Litauen"),
+    Country(db_ril100='XM', iso_3166='HU', uic=55, name="Ungarn"),
+    Country(db_ril100='ZM', iso_3166='MD', uic=23, name="Moldau"),
+    Country(db_ril100='XN', iso_3166='NL', uic=84, name="Niederlande",
             _name_forms=Pronouns(
                 nominative="die Niederlande",
                 genitive="der Niederlande",
                 dative="den Niederlanden",
                 accusative="die Niederlande"
             )),
-    Country(db_ril100='O', iso_3166='NO', uic=76, name="Norwegen"),
-    Country(db_ril100='P', iso_3166='PL', uic=51, name="Polen"),
-    Country(db_ril100='Q', iso_3166='TR', uic=75, name="Türkei",
+    Country(db_ril100='XO', iso_3166='NO', uic=76, name="Norwegen"),
+    Country(db_ril100='XP', iso_3166='PL', uic=51, name="Polen"),
+    Country(db_ril100='XQ', iso_3166='TR', uic=75, name="Türkei",
             _name_forms=Pronouns(
                 nominative="die Türkei",
                 genitive="der Türkei",
                 dative="der Türkei",
                 accusative="die Türkei"
             )),
-    Country(db_ril100='R', iso_3166='HR', uic=78, name="Kroatien"),
-    Country(db_ril100='S', iso_3166='CH', uic=85, name="Schweiz",
+    Country(db_ril100='XR', iso_3166='HR', uic=78, name="Kroatien"),
+    Country(db_ril100='XS', iso_3166='CH', uic=85, name="Schweiz",
             _name_forms=Pronouns(
                 nominative="die Schweiz",
                 genitive="der Schweiz",
                 dative="der Schweiz",
                 accusative="die Schweiz"
             )),
-    Country(db_ril100='T', iso_3166='CZ', uic=54, name="Tschechien"),
-    Country(db_ril100='U', iso_3166='RO', uic=53, name="Rumänien"),
-    Country(db_ril100='V', iso_3166='SE', uic=74, name="Schweden"),
-    Country(db_ril100='W', iso_3166='BG', uic=52, name="Bulgarien"),
-    Country(db_ril100='X', iso_3166='PT', uic=94, name="Portugal"),
-    Country(db_ril100='Y', iso_3166='SK', uic=56, name="Slowakei",
+    Country(db_ril100='XT', iso_3166='CZ', uic=54, name="Tschechien"),
+    Country(db_ril100='ZT', iso_3166='LV', uic=25, name="Lettland"),
+    Country(db_ril100='XU', iso_3166='RO', uic=53, name="Rumänien"),
+    Country(db_ril100='ZU', iso_3166='UA', uic=22, name="Ukraine"),
+    Country(db_ril100='XV', iso_3166='SE', uic=74, name="Schweden"),
+    Country(db_ril100='XW', iso_3166='BG', uic=52, name="Bulgarien"),
+    Country(db_ril100='ZW', iso_3166='BY', uic=21, name="Belarus"),
+    Country(db_ril100='XX', iso_3166='PT', uic=94, name="Portugal"),
+    Country(db_ril100='XY', iso_3166='SK', uic=56, name="Slowakei",
             _name_forms=Pronouns(
                 nominative="die Slowakei",
                 genitive="der Slowakei",
                 dative="der Slowakei",
                 accusative="die Slowakei"
             )),
-    Country(db_ril100='Z', iso_3166='SI', uic=79, name="Slowenien"),
+    Country(db_ril100='XZ', iso_3166='SI', uic=79, name="Slowenien"),
     germany
 )}
 
 ril100_to_country: Dict[str, Country] = {country.db_ril100: country for country in countries.values()}
+ril100_to_country.update({
+    "X-": germany,
+    "Z-": germany
+})
 iso_3166_to_country: Dict[str, Country] = countries
 tld_to_country: Dict[str, Country] = {country.tld: country for country in countries.values()}
 flag_to_country: Dict[str, Country] = {country.flag: country for country in countries.values()}
 uic_to_country: Dict[int, Country] = {country.uic: country for country in countries.values()}
+uic_to_country.update({
+    49: countries["BA"],
+    50: countries["BA"]
+})
 
 
 class CountryRepresentation(Enum):
@@ -156,10 +173,10 @@ class CountryRepresentation(Enum):
 def country_for_code(code: str) -> Tuple[Optional[Country], CountryRepresentation]:
     code = code.upper()
     if code.startswith('X'):
-        country_ril100 = code[1]
+        country_ril100 = code[:2]
         return ril100_to_country[country_ril100], CountryRepresentation.RIL100_X
     elif code.startswith('Z'):
-        country_ril100 = code[1]
+        country_ril100 = code[:2]
         return ril100_to_country[country_ril100], CountryRepresentation.RIL100_Z
     elif flag_re.match(code):
         flag = code[:2]
