@@ -55,11 +55,14 @@ class PathSuggestionConfig:
 
 def get_path_suggestion(graph: nx.Graph, stations: List[str],
                         config: PathSuggestionConfig = PathSuggestionConfig(),
-                        station_to_group: Optional[Dict[str, int]] = None) -> List[str]:
+                        station_to_group: Optional[Dict[str, int]] = None) -> List[str] | None:
     path_complete = get_shortest_path(graph, stations,
                                       use_sfs=config.use_sfs,
                                       accept_non_electrified=config.non_electrified,
                                       avoid_equipments=config.avoid_equipments)
+    if not path_complete:
+        # For single stations, we can't compute a pathSuggestion
+        return None
     assert nx.is_simple_path(graph, path_complete)
     if not config.full_path:
         path_without_trivial_nodes = without_trivial_nodes(graph, stations, path_complete, station_to_group)
