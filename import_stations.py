@@ -31,11 +31,13 @@ def import_stations_into_tc(station_codes: List[str],
                             annotate: bool = False,
                             data_set: Optional[DataSet] = None,
                             station_json: TcFile | None = None,
+                            case_sensitive: bool = False,
                             **kwargs) -> TcFile:
     if not data_set:
         data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [with_location_data(code_to_station[code.upper()]) for code in station_codes]
+    stations = [with_location_data(code_to_station[code.upper() if not case_sensitive else code]) for code in
+                station_codes]
 
     add_location_data_to_list(stations)
 
@@ -63,7 +65,9 @@ def import_stations_into_tc(station_codes: List[str],
     add_stations_to_file(stations.copy(), station_json, override_stations, update_stations, append=append)
 
     if trassenfinder:
-        create_trassenfinder([(code, code_to_station[code.upper()].name) for code in station_codes], tc_directory)
+        create_trassenfinder(
+            [(code, code_to_station[code.upper() if not case_sensitive else code].name) for code in station_codes],
+            tc_directory)
     if gpx:
         create_gpx(stations, tc_directory)
 

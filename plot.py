@@ -43,8 +43,8 @@ def get_routes_plot_data(station_data: List[dict], path_data: List[dict],
     if highlighted_path:
         highlighted_segments = set()
         for start, end in zip(highlighted_path, highlighted_path[1:]):
-            highlighted_segments.add((start, end))
-            highlighted_segments.add((end, start))
+            highlighted_segments.add((start.upper(), end.upper()))
+            highlighted_segments.add((end.upper(), start.upper()))
         colors = [color_highlight if (start.upper(), end.upper()) in highlighted_segments else color_default for start, end in segments]
         line_widths = [line_width_highlight if (start.upper(), end.upper()) in highlighted_segments else line_width_default for start, end in segments]
     else:

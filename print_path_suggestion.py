@@ -18,13 +18,14 @@ def print_path_suggestion(station_codes: List[str],
                           tc_directory: PathLike | str = '..',
                           data_directory: PathLike | str = 'data',
                           config: PathSuggestionConfig = PathSuggestionConfig,
-                          graph: Optional[nx.Graph] = None
+                          graph: Optional[nx.Graph] = None,
+                          case_sensitive: bool = False
                           ):
     station_json = TcFile("Station", tc_directory)
     path_json = TcFile("Path", tc_directory)
 
     if not graph:
-        graph = graph_from_files(station_json, path_json)
+        graph = graph_from_files(station_json, path_json, case_sensitive=case_sensitive)
 
     station_groups = {station['ril100']: station.get('group') for station in station_json.data}
 
@@ -49,12 +50,13 @@ if __name__ == '__main__':
 
     station_json = TcFile("Station", args.tc_directory)
     path_json = TcFile("Path", args.tc_directory)
-    graph = graph_from_files(station_json, path_json)
+    graph = graph_from_files(station_json, path_json, case_sensitive=args.case_sensitive)
 
     for path in stations:
         print_path_suggestion(
             station_codes=path,
             tc_directory=args.tc_directory,
             data_directory=args.data_directory,
-            config=config
+            config=config,
+            case_sensitive=args.case_sensitive
         )
