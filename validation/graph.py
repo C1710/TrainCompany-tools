@@ -17,10 +17,13 @@ def build_tc_graph(stations: List[str], paths: List[Tuple[str, str] | Tuple[str,
     return graph
 
 
-def graph_from_files(station_json: TcFile, path_json: TcFile) -> nx.Graph:
-    station_codes = [station['ril100'].upper() for station in flatten_objects(station_json.data)]
-    path_edges = [(path['start'].upper(), path['end'].upper(), path) for path in flatten_objects(path_json.data)
-                  if path['start'].upper() in station_codes and path['end'].upper() in station_codes]
+def graph_from_files(station_json: TcFile, path_json: TcFile, case_sensitive: bool = False) -> nx.Graph:
+    maybe_upper = str.upper if not case_sensitive else lambda s: s
+
+    station_codes = [maybe_upper(station['ril100']) for station in flatten_objects(station_json.data)]
+    path_edges = [(maybe_upper(path['start']), maybe_upper(path['end']), path) for path in
+                  flatten_objects(path_json.data)
+                  if maybe_upper(path['start']) in station_codes and maybe_upper(path['end']) in station_codes]
 
     return build_tc_graph(station_codes, path_edges)
 

@@ -25,7 +25,7 @@ def update_path_suggestions(tc_directory: PathLike | str,
 
     if not graph:
         path_json = TcFile('Path', tc_directory)
-        graph = graph_from_files(station_json, path_json)
+        graph = graph_from_files(station_json, path_json, case_sensitive=True)
 
     task_model_json = TcFile('TaskModel', tc_directory)
 
