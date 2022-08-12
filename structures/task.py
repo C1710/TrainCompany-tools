@@ -41,8 +41,8 @@ class Task:
         if not path_suggestion_config:
             path_suggestion_config = PathSuggestionConfig()
         if graph:
-            object.__setattr__(self, 'path_suggestion', get_path_suggestion(graph, self.stations,
-                                                                            config=path_suggestion_config))
+            object.__setattr__(self, 'pathSuggestion', get_path_suggestion(graph, self.stations,
+                                                                           config=path_suggestion_config))
 
     def to_dict(self, add_suggestion: bool = False) -> Dict[str, Any]:
         task = self.__dict__
