@@ -276,6 +276,8 @@ def validate(tc_directory: PathLike | str = '..',
                 new_task.update(sub_task)
                 tasks.append(new_task)
 
+    from validation.graph import PathSuggestionConfig
+
     for task in tasks:
         # 5.1. All stations exist
         if 'stations' in task:
@@ -290,7 +292,8 @@ def validate(tc_directory: PathLike | str = '..',
                 # First, we need to recreate the full path
                 # For this, we need treat the suggestions as the stations for a new pathSuggestion
                 try:
-                    path = get_shortest_path(graph=graph, stations=task['pathSuggestion'], log=False)
+                    config = PathSuggestionConfig(distance=True)
+                    path = get_shortest_path(graph=graph, stations=task['pathSuggestion'], config=config, log=False)
                     if not nx.is_simple_path(graph, path):
                         issues_score = 10000 if enforce_experimental else 0
                         logging.error("+{: <6} pathSuggestion enthält Kreis: {}".format(

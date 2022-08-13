@@ -1,9 +1,13 @@
+from __future__ import annotations
 import logging
-from typing import Dict, Any, List, Optional, Generator, Set
+from typing import Dict, Any, List, Optional, Generator, Set, TYPE_CHECKING
 
 import networkx as nx
 
 from cli_utils import format_list_double_quotes
+
+if TYPE_CHECKING:
+    from validation.graph import PathSuggestionConfig
 
 
 def get_shortest_path(graph: nx.Graph,
@@ -12,7 +16,14 @@ def get_shortest_path(graph: nx.Graph,
                       use_sfs: bool = True,
                       accept_non_electrified: bool = True,
                       avoid_equipments: Optional[Set[str]] = None,
+                      config: PathSuggestionConfig | None = None,
                       log: bool = True) -> Optional[List[str]]:
+    if config:
+        train = config.train
+        use_sfs = config.use_sfs
+        accept_non_electrified = config.non_electrified
+        avoid_equipments = config.avoid_equipments
+
     if len(stations) >= 2:
         if avoid_equipments is None:
             avoid_equipments = set()
@@ -97,8 +108,10 @@ def _without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str]
             continue
         # We want to yield all nodes that have degree != 2 themselves or an adjacent one.
         # However, we do not care if one of the other nodes has degree 1, because it would still be trivial
-        if graph.degree[this_node] != 2 \
-                or (add_adjacent_2_degree and (graph.degree[last_node] > 2 or graph.degree[next_node] > 2)):
+        if graph.degree[this_node] != 2:
+            yield this_node
+            continue
+        if add_adjacent_2_degree and (graph.degree[last_node] > 2 or graph.degree[next_node] > 2):
             if not station_to_group or station_to_group.get(this_node) not in (5, 6):
                 yield this_node
     yield path[-1]
