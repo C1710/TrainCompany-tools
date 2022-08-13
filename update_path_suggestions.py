@@ -2,16 +2,12 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 from os import PathLike
-
-import networkx as nx
 
 from cli_utils import add_default_cli_args
 from structures.task import *
 from tc_utils import TcFile
-from validation import build_tc_graph
-from validation.graph import graph_from_files
+from validation.graph import graph_from_files, path_suggestion_configs
 
 
 def update_path_suggestions(tc_directory: PathLike | str,
@@ -47,7 +43,17 @@ def update_path_suggestion(task: Dict[str, Any],
         stations = task['stations']
         if force or 'pathSuggestion' not in task:
             try:
-                path_suggestion = get_path_suggestion(graph, stations, config=config, station_to_group=station_to_group)
+                if config.auto_service:
+                    logging.debug("Using automatic pathSuggestion config")
+                    if 'service' in task:
+                        config_ = path_suggestion_configs[task['service']]
+                    else:
+                        logging.warning("Task enthält kein \"service\": {}".format(task))
+                        config_ = config
+                else:
+                    config_ = config
+                path_suggestion = get_path_suggestion(graph, stations, config=config_,
+                                                      station_to_group=station_to_group)
                 if path_suggestion:
                     task['pathSuggestion'] = path_suggestion
             except nx.exception.NetworkXNoPath as e:
@@ -64,7 +70,7 @@ if __name__ == '__main__':
     add_default_cli_args(parser, data_directory=False)
     parser.add_argument('--force', action='store_true',
                         help="Aktualisiert alle pathSuggestions, auch existierende")
-    PathSuggestionConfig.add_cli_args(parser)
+    PathSuggestionConfig.add_cli_args(parser, allow_auto_service=True)
     args = parser.parse_args()
     config = PathSuggestionConfig.from_cli_args(args)
 

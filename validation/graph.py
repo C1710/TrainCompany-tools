@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass, field
+from enum import Enum
 
 import networkx as nx
 from typing import List, Tuple, Any, Dict, Optional, Set, ClassVar
@@ -33,10 +34,11 @@ class PathSuggestionConfig:
     use_sfs: bool = field(default=True)
     non_electrified: bool = field(default=True)
     avoid_equipments: Set[str] = field(default_factory=set)
-    full_path: bool = False
+    full_path: bool = field(default=False),
+    auto_service: bool = field(default=False)
 
     @classmethod
-    def add_cli_args(cls, parser: ArgumentParser):
+    def add_cli_args(cls, parser: ArgumentParser, allow_auto_service: bool = False):
         parser.add_argument("--avoid-sfs", action='store_true',
                             help="Versucht, SFS zu meiden.")
         parser.add_argument("--electrified", action='store_true',
@@ -45,15 +47,62 @@ class PathSuggestionConfig:
                             help="Vereinfacht den Pfad nicht.")
         parser.add_argument("--avoid-equipments", type=str, nargs='+', metavar="EQUIPMENT",
                             help="Equipments, die gemieden werden sollen.")
+        if allow_auto_service:
+            parser.add_argument("--auto-service", action="store_true",
+                                help="pathSuggestion-Konfiguration automatisch festlegen.")
+        parser.add_argument("--path-suggestion-service", type=int,
+                            help="Nutzt die Standard-PathSuggestion-Konfiguration für die angegebene Aufgabenkategorie.")
 
     @classmethod
     def from_cli_args(cls, args: Namespace) -> PathSuggestionConfig:
-        return cls(
-            use_sfs=not args.avoid_sfs,
-            non_electrified=not args.electrified,
-            avoid_equipments=args.avoid_equipments,
-            full_path=args.full_path
-        )
+        if args.path_suggestion_service is None:
+            return cls(
+                use_sfs=not args.avoid_sfs,
+                non_electrified=not args.electrified,
+                avoid_equipments=args.avoid_equipments,
+                full_path=args.full_path,
+                auto_service=args.auto_service,
+            )
+        else:
+            # Use the default suggestion config for the given service level
+            # TODO: Allow to override stuff
+            base_suggestion = path_suggestion_configs[args.path_suggestion_service]
+            return base_suggestion
+
+
+class PathSuggestionConfigs(PathSuggestionConfig, Enum):
+    HGV = PathSuggestionConfig(
+        use_sfs=True,
+        non_electrified=False
+    )
+    IC = PathSuggestionConfig(
+        use_sfs=True
+    )
+    REGIO = PathSuggestionConfig(
+        avoid_equipments={"KRM", "TVM"}
+    )
+    REGIO_SHORT = PathSuggestionConfig(
+        use_sfs=False,
+        avoid_equipments={"ETCS", "KRM", "TVM"}
+    )
+    SPECIAL = PathSuggestionConfig(
+        avoid_equipments={"KRM", "TVM"}
+    )
+    FREIGHT_IMPORTANT = PathSuggestionConfig(
+        avoid_equipments={"KRM", "TVM"}
+    )
+    FREIGHT = FREIGHT_IMPORTANT
+
+
+path_suggestion_configs: Dict[int, PathSuggestionConfig] = {
+    0: PathSuggestionConfigs.HGV,
+    1: PathSuggestionConfigs.IC,
+    2: PathSuggestionConfigs.REGIO,
+    3: PathSuggestionConfigs.REGIO_SHORT,
+    4: PathSuggestionConfigs.SPECIAL,
+    10: PathSuggestionConfigs.FREIGHT_IMPORTANT,
+    11: PathSuggestionConfigs.FREIGHT
+}
 
 
 def get_path_suggestion(graph: nx.Graph, stations: List[str],
