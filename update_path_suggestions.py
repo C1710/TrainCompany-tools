@@ -45,10 +45,15 @@ def update_path_suggestion(task: Dict[str, Any],
                            force: bool = False,
                            fix: bool = False,
                            preserve: bool = False,
-                           service: int | None = None):
-    if service is None:
-        service = task['service'] if 'service' in task else None
-    if 'stations' in task:
+                           service: int | None = None,
+                           stops_everywhere: bool | None = None):
+    if 'service' in task:
+        service = task['service']
+    if 'stopsEverwhere' in task:
+        stops_everywhere = task['stopsEverwhere']
+    if 'stopsEverywhere' in task:
+        stops_everywhere = task['stopsEverywhere']
+    if 'stations' in task and not stops_everywhere:
         stations = task['stations']
         if 'pathSuggestion' in task:
             preserve_ = preserve
@@ -80,13 +85,17 @@ def update_path_suggestion(task: Dict[str, Any],
                 logging.exception("Konnte keine pathSuggestion finden", exc_info=e)
         if 'pathSuggestion' in task and (
                 task['pathSuggestion'] == task['stations']
-                or not task['pathSuggestion']) and not preserve_:
+                or not task['pathSuggestion']) \
+                and not preserve_:
+            task.pop('pathSuggestion')
+    if stops_everywhere:
+        if 'pathSuggestion' in task:
             task.pop('pathSuggestion')
     if 'objects' in task:
         for sub_task in task['objects']:
-            service = sub_task['service'] if 'service' in sub_task else service
             update_path_suggestion(sub_task, graph, config=config, station_to_group=station_to_group,
-                                   force=force, fix=fix, preserve=preserve, service=service)
+                                   force=force, fix=fix, preserve=preserve, service=service,
+                                   stops_everywhere=stops_everywhere)
 
 
 if __name__ == '__main__':
