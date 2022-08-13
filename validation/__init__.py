@@ -277,6 +277,7 @@ def validate(tc_directory: PathLike | str = '..',
                 tasks.append(new_task)
 
     from validation.graph import PathSuggestionConfig
+    from validation.shortest_paths import has_direct_path
 
     for task in tasks:
         # 5.1. All stations exist
@@ -312,5 +313,16 @@ def validate(tc_directory: PathLike | str = '..',
                         ))
                     issues += issues_score
 
-    return issues
+            # 5.2.3. Check that all pathSuggestions have direct paths between their nodes
+            issues_score = 70
+            for segment_start, segment_end in nx.utils.pairwise(task['pathSuggestion']):
+                if not has_direct_path(graph, segment_start, segment_end):
+                    logging.warning(
+                        "+{: <6} Zwischen {} und {} gibt es keine direkte Verbindung".format(
+                            issues_score,
+                            segment_start, segment_end
+                        )
+                    )
+                    issues += issues_score
 
+    return issues

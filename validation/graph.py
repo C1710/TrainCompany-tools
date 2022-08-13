@@ -9,7 +9,7 @@ import networkx as nx
 from typing import List, Tuple, Any, Dict, Optional, Set, ClassVar
 
 from tc_utils import TcFile, expand_objects, flatten_objects
-from validation.shortest_paths import get_shortest_path, without_trivial_nodes
+from validation.shortest_paths import get_shortest_path, without_trivial_nodes, has_direct_path
 
 
 def build_tc_graph(stations: List[str], paths: List[Tuple[str, str] | Tuple[str, str, Dict[str, Any]]]) -> nx.Graph:
@@ -136,9 +136,33 @@ def get_path_suggestion(graph: nx.Graph, stations: List[str],
         # For single stations, we can't compute a pathSuggestion
         return None
     assert nx.is_simple_path(graph, path_complete), path_complete
-    assert not (config.auto_service and config.full_path)
     if not config.full_path:
         path_without_trivial_nodes = without_trivial_nodes(graph, stations, path_complete, station_to_group)
         return path_without_trivial_nodes
     else:
         return path_complete
+
+
+def fixed_path_suggestion(graph: nx.Graph, stations: List[str],
+                          existing_path_suggestion: List[str],
+                          config: PathSuggestionConfig = PathSuggestionConfig(),
+                          station_to_group: Optional[Dict[str, int]] = None) -> List[str] | None:
+    new_path_complete = []
+    updated = False
+    existing_path_suggestion_set = set(existing_path_suggestion)
+    for segment_start, segment_end in nx.utils.pairwise(existing_path_suggestion):
+        new_path_complete.append(segment_start)
+        if not has_direct_path(graph, segment_start, segment_end, existing_path_suggestion_set):
+            updated = True
+            expanded_segment = get_shortest_path(graph, [segment_start, segment_end], config=config)
+            if expanded_segment:
+                # Only add the stations _between_ the start and end of the segment
+                expanded_segment = expanded_segment[1:-1]
+                new_path_complete.extend(expanded_segment)
+    new_path_complete.append(existing_path_suggestion[-1])
+
+    if not config.full_path and updated:
+        new_path = without_trivial_nodes(graph, stations, new_path_complete, station_to_group)
+        return new_path
+    else:
+        return new_path_complete
