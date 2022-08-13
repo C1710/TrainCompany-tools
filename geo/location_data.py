@@ -3,13 +3,13 @@ from __future__ import annotations
 import logging
 import os.path
 from functools import lru_cache
-from typing import List, Optional
 
+import geopy
 from geopy import GoogleV3
 from geopy.exc import GeopyError
 
 # https://adamj.eu/tech/2021/05/13/python-type-hints-how-to-fix-circular-imports/
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from structures.country import *
 
@@ -28,10 +28,20 @@ def load_api_key() -> str:
         return api_key.read()
 
 
-def with_location_data(station: Station) -> Station:
+def with_location_data(station: Station,
+                       fallback_geocoder: str | None = None,
+                       **fallback_kwargs) -> Station:
     from structures import Station
     if not station.location:
-        geolocator = GoogleV3(api_key=load_api_key())
+        if fallback_geocoder:
+            try:
+                geolocator = GoogleV3(api_key=load_api_key())
+            except FileNotFoundError:
+                logging.info("No Google API-Key. Falling back to OSM")
+                cls = geopy.get_geocoder_for_service(fallback_geocoder)
+                geolocator = cls(**fallback_kwargs)
+        else:
+            geolocator = GoogleV3(api_key=load_api_key())
         location = geolocator.geocode(create_search_query(station),
                                       region=country_for_station(station).tld,
                                       language=query_language(station))
@@ -79,10 +89,14 @@ def query_language(station: Station) -> str:
     else:
         return "EN"
 
-def add_location_data_to_list(stations: List[Station]):
+
+def add_location_data_to_list(stations: List[Station],
+                              fallback_geocoder: str | None = None,
+                              **fallback_kwargs):
     for index, station in enumerate(stations):
         try:
-            stations[index] = with_location_data(station)
+            stations[index] = with_location_data(station, fallback_geocoder=fallback_geocoder,
+                                                 fallback_kwargs=fallback_kwargs)
         except TimeoutError:
             logging.warning("Konnte Standortdaten für {} nicht abrufen.".format(station.name))
         except GeopyError:
