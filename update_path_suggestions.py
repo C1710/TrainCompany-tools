@@ -7,7 +7,7 @@ from os import PathLike
 from cli_utils import add_default_cli_args
 from structures.task import *
 from tc_utils import TcFile
-from validation.graph import graph_from_files, path_suggestion_configs
+from validation.graph import graph_from_files, path_suggestion_configs, fixed_path_suggestion
 
 
 def update_path_suggestions(tc_directory: PathLike | str,
@@ -77,8 +77,9 @@ def update_path_suggestion(task: Dict[str, Any],
                 elif fix:
                     # We want to change as little as possible and be as close to the game's strategy as possible.
                     config_.distance = True
-                    path_suggestion = get_path_suggestion(graph, task['pathSuggestion'], config=config_,
-                                                          station_to_group=station_to_group)
+                    path_suggestion = fixed_path_suggestion(graph, stations, config=config_,
+                                                            existing_path_suggestion=task['pathSuggestion'],
+                                                            station_to_group=station_to_group)
                 if path_suggestion:
                     task['pathSuggestion'] = path_suggestion
             except nx.exception.NetworkXNoPath as e:

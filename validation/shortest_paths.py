@@ -1,6 +1,6 @@
 from __future__ import annotations
 import logging
-from typing import Dict, Any, List, Optional, Generator, Set, TYPE_CHECKING
+from typing import Dict, Any, List, Optional, Generator, Set, TYPE_CHECKING, Tuple
 
 import networkx as nx
 
@@ -115,3 +115,22 @@ def _without_trivial_nodes(graph: nx.Graph, stations: List[str], path: List[str]
             if not station_to_group or station_to_group.get(this_node) not in (5, 6):
                 yield this_node
     yield path[-1]
+
+
+def _view_direct(graph: nx.Graph, station_start: str, station_end: str, avoid: Set[str] | None = None) -> nx.Graph:
+    if avoid is None:
+        avoid = set()
+    view = nx.subgraph_view(graph, filter_node=lambda node: (graph.degree[node] <= 2 and node not in avoid) or node in (
+    station_start, station_end))
+    return view
+
+
+def has_direct_path(graph: nx.Graph, station_start: str, station_end: str, avoid: Set[str] | None = None) -> bool:
+    view = _view_direct(graph, station_start, station_end, avoid)
+    return nx.has_path(view, station_start, station_end)
+
+
+def direct_paths(graph: nx.Graph, station_start: str, station_end: str, avoid: Set[str] | None = None) -> Generator[
+    List[str], None, None]:
+    view = _view_direct(graph, station_start, station_end, avoid)
+    return nx.all_simple_paths(view, station_start, station_end)
