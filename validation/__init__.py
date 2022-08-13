@@ -292,9 +292,11 @@ def validate(tc_directory: PathLike | str = '..',
             if enable_experimental:
                 # First, we need to recreate the full path
                 # For this, we need treat the suggestions as the stations for a new pathSuggestion
+                # TODO: Use direct paths instead
                 try:
                     config = PathSuggestionConfig(distance=True)
                     path = get_shortest_path(graph=graph, stations=task['pathSuggestion'], config=config, log=False)
+                    # 5.2.1. Check if it is a simple path
                     if not nx.is_simple_path(graph, path):
                         issues_score = 10000 if enforce_experimental else 0
                         logging.error("+{: <6} pathSuggestion enthält Kreis: {}".format(
@@ -304,6 +306,7 @@ def validate(tc_directory: PathLike | str = '..',
                         logging.error("       {}".format(format_list_double_quotes(path)))
                         issues += issues_score
                 except nx.exception.NetworkXNoPath as e:
+                    # 5.2.1.1. Error if pathSuggestion could not be found
                     issues_score = 40 if enforce_experimental else 0
                     logging.warning(
                         "+{: <6} Konnte keinen Pfad für pathSuggestion finden. {}\n       Betroffene pathSuggestion: {}".format(
@@ -312,17 +315,17 @@ def validate(tc_directory: PathLike | str = '..',
                             format_list_double_quotes(task['pathSuggestion'])
                         ))
                     issues += issues_score
-
-            # 5.2.3. Check that all pathSuggestions have direct paths between their nodes
-            issues_score = 70
-            for segment_start, segment_end in nx.utils.pairwise(task['pathSuggestion']):
-                if not has_direct_path(graph, segment_start, segment_end):
-                    logging.warning(
-                        "+{: <6} Zwischen {} und {} gibt es keine direkte Verbindung".format(
-                            issues_score,
-                            segment_start, segment_end
+            if enable_experimental:
+                # 5.2.2. Check that all pathSuggestions have direct paths between their nodes
+                issues_score = 70
+                for segment_start, segment_end in nx.utils.pairwise(task['pathSuggestion']):
+                    if not has_direct_path(graph, segment_start, segment_end):
+                        logging.warning(
+                            "+{: <6} Zwischen {} und {} gibt es keine direkte Verbindung".format(
+                                issues_score,
+                                segment_start, segment_end
+                            )
                         )
-                    )
-                    issues += issues_score
+                        issues += issues_score
 
     return issues
