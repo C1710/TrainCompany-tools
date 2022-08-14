@@ -20,8 +20,8 @@ uic_country = re.compile(r'[1-9][0-9]\d{5,7}')
 class Country:
     iso_3166: str
     name: str
-    db_ril100: str
     uic: int
+    db_ril100: str | None = None
     _name_forms: Optional[Pronouns] = field(default=None)
     _tld: Optional[str] = field(default=None)
 
@@ -137,10 +137,67 @@ countries: Dict[str, Country] = {country.iso_3166: country for country in (
                 accusative="die Slowakei"
             )),
     Country(db_ril100='XZ', iso_3166='SI', uic=79, name="Slowenien"),
+    Country(iso_3166='GE', uic=28, name="Georgien"),
+    Country(iso_3166='UZ', uic=29, name="Usbekistan"),
+    Country(iso_3166='KP', uic=30, name="Nordkorea"),
+    Country(iso_3166='MN', uic=31, name="Mongolei",
+            _name_forms=Pronouns(
+                nominative="die Mongolei",
+                genitive="der Mongolei",
+                dative="der Mongolei",
+                accusative="die Mongolei"
+            )),
+    Country(iso_3166='VN', uic=32, name="Vietnam"),
+    Country(iso_3166='CN', uic=33, name="VR China",
+            _name_forms=Pronouns(
+                nominative="die VR China",
+                genitive="der VR China",
+                dative="der VR China",
+                accusative="die VR China"
+            )),
+    Country(iso_3166='CU', uic=40, name="Kuba"),
+    Country(iso_3166='AL', uic=41, name="Albanien"),
+    Country(iso_3166='JP', uic=42, name="Japan"),
+    Country(iso_3166='AZ', uic=57, name="Aserbaidschan"),
+    Country(iso_3166='AM', uic=58, name="Armenien"),
+    Country(iso_3166='KG', uic=59, name="Kirgisistan"),
+    Country(iso_3166='KR', uic=61, name="Südkorea"),
+    Country(iso_3166='ME', uic=62, name="Montenegro"),
+    Country(iso_3166='TJ', uic=66, name="Tadschikistan"),
+    Country(iso_3166='TM', uic=67, name="Turkmenistan"),
+    Country(iso_3166='AF', uic=68, name="Afghanistan"),
+    Country(iso_3166='EG', uic=90, name="Ägypten"),
+    Country(iso_3166='TN', uic=91, name="Tunesien"),
+    Country(iso_3166='DZ', uic=92, name="Algerien"),
+    Country(iso_3166='MA', uic=93, name="Marokko"),
+    Country(iso_3166='IL', uic=95, name="Israel"),
+    Country(iso_3166='IR', uic=96, name="Iran",
+            _name_forms=Pronouns(
+                nominative="der Iran",
+                genitive="des Irans",
+                dative="dem Iran",
+                accusative="den Iran"
+            )),
+    Country(iso_3166='SY', uic=97, name="Syrien"),
+    Country(iso_3166='LB', uic=98, name="Libanon",
+            _name_forms=Pronouns(
+                nominative="der Libanon",
+                genitive="des Libanons",
+                dative="dem Libanon",
+                accusative="den Libanon"
+            )),
+    Country(iso_3166='IQ', uic=99, name="Irak",
+            _name_forms=Pronouns(
+                nominative="der Irak",
+                genitive="des Iraks",
+                dative="dem Irak",
+                accusative="den Irak"
+            )),
     germany
 )}
 
-ril100_to_country: Dict[str, Country] = {country.db_ril100: country for country in countries.values()}
+ril100_to_country: Dict[str, Country] = {country.db_ril100: country for country in countries.values()
+                                         if country.db_ril100}
 ril100_to_country.update({
     "X-": germany,
     "Z-": germany
