@@ -4,7 +4,7 @@ import argparse
 import logging
 from os import PathLike
 
-from cli_utils import add_default_cli_args
+from cli_utils import add_default_cli_args, use_default_cli_args
 from structures.task import *
 from tc_utils import TcFile
 from validation.graph import graph_from_files, path_suggestion_configs, fixed_path_suggestion
@@ -111,6 +111,7 @@ if __name__ == '__main__':
                         help="Löscht bestehende pathSuggestions, wenn sie redundant sind")
     PathSuggestionConfig.add_cli_args(parser, allow_auto_service=True)
     args = parser.parse_args()
+    use_default_cli_args(args)
     config = PathSuggestionConfig.from_cli_args(args)
 
     tasks_json = update_path_suggestions(tc_directory=args.tc_directory, force=args.force, fix=args.fix, config=config)

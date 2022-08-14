@@ -8,7 +8,8 @@ from typing import List, Optional, Set
 
 import networkx as nx
 
-from cli_utils import process_station_input, add_default_cli_args, add_station_cli_args, parse_station_args
+from cli_utils import process_station_input, add_default_cli_args, add_station_cli_args, parse_station_args, \
+    use_default_cli_args
 from structures import DataSet
 from tc_utils import TcFile
 from validation.graph import graph_from_files, get_path_suggestion, PathSuggestionConfig
@@ -45,6 +46,7 @@ if __name__ == '__main__':
     PathSuggestionConfig.add_cli_args(parser)
 
     args = parser.parse_args()
+    use_default_cli_args(args)
     stations = parse_station_args(args, required=True)
     config = PathSuggestionConfig.from_cli_args(args)
 

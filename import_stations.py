@@ -11,7 +11,8 @@ from typing import List, Tuple, Optional, Any, Dict
 
 import gpxpy.gpx
 
-from cli_utils import check_files, process_station_input, add_default_cli_args, add_station_cli_args, parse_station_args
+from cli_utils import check_files, process_station_input, add_default_cli_args, add_station_cli_args, \
+    parse_station_args, use_default_cli_args
 from geo.location_data import add_location_data_to_list, with_location_data
 from structures import DataSet
 from structures.country import split_country, CountryRepresentation, iso_3166_to_country, tld_to_country
@@ -141,6 +142,7 @@ if __name__ == '__main__':
     parser.add_argument('--gpx', action='store_true',
                         help="Legt eine GPX-Datei mit Wegpunkten an, die bspw. auf brouter.de importiert werden kann.")
     args = parser.parse_args()
+    use_default_cli_args(args)
 
     check_files(args.tc_directory, args.data_directory)
     stations = parse_station_args(args, required=True, inplace=False)

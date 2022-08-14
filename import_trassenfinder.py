@@ -9,7 +9,7 @@ import pathlib
 from os import PathLike
 from typing import Tuple
 
-from cli_utils import check_files, add_default_cli_args
+from cli_utils import check_files, add_default_cli_args, use_default_cli_args
 from geo.location_data import add_location_data_to_list
 from import_brouter import import_gpx_into_tc
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
@@ -61,6 +61,7 @@ if __name__ == '__main__':
     parser.add_argument('--annotate', action='store_true',
                         help="Fügt die vollen Stationsnamen hinzu. Die müssen später wieder gelöscht werden!")
     args = parser.parse_args()
+    use_default_cli_args(args)
 
     check_files(args.tc_directory, args.data_directory)
 

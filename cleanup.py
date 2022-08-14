@@ -7,7 +7,7 @@ import os
 from os import PathLike
 from typing import Any, Dict, Tuple
 
-from cli_utils import add_default_cli_args
+from cli_utils import add_default_cli_args, use_default_cli_args
 from tc_utils import TcFile
 
 
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     parser.add_argument("--force", action="store_true",
                         help="Löscht alle Annotationen, auch, wenn sie vielleicht noch hilfreich sind.")
     args = parser.parse_args()
+    use_default_cli_args(args)
 
     path_json, station_json = cleanup(tc_directory=args.tc_directory, force=args.force)
     path_json.save()
