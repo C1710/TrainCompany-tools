@@ -33,6 +33,7 @@ Die wichtigsten Tools werden unten noch weiter erläutert.
 - `shift_station_coordinates.py`: _Sollte i.d.R. nicht (mehr) erforderlich sein._
 - `update_path_suggestions.py`: _Bitte nicht nutzen - damit werden alle `pathSuggestions` überschrieben._
 - `validate_files.py`: Prüft die Daten auf mögliche Probleme.
+- `import_brouter.py`: Importiert einen GPX+Wegpunkte-Export aus https://brouter.de/brouter-web.
 
 ## Haltestellen-Auflistungen
 In die Tools `import_stations.py` und `create_tasks.py` müssen viele Haltestellen-Codes (RIL100, usw.) eingegeben werden.
@@ -110,29 +111,60 @@ Zusätzlich gibt es aber noch zwei weitere Optionen:
 Insbesondere Bahnsteigdaten und Gruppe können auch fehlerhaft sein und sollten auf Plausiblität überprüft werden.
 
 ### `import_trassenfinder.py`
-Hiermit können CSV-Exporte aus trassenfinder.de importiert werden (oder ähnliche Dateien).
-Es wird alle Haltepunkte, die mit `"Kundenhalt"` markiert sind, bzw. im Trassenfinder mit einer Haltezeit >0 angegeben sind.
-Um die Strecken leichter zu identifizieren, gibt es die `--annotate`-Option.
-Dadurch werden in den Eintrag in `Path.json` auch die vollen Haltestellennamen hinzugefügt.
-Die sollten aber später wieder über `cleanup.py` gelöscht werden, weil sie die Daten noch größer/unübersichtlicher machen würden.
-Ansonsten werden die Tests fehlschlagen.
+Hiermit können CSV-Exporte aus trassenfinder.de importiert werden (oder ähnliche Dateien). Es wird alle Haltepunkte, die
+mit `"Kundenhalt"` markiert sind, bzw. im Trassenfinder mit einer Haltezeit >0 angegeben sind. Um die Strecken leichter
+zu identifizieren, gibt es die `--annotate`-Option. Dadurch werden in den Eintrag in `Path.json` auch die vollen
+Haltestellennamen hinzugefügt. Die sollten aber später wieder über `cleanup.py` gelöscht werden, weil sie die Daten noch
+größer/unübersichtlicher machen würden. Ansonsten werden die Tests fehlschlagen.
+
 #### Importierte Daten
+
 - Angefahrene Haltestellen-Codes
 - Segment/Streckenlänge
 - Länderzulassungen
 - (Falls Streckennummer angegeben und Daten vorhanden) Elektrifizierung, Streckengruppe (Haupt-/Nebenbahn, SFS)
+- `twistingFactor` der Strecke
 
-Insbesondere Höchstgeschwindigkeit und Kurvigkeit werden _nicht_ importiert.
+Insbesondere Höchstgeschwindigkeit wird _nicht_ importiert.
+
+### `import_brouter.py`
+
+Hiermit lässt sich ein GPX-Export (mit Wegpunkten aktiviert) aus brouter.de (oder vergleichbar) importieren. Dafür
+müssen alle angefahrenen Haltestellen als Wegpunkte markiert sein (also durch Klicken). Das Tool gleicht dann die
+Wegpunkte mit bekannten Haltestellen ab und erstellt ggf. neue (erkennbar an den Flagge + O + Zahlen-Codes).
+
+### Importierte Daten
+
+- Haltestellen
+	- Code
+	- Name
+	- Standort
+	- Art (kann falsch liegen, bitte kontrollieren)
+	- Falls in den Daten vorhanden, Bahnsteiginformationen
+- Strecken
+	- Wegpunkte
+	- Falls `--annotate` angegeben ist, auch die langen Namen der Wegpunkte
+	  (müssen später mit `cleanup.py` wieder entfernt werden)
+	- Segmentlängen
+	- `twistingFactor`
+	- Länderzulassungen (müssen ggf. manuell bei `TrainEquipment.json` hinzugefügt werden)
+	  Bei Grenzen kann/muss ggf. eine der beiden Zulassungen entfernt werden
+
+Es werden _keine_ Höxhstgeschwindigkeiten und Informationen zu Streckenart und Elektrifizierung hinzugefügt. Hierzu
+bitte bspw. bei OpenRailwayMap nachsehen.
 
 ### `plot.py`
-EIn einfaches Tool ohne Optionen (auch ohne `-h`), das die aktuelle Haltestellen/Strecken-Karte erstellt - `map_plot.py`.
-Die kann in Inkscape oder vielleicht auch einem Webbrowser geöffnet werden und dient als Hilfe um z.B. fehlerhafte Koordinaten zu finden oder Haltestellen zu entklumpen.
+
+EIn einfaches Tool ohne Optionen (auch ohne `-h`), das die aktuelle Haltestellen/Strecken-Karte erstellt - `map_plot.py`
+. Die kann in Inkscape oder vielleicht auch einem Webbrowser geöffnet werden und dient als Hilfe um z.B. fehlerhafte
+Koordinaten zu finden oder Haltestellen zu entklumpen.
 
 ### `validate_files.py`
-Prüft die Datensätze auf Probleme, wie zu lange Streckenabschnitte, Haltestellen ohne Anschluss ans Netz usw.
-Manche Probleme bringen mehr oder weniger "Punkte". Ist eine bestimmte Schwelle (derzeit standardmäßig 700) überschritten, schlägt es fehl.
-Meist liegt das an einzelnen großen Problemen, etwa noch vorhandenen langen Namen.
-Steigt dieser Punktestand nur leicht gegenüber der existierenden Version an, wird das wahrscheinlich okay sein,
+
+Prüft die Datensätze auf Probleme, wie zu lange Streckenabschnitte, Haltestellen ohne Anschluss ans Netz usw. Manche
+Probleme bringen mehr oder weniger "Punkte". Ist eine bestimmte Schwelle (derzeit standardmäßig 700) überschritten,
+schlägt es fehl. Meist liegt das an einzelnen großen Problemen, etwa noch vorhandenen langen Namen. Steigt dieser
+Punktestand nur leicht gegenüber der existierenden Version an, wird das wahrscheinlich okay sein,
 auch wenn der Punktestand dann so gerade über den Schwellwert kommt.
 
 ## Wie eine neue (internationale) Strecke hinzugefügt werden kann
