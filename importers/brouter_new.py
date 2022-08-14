@@ -21,11 +21,13 @@ from structures.station import Station, CodeTuple
 class BrouterImporterNew(Importer[CodeWaypoint]):
     stations: List[Station]
     name_to_station: Dict[str, Station]
+    language: str | bool
 
-    def __init__(self, station_data: List[Station]):
+    def __init__(self, station_data: List[Station], language: str | bool = False):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
+        self.language = language
 
     def import_data(self, file_name: str) -> List[CodeWaypoint]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -40,7 +42,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 geopy.Point(latitude=waypoint.latitude, longitude=waypoint.longitude),
                 exactly_one=False,
                 limit=6,
-                query_string_filter='+'.join(["osm_value:stop", "osm_value:station", "osm_value:halt"])
+                query_string_filter='+'.join(["osm_value:stop", "osm_value:station", "osm_value:halt"]),
+                language=self.language
             )
             if possible_stations is None:
                 logging.error(f"No station found for location (lat={waypoint.latitude}, lon={waypoint.longitude})")
@@ -55,8 +58,12 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 logging.error("Ignoring station")
                 continue
 
+            for possible_station in possible_stations:
+                if 'name' not in possible_station.raw['properties']:
+                    logging.info("Station ohne Namen: {}".format(possible_station.raw))
+
             possible_station_names = (normalize_name(station.raw['properties']['name'])
-                                      for station in possible_stations)
+                                      for station in possible_stations if 'name' in station.raw['properties'])
             possible_station_groups = [group_from_photon_response(station.raw['properties']) for station in
                                        possible_stations]
             # Is one of these names in our data set?
@@ -79,7 +86,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     break
             else:
                 logging.info("Couldn't find any of these stations: {}. Creating new one.".format(
-                    [station.raw['properties']['name'] for station in possible_stations]
+                    [station.raw['properties']['name'] for station in possible_stations if
+                     'name' in station.raw['properties']]
                 ))
                 # We create a new station because we can't find an existing one
                 new_station = possible_stations[0]
