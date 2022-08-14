@@ -61,7 +61,7 @@ def validate(tc_directory: PathLike | str = '..',
                 logging.warning("+{: <6} Unbekannte Haltestelle: {}".format(issues_score, station['ril100']))
                 issues += issues_score
             else:
-                logging.info("+{: <6} Betriebsstelle in unbekanntem Land: {}".format(0, station['ril100']))
+                logging.debug("+{: <6} Betriebsstelle in unbekanntem Land: {}".format(0, station['ril100']))
             continue
         # 1.1. location check
         # Currently not done because the new coordinates are not yet supported
