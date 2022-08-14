@@ -236,7 +236,7 @@ class CodeWaypoint(Waypoint):
 
 
 sinuosity_to_twist = [
-    (1.000, 0.00),
+    (1.000, 0.01),
     (1.010, 0.10),
     (1.025, 0.13),
     (1.050, 0.15),

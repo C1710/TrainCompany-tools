@@ -1,6 +1,8 @@
 from __future__ import annotations
 import logging
+import re
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import List, Optional, Tuple, Dict, Set, Any
 
 import geopy.distance
@@ -22,7 +24,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
 
     def __init__(self, station_data: List[Station]):
         self.stations = station_data
-        self.name_to_station = {unidecode.unidecode(station.name.lower()): station for station in station_data}
+        self.name_to_station = {normalize_name(station.name): station
+                                for station in station_data}
 
     def import_data(self, file_name: str) -> List[CodeWaypoint]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -52,8 +55,7 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 logging.error("Ignoring station")
                 continue
 
-            # FIXME: Apply other normalizations as well
-            possible_station_names = (unidecode.unidecode(station.raw['properties']['name'].lower())
+            possible_station_names = (normalize_name(station.raw['properties']['name'])
                                       for station in possible_stations)
             possible_station_groups = [group_from_photon_response(station.raw['properties']) for station in
                                        possible_stations]
@@ -134,6 +136,22 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     break
             last_location = location
         return code_waypoints
+
+
+delimiters = re.compile(r"[- _]", flags=re.IGNORECASE)
+omitted_tokens = re.compile(r"[.']", flags=re.IGNORECASE)
+more_than_one_space = re.compile(r"\s\s+")
+
+
+@lru_cache
+def normalize_name(name: str) -> str:
+    name = name.lower()
+    name = unidecode.unidecode(name)
+    name = delimiters.sub(" ", name)
+    name = omitted_tokens.sub("", name)
+    name = more_than_one_space.sub(" ", name)
+    name = name.replace("saint", "st")
+    return name
 
 
 def group_from_photon_response(response: Dict[str, Any]) -> int:
