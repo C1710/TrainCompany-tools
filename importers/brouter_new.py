@@ -55,6 +55,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
             # FIXME: Apply other normalizations as well
             possible_station_names = (unidecode.unidecode(station.raw['properties']['name'].lower())
                                       for station in possible_stations)
+            possible_station_groups = [group_from_photon_response(station.raw['properties']) for station in
+                                       possible_stations]
             # Is one of these names in our data set?
             for name in possible_station_names:
                 if name in self.name_to_station:
@@ -97,7 +99,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                         latitude=new_station.latitude,
                         longitude=new_station.longitude
                     ),
-                    _group=group_from_photon_response(new_station_properties)
+                    _group=largest_group(possible_station_groups)
+
                 )
 
                 # Add to the data set (it should propagate to the original data set as well)
@@ -134,8 +137,10 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
 
 def group_from_photon_response(response: Dict[str, Any]) -> int:
     value = response['osm_value']
-    if value == 'station' or value == 'stop':
+    if value == 'station':
         group = 2
+    elif value == 'stop':
+        group = 5
     elif value == 'halt':
         group = 5
     elif value == 'junction':
@@ -143,3 +148,22 @@ def group_from_photon_response(response: Dict[str, Any]) -> int:
     else:
         group = -1
     return group
+
+
+def largest_group(groups: List[int]) -> int:
+    if 0 in groups:
+        return 0
+    if 1 in groups:
+        return 1
+    if 2 in groups:
+        return 2
+    if 5 in groups:
+        return 5
+    if 3 in groups:
+        return 3
+    if 6 in groups:
+        return 6
+    if 4 in groups:
+        return 4
+    else:
+        return -1
