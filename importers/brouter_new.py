@@ -109,7 +109,7 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
             stops.append(station)
 
         # Now we go through the file, accumulate distances and create the new waypoints
-        distance_total = 0
+        distance_total = 0.0
         code_waypoints = []
         last_location: Optional[Location] = None
         for trackpoint in gpx.tracks[0].segments[0].points:
@@ -118,10 +118,10 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 longitude=trackpoint.longitude
             )
             if last_location:
-                distance_total += location.distance(last_location)
+                distance_total += location.distance_float(last_location)
             # Check if we have a stop here
             for stop in stops:
-                if stop.location.distance(location) < 0.08:
+                if stop.location.distance_float(location) < 0.08:
                     # We have a stop here - add the CodeWaypoint
                     code_waypoints.append(CodeWaypoint(
                         code=stop.codes[0],
@@ -132,6 +132,7 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     # We don't want to match the stop multiple times
                     stops.remove(stop)
                     break
+            last_location = location
         return code_waypoints
 
 
