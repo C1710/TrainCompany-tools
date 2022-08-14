@@ -50,32 +50,41 @@ def with_location_data(station: Station, use_google: bool = False) -> Station:
                 country_for_station(station).name,
                 osm_tag="place:country"
             )
+            bbox = country_location.raw['properties']['extent']
+            bbox_start = geopy.Point(
+                longitude=bbox[0],
+                latitude=bbox[1]
+            )
+            bbox_end = geopy.Point(
+                longitude=bbox[2],
+                latitude=bbox[3]
+            )
 
             location: geopy.Location = geolocator.geocode(station.name,
                                                           osm_tag=['railway:station', 'railway:halt', 'railway:stop',
                                                                    'railway:junction'],
-                                                          location_bias=country_location.point)
+                                                          bbox=(bbox_start, bbox_end))
 
             if location is None:
                 logging.warning("Couldn't find station {}. Looking for town/village/...".format(station.name))
                 location = geolocator.geocode(station.name,
                                               osm_tag=['place:city', 'place:town', 'place:borough', 'place:hamlet',
                                                        'place:village', 'place:municipality'],
-                                              location_bias=country_location.point)
+                                              bbox=(bbox_start, bbox_end))
 
             # Extract metadata
-            metadata: Dict[str, Any] = location.raw['properties']
-            osm_id = metadata['osm_id']
-            city = metadata['city']
-            value = metadata['osm_value']
-            if value == 'station':
-                group = 2
-            elif value == 'halt':
-                group = 5
-            elif value == 'junction':
-                group = 4
-            else:
-                group = -1
+            # metadata: Dict[str, Any] = location.raw['properties']
+            # osm_id = metadata['osm_id']
+            # city = metadata['city']
+            # value = metadata['osm_value']
+            # if value == 'station':
+            #     group = 2
+            # elif value == 'halt':
+            #     group = 5
+            # elif value == 'junction':
+            #     group = 4
+            # else:
+            #     group = -1
 
         if location is None:
             logging.warning("Couldn't find station {}.".format(station.name))
