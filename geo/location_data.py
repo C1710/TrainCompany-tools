@@ -52,7 +52,7 @@ def with_location_data(station: Station, use_google: bool = False) -> Station:
             )
 
             location: geopy.Location = geolocator.geocode(station.name,
-                                                          osm_tag=['railway:station', 'railway:halt',
+                                                          osm_tag=['railway:station', 'railway:halt', 'railway:stop',
                                                                    'railway:junction'],
                                                           location_bias=country_location.point)
 

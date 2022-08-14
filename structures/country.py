@@ -69,7 +69,7 @@ class Country:
 # We add a special RIL100 country code for Germany
 germany = Country(db_ril100='-', iso_3166='DE', uic=80, name="Deutschland")
 
-countries = {country.iso_3166: country for country in (
+countries: Dict[str, Country] = {country.iso_3166: country for country in (
     Country(db_ril100='XA', iso_3166='AT', uic=81, name="Österreich"),
     Country(db_ril100='ZA', iso_3166='MK', uic=65, name="Nordmazedonien"),
     Country(db_ril100='XB', iso_3166='BE', uic=88, name="Belgien"),
