@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import logging
 import os
 from argparse import ArgumentParser, Namespace
@@ -54,7 +55,8 @@ def process_station_input(stations: List[str],
 
 def add_default_cli_args(parser: ArgumentParser,
                          tc_directory: bool = True,
-                         data_directory: bool = True):
+                         data_directory: bool = True,
+                         default_logging_level: int = logging.WARNING):
     script_path = os.path.realpath(__file__)
     script_dir = os.path.dirname(script_path)
 
@@ -71,8 +73,29 @@ def add_default_cli_args(parser: ArgumentParser,
                             help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
     if data_directory:
         parser.add_argument('--data_directory', "--data-dir", dest='data_directory', metavar='VERZEICHNIS', type=str,
-                        default=default_data_directory,
-                        help="Das Verzeichnis, in dem sich die OpenData-Datensätze befinden")
+                            default=default_data_directory,
+                            help="Das Verzeichnis, in dem sich die OpenData-Datensätze befinden")
+    logging_args = parser.add_mutually_exclusive_group(required=False)
+    # https://stackoverflow.com/a/20663028/5070653
+    logging_args.add_argument("--log-level", dest="loglevel", default=default_logging_level,
+                              help=argparse.SUPPRESS)
+    if default_logging_level != logging.INFO:
+        logging_args.add_argument("-v", "--verbose", action="store_const", dest="loglevel", const=logging.INFO,
+                                  help="Gibt mehr Logging-Informationen aus")
+    if default_logging_level != logging.DEBUG:
+        logging_args.add_argument("-d", "--debug", action="store_const", dest="loglevel", const=logging.DEBUG,
+                                  help="Gibt Debug-Informationen aus")
+    if default_logging_level != logging.WARNING:
+        logging_args.add_argument("-w", "--warning", action="store_const", dest="loglevel", const=logging.WARNING,
+                                  help="Gibt nur Warnungen aus")
+    if default_logging_level != logging.ERROR:
+        logging_args.add_argument("-e", "--error", "--quiet", action="store_const", dest="loglevel",
+                                  const=logging.ERROR,
+                                  help="Gibt nur schwerwiegende Fehler aus")
+
+
+def use_default_cli_args(args: Namespace):
+    logging.basicConfig(level=args.loglevel)
 
 
 def add_station_cli_args(parser: ArgumentParser,

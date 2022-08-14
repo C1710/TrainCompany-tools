@@ -7,7 +7,7 @@ import os
 from os import PathLike
 from typing import List
 
-from cli_utils import check_files, add_default_cli_args
+from cli_utils import check_files, add_default_cli_args, use_default_cli_args
 
 
 def export_station_list(country: str,
@@ -30,6 +30,7 @@ if __name__ == '__main__':
                         help="Die Datei, in die gespeichert werden soll. Standard: stations_<Land>.tsv")
     add_default_cli_args(parser)
     args = parser.parse_args()
+    use_default_cli_args(args)
 
     check_files(args.tc_directory, args.data_directory)
 

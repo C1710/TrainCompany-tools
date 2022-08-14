@@ -8,7 +8,7 @@ import sys
 from os import PathLike
 from typing import Type
 
-from cli_utils import check_files, add_default_cli_args, add_station_cli_args, parse_station_args
+from cli_utils import check_files, add_default_cli_args, add_station_cli_args, parse_station_args, use_default_cli_args
 from structures.country import parse_codes_with_countries
 from structures.task import *
 from tc_utils import TcFile
@@ -96,6 +96,7 @@ if __name__ == '__main__':
     parser.add_argument('--no_add_suggestion', action='store_true',
                         help="Fügt der Task keinen Hinweis auf den kürzesten Pfad hinzu.")
     args = parser.parse_args()
+    use_default_cli_args(args)
 
     check_files(args.tc_directory, args.data_directory)
     stations = parse_station_args(args, required=True)

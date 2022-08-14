@@ -6,7 +6,7 @@ import argparse
 from os import PathLike
 from typing import Dict, Any
 
-from cli_utils import add_default_cli_args
+from cli_utils import add_default_cli_args, use_default_cli_args
 from geo import Location
 from tc_utils import TcFile
 
@@ -46,6 +46,7 @@ if __name__ == '__main__':
                         " 1 - Direkte Projektion auf EPSG:3035\n"
                         " 2 - Von WGS84 auf EPSG:3035\n")
     args = parser.parse_args()
+    use_default_cli_args(args)
 
     station_json = project_coordinates(tc_directory=args.tc_directory, projection_version=args.version)
     station_json.save()

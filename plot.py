@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 import json
 import os
 
-from cli_utils import add_default_cli_args, process_station_input, add_station_cli_args, parse_station_args
+from cli_utils import add_default_cli_args, process_station_input, add_station_cli_args, parse_station_args, \
+    use_default_cli_args
 from geo import Location
 from project_coordinates import project_coordinate_for_station
 from structures import DataSet
@@ -145,6 +146,7 @@ if __name__ == '__main__':
     parser.add_argument('--hide-text', action='store_true',
                         help="Fügt keine Stationscodes hinzu")
     args = parser.parse_args()
+    use_default_cli_args(args)
     highlight_path = parse_station_args(args)
     if args.out_file is None:
         args.out_file = os.path.join(args.tc_directory, "map_plot.svg")

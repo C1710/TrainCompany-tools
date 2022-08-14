@@ -33,5 +33,5 @@ class FrPlatformsImporter (CsvImporter[Platform]):
 
 
 def warn_missing_station(station_name: str) -> int:
-    logging.debug("Unknown station name: {}".format(station_name))
+    logging.debug("Unknown station name for platform: {}".format(station_name))
     return -1
