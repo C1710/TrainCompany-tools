@@ -33,14 +33,15 @@ def import_stations_into_tc(station_codes: List[str],
                             data_set: Optional[DataSet] = None,
                             station_json: TcFile | None = None,
                             case_sensitive: bool = False,
+                            use_google: bool = False,
                             **kwargs) -> TcFile:
     if not data_set:
         data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [with_location_data(code_to_station[code.upper() if not case_sensitive else code]) for code in
+    stations = [code_to_station[code.upper() if not case_sensitive else code] for code in
                 station_codes]
 
-    add_location_data_to_list(stations)
+    add_location_data_to_list(stations, use_google=use_google)
 
     for station in stations:
         if not station.platform_count or not station.platform_length and station.group != 4:
@@ -141,6 +142,8 @@ if __name__ == '__main__':
                         help="Legt eine Trassenfinder-ähnliche Datei mit den Haltestellen an.")
     parser.add_argument('--gpx', action='store_true',
                         help="Legt eine GPX-Datei mit Wegpunkten an, die bspw. auf brouter.de importiert werden kann.")
+    parser.add_argument("--use-google", action='store_true',
+                        help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
     args = parser.parse_args()
     use_default_cli_args(args)
 

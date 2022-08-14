@@ -23,7 +23,8 @@ def import_trasse_into_tc(trasse: PathLike | str,
                           tc_directory: PathLike | str = '..',
                           data_directory: PathLike | str = 'data',
                           override_stations: bool = False,
-                          add_annotation: bool = False
+                          add_annotation: bool = False,
+                          use_google: bool = False
                           ) -> Tuple[TcFile, TcFile]:
     if pathlib.Path(trasse).suffix.lower() == 'gpx':
         logging.warning("GPX-Dateiendung. Versuche als Brouter-Export zu laden.")
@@ -41,7 +42,7 @@ def import_trasse_into_tc(trasse: PathLike | str,
     tc_route = TcRoute.from_route(route, data_set.station_data, add_annotations=add_annotation)
 
     # Add location data from Google, if necessary
-    add_location_data_to_list(tc_route.stations)
+    add_location_data_to_list(tc_route.stations, use_google=use_google)
 
     add_route_to_files(tc_route, station_json, path_json,
                        override_stations=override_stations)
@@ -60,6 +61,8 @@ if __name__ == '__main__':
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     parser.add_argument('--annotate', action='store_true',
                         help="Fügt die vollen Stationsnamen hinzu. Die müssen später wieder gelöscht werden!")
+    parser.add_argument("--use-google", action='store_true',
+                        help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
     args = parser.parse_args()
     use_default_cli_args(args)
 

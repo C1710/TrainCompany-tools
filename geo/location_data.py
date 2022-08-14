@@ -32,9 +32,6 @@ def load_api_key() -> str:
 def with_location_data(station: Station, use_google: bool = False) -> Station:
     from structures import Station
     if not station.location:
-        kwargs = {
-            "language": query_language(station)
-        }
         if use_google:
             geolocator = GoogleV3(api_key=load_api_key())
             logging.debug("Using location data from Google")
@@ -120,10 +117,10 @@ def query_language(station: Station) -> str:
         return "EN"
 
 
-def add_location_data_to_list(stations: List[Station]):
+def add_location_data_to_list(stations: List[Station], use_google: bool = False):
     for index, station in enumerate(stations):
         try:
-            stations[index] = with_location_data(station)
+            stations[index] = with_location_data(station, use_google=use_google)
         except TimeoutError:
             logging.warning("Konnte Standortdaten für {} nicht abrufen.".format(station.name))
         except GeopyError:
