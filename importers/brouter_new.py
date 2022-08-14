@@ -55,8 +55,12 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 logging.error("Ignoring station")
                 continue
 
+            for possible_station in possible_stations:
+                if 'name' not in possible_station.raw['properties']:
+                    logging.info("Station ohne Namen: {}".format(possible_station.raw))
+
             possible_station_names = (normalize_name(station.raw['properties']['name'])
-                                      for station in possible_stations)
+                                      for station in possible_stations if 'name' in station.raw['properties'])
             possible_station_groups = [group_from_photon_response(station.raw['properties']) for station in
                                        possible_stations]
             # Is one of these names in our data set?
@@ -79,7 +83,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     break
             else:
                 logging.info("Couldn't find any of these stations: {}. Creating new one.".format(
-                    [station.raw['properties']['name'] for station in possible_stations]
+                    [station.raw['properties']['name'] for station in possible_stations if
+                     'name' in station.raw['properties']]
                 ))
                 # We create a new station because we can't find an existing one
                 new_station = possible_stations[0]
