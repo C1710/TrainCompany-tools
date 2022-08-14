@@ -34,7 +34,8 @@ def add_platforms_to_stations(stations: List[Station], platforms: List[Platform]
                     station_to_plattforms[station] = []
                 station_to_plattforms[station].append(platform)
             except KeyError:
-                logging.debug("Couldn't find station for platform: {}".format(platform.station))
+                if platform.station >= 0:
+                    logging.debug("Couldn't find station for platform: {}".format(platform.station))
         # TODO: Fail here
     for index, station in enumerate(stations):
         if station in station_to_plattforms:
