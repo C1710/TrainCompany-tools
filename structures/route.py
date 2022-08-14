@@ -155,10 +155,7 @@ class TcPath:
 
     @staticmethod
     def merge(paths: List[TcPath]) -> TcPath:
-        main_path = TcPath(
-            maxSpeed=0,
-            twistingFactor=0
-        )
+        main_path = TcPath()
         for attr in paths[0].__dict__.keys():
             base = paths[0].__getattribute__(attr)
             if all((path.__getattribute__(attr) == base for path in paths)):
@@ -169,6 +166,13 @@ class TcPath:
                 for path in paths:
                     path.__setattr__(attr, None)
         main_path.objects = paths
+
+        if main_path.maxSpeed is None:
+            main_path.maxSpeed = 0
+        if main_path.twistingFactor is None:
+            main_path.twistingFactor = 0
+        if not main_path.objects or not main_path.objects[0]:
+            main_path.objects = None
         return main_path
 
     def to_dict(self) -> Dict[str, Any]:
