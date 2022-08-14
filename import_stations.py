@@ -32,15 +32,11 @@ def import_stations_into_tc(station_codes: List[str],
                             data_set: Optional[DataSet] = None,
                             station_json: TcFile | None = None,
                             case_sensitive: bool = False,
-                            fallback_geocoder: str | None = None,
-                            fallback_geocoder_kwargs: Dict[str, Any] | None = None,
                             **kwargs) -> TcFile:
     if not data_set:
         data_set = DataSet.load_data(data_directory)
     code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(data_set.station_data)}
-    stations = [with_location_data(code_to_station[code.upper() if not case_sensitive else code],
-                                   fallback_geocoder=fallback_geocoder,
-                                   fallback_kwargs=fallback_geocoder_kwargs) for code in
+    stations = [with_location_data(code_to_station[code.upper() if not case_sensitive else code]) for code in
                 station_codes]
 
     add_location_data_to_list(stations)
@@ -144,9 +140,6 @@ if __name__ == '__main__':
                         help="Legt eine Trassenfinder-ähnliche Datei mit den Haltestellen an.")
     parser.add_argument('--gpx', action='store_true',
                         help="Legt eine GPX-Datei mit Wegpunkten an, die bspw. auf brouter.de importiert werden kann.")
-    parser.add_argument("--falback-geocoder", type=str,
-                        help="Der geopy-Geocoder, der verwendet werden soll, wenn kein Google Maps API-Key vorhanden ist")
-
     args = parser.parse_args()
 
     check_files(args.tc_directory, args.data_directory)

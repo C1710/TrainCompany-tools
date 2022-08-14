@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import inspect
 import logging
 import os.path
 from functools import lru_cache
 
 import geopy
-from geopy import GoogleV3
+from geopy import GoogleV3, Photon
 from geopy.exc import GeopyError
 
 # https://adamj.eu/tech/2021/05/13/python-type-hints-how-to-fix-circular-imports/
@@ -28,31 +29,60 @@ def load_api_key() -> str:
         return api_key.read()
 
 
-def with_location_data(station: Station,
-                       fallback_geocoder: str | None = None,
-                       **fallback_kwargs) -> Station:
+def with_location_data(station: Station, use_google: bool = False) -> Station:
     from structures import Station
     if not station.location:
-        if fallback_geocoder:
-            try:
-                geolocator = GoogleV3(api_key=load_api_key())
-            except FileNotFoundError:
-                logging.info("No Google API-Key. Falling back to OSM")
-                cls = geopy.get_geocoder_for_service(fallback_geocoder)
-                geolocator = cls(**fallback_kwargs)
-        else:
+        kwargs = {
+            "language": query_language(station)
+        }
+        if use_google:
             geolocator = GoogleV3(api_key=load_api_key())
-        location = geolocator.geocode(create_search_query(station),
-                                      region=country_for_station(station).tld,
-                                      language=query_language(station))
-        logging.info("Loading station location from Google Maps")
-        if location is None:
-            logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
-            location = geolocator.geocode(station.name,
-                                          region=country_for_station(station).tld,
-                                          language=query_language(station))
+            logging.debug("Using location data from Google")
+
+            location = geolocator.geocode(create_search_query(station),
+                                          region=country_for_station(station).tld)
             if location is None:
-                logging.warning("Couldn't find station {}.".format(station.name))
+                # This is only an issue if we use Google Maps
+                logging.warning("Couldn't find station {}. Trying without \" Bahnhof\" suffix".format(station.name))
+                location = geolocator.geocode(station.name, region=country_for_station(station).tld)
+        else:
+            geolocator = Photon()
+            logging.debug("Using location data from Photon")
+
+            country_location: geopy.Location = geolocator.geocode(
+                country_for_station(station).name,
+                osm_tag="place:country"
+            )
+
+            location: geopy.Location = geolocator.geocode(station.name,
+                                                          osm_tag=['railway:station', 'railway:halt',
+                                                                   'railway:junction'],
+                                                          location_bias=country_location.point)
+
+            if location is None:
+                logging.warning("Couldn't find station {}. Looking for town/village/...".format(station.name))
+                location = geolocator.geocode(station.name,
+                                              osm_tag=['place:city', 'place:town', 'place:borough', 'place:hamlet',
+                                                       'place:village', 'place:municipality'],
+                                              location_bias=country_location.point)
+
+            # Extract metadata
+            metadata: Dict[str, Any] = location.raw['properties']
+            osm_id = metadata['osm_id']
+            city = metadata['city']
+            value = metadata['osm_value']
+            if value == 'station':
+                group = 2
+            elif value == 'halt':
+                group = 5
+            elif value == 'junction':
+                group = 4
+            else:
+                group = -1
+
+        if location is None:
+            logging.warning("Couldn't find station {}.".format(station.name))
+
         station = Station(
             name=station.name,
             codes=station.codes,
@@ -90,13 +120,10 @@ def query_language(station: Station) -> str:
         return "EN"
 
 
-def add_location_data_to_list(stations: List[Station],
-                              fallback_geocoder: str | None = None,
-                              **fallback_kwargs):
+def add_location_data_to_list(stations: List[Station]):
     for index, station in enumerate(stations):
         try:
-            stations[index] = with_location_data(station, fallback_geocoder=fallback_geocoder,
-                                                 fallback_kwargs=fallback_kwargs)
+            stations[index] = with_location_data(station)
         except TimeoutError:
             logging.warning("Konnte Standortdaten für {} nicht abrufen.".format(station.name))
         except GeopyError:
