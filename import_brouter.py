@@ -10,6 +10,7 @@ from typing import Tuple
 from cli_utils import check_files, add_default_cli_args, use_default_cli_args
 from geo.location_data import add_location_data_to_list
 from importers.brouter import BrouterImporter
+from importers.brouter_new import BrouterImporterNew
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
 from structures import DataSet
 from structures.route import TcRoute
@@ -22,10 +23,15 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        data_directory: PathLike | str = 'data',
                        override_stations: bool = False,
                        add_annotation: bool = False,
-                       use_google: bool = False
+                       use_google: bool = False,
+                       use_old_importer: bool = False
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
-    waypoints = BrouterImporter().import_data(gpx)
+    if use_old_importer:
+        importer = BrouterImporter(data_set.station_data)
+    else:
+        importer = BrouterImporterNew(data_set.station_data)
+    waypoints = importer.import_data(gpx)
 
     station_json = TcFile('Station', tc_directory)
     path_json = TcFile('Path', tc_directory)
@@ -55,6 +61,8 @@ if __name__ == '__main__':
                         help="Fügt die vollen Stationsnamen hinzu. Die müssen später wieder gelöscht werden!")
     parser.add_argument("--use-google", action='store_true',
                         help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
+    parser.add_argument("--old-importer", action='store_true',
+                        help="Nutzt den alten Importer, der auf Standorten basiert und nur bekannte Haltestellen hinzufügt.")
     args = parser.parse_args()
     use_default_cli_args(args)
 
@@ -65,7 +73,8 @@ if __name__ == '__main__':
         args.tc_directory,
         args.data_directory,
         args.override_stations,
-        add_annotation=args.annotate
+        add_annotation=args.annotate,
+        use_old_importer=args.old_importer
     )
 
     station_json.save()

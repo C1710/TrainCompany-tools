@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 import logging
 from abc import ABCMeta
 from dataclasses import dataclass, field
@@ -81,6 +82,7 @@ class TcPath:
     length: Optional[int] = field(default=None)
     maxSpeed: Optional[int] = field(default=None)
     twistingFactor: Optional[float] = field(default=None)
+    sinuosity: Optional[float] = field(default=None)
     neededEquipments: Optional[List[str]] = field(default=None)
     objects: Optional[List[TcPath] | List[Dict[str, Any]]] = field(default=None)
 
@@ -102,41 +104,48 @@ class TcPath:
             visited_waypoints.append(waypoint_start)
 
             if waypoint_end.is_stop:
-                length = waypoint_end.distance_from_start - visited_waypoints[0].distance_from_start
-                visited_countries: Set = set()
-                visited_countries.update({country_for_code(waypoint.code)[0] for waypoint in visited_waypoints})
-                visited_countries.add(country_for_code(waypoint_end.code)[0])
+                current_stop = waypoint_end
+                last_stop = visited_waypoints[0]
+                length = current_stop.distance_from_start - last_stop.distance_from_start
+
+                twisting_factor = None
+                sinuosity = None
+                if code_to_station:
+                    current_station = code_to_station[current_stop.code]
+                    last_station = code_to_station[last_stop.code]
+                    if current_station.location and last_station.location:
+                        direct_distance = current_station.location.distance(last_station.location)
+                        sinuosity = round(length / direct_distance, ndigits=3)
+                        twisting_factor = round(sinousity_to_twisting_factor(sinuosity), ndigits=2)
+                    else:
+                        print("No location")
+                else:
+                    print("No code_to_station")
+
+                visited_countries: Set = {country_for_code(waypoint.code)[0] for waypoint in visited_waypoints}
+                visited_countries.add(country_for_code(current_stop.code)[0])
                 needed_countries = [country.iso_3166 for country in visited_countries]
+
+                path_fun = functools.partial(TcPath,
+                                             name=None,
+                                             start=last_stop.code,
+                                             end=current_stop.code,
+                                             electrified=all((track.electrified for track in visited_tracks)),
+                                             group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
+                                             length=int(length),
+                                             maxSpeed=None,
+                                             twistingFactor=twisting_factor,
+                                             neededEquipments=needed_countries if needed_countries else None,
+                                             objects=None)
                 if not add_annotations:
                     # Add a new path
-                    path = TcPath(
-                        name=None,
-                        start=visited_waypoints[0].code,
-                        end=waypoint_end.code,
-                        electrified=all((track.electrified for track in visited_tracks)),
-                        group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
-                        length=int(length),
-                        maxSpeed=None,
-                        twistingFactor=None,
-                        neededEquipments=needed_countries if needed_countries else None,
-                        objects=None
-                    )
+                    path = path_fun()
                 else:
-                    start_code = visited_waypoints[0].code
-                    end_code = waypoint_end.code
-                    path = TcPath(
-                        name=None,
-                        start=start_code,
+                    start_code = last_stop.code
+                    end_code = current_stop.code
+                    path = path_fun(
                         start_long=code_to_station[start_code].name if start_code in code_to_station else '',
-                        end=end_code,
                         end_long=code_to_station[end_code].name if end_code in code_to_station else '',
-                        electrified=all((track.electrified for track in visited_tracks)),
-                        group=max(visited_tracks, key=lambda track: track.kind.rank).kind.value,
-                        length=int(length),
-                        maxSpeed=None,
-                        twistingFactor=None,
-                        neededEquipments=needed_countries if needed_countries else None,
-                        objects=None
                     )
                 paths.append(path)
                 # We will add this one the next time anyway
@@ -146,10 +155,7 @@ class TcPath:
 
     @staticmethod
     def merge(paths: List[TcPath]) -> TcPath:
-        main_path = TcPath(
-            maxSpeed=0,
-            twistingFactor=0
-        )
+        main_path = TcPath()
         for attr in paths[0].__dict__.keys():
             base = paths[0].__getattribute__(attr)
             if all((path.__getattribute__(attr) == base for path in paths)):
@@ -160,6 +166,13 @@ class TcPath:
                 for path in paths:
                     path.__setattr__(attr, None)
         main_path.objects = paths
+
+        if main_path.maxSpeed is None:
+            main_path.maxSpeed = 0
+        if main_path.twistingFactor is None:
+            main_path.twistingFactor = 0
+        if not main_path.objects or not main_path.objects[0]:
+            main_path.objects = None
         return main_path
 
     def to_dict(self) -> Dict[str, Any]:
@@ -224,3 +237,39 @@ class Waypoint(metaclass=ABCMeta):
 @dataclass(frozen=True)
 class CodeWaypoint(Waypoint):
     code: str
+
+
+sinuosity_to_twist = [
+    (1.000, 0.01),
+    (1.010, 0.10),
+    (1.025, 0.13),
+    (1.050, 0.15),
+    (1.100, 0.20),
+    (1.150, 0.28),
+    (1.200, 0.30),
+    (1.330, 0.40),
+    (1.400, 0.50),
+    (1.900, 0.90),
+    (6.000, 1.00)
+]
+
+
+@functools.lru_cache
+def sinousity_to_twisting_factor(sinuosity: float) -> float:
+    if sinuosity < 1.0:
+        return 0.0
+    for (start_sin, start_twist), (end_sin, end_twist) in zip(sinuosity_to_twist, sinuosity_to_twist[1:]):
+        if start_sin <= sinuosity < end_sin:
+            return sinuosity_between_points(sinuosity, start_sin, start_twist, end_sin, end_twist)
+    return 1.0
+
+
+@functools.lru_cache
+def sinuosity_between_points(sinuosity: float,
+                             start_sin: float, start_twist: float,
+                             end_sin: float, end_twist: float) -> float:
+    delta_sin = end_sin - start_sin
+    delta_twist = end_twist - start_twist
+    sinuosity -= start_sin
+    sinuosity *= delta_twist / delta_sin
+    return sinuosity + start_twist

@@ -101,6 +101,12 @@ class Location:
             (other.latitude, other.longitude)
         ).kilometers
 
+    def distance_float(self, other: Location) -> float:
+        return geopy.distance.geodesic(
+            (self.latitude, self.longitude),
+            (other.latitude, other.longitude)
+        ).meters / 1000
+
     def __hash__(self):
         return ('location', self.latitude, self.longitude).__hash__()
 
