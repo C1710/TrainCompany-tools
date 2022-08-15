@@ -46,7 +46,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 exactly_one=False,
                 limit=6,
                 query_string_filter='+'.join(["osm_value:stop", "osm_value:station", "osm_value:halt"]),
-                language=self.language
+                language=self.language,
+                timeout=10
             )
             if possible_stations is None:
                 logging.error(f"No station found for location (lat={waypoint.latitude}, lon={waypoint.longitude})")
