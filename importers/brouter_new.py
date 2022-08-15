@@ -8,6 +8,8 @@ from typing import List, Optional, Tuple, Dict, Set, Any
 import geopy.distance
 import gpxpy
 import unidecode
+from geopy.exc import GeocoderServiceError
+from geopy.extra.rate_limiter import RateLimiter
 
 import geo
 from geo import Location
@@ -36,9 +38,10 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
         stops = []
         # Step 1: Find the OSM railway stations for all waypoints
         geolocator = PhotonAdvancedReverse()
+        reverse = RateLimiter(geolocator.reverse, min_delay_seconds=0.5, max_retries=3)
         for waypoint in gpx.waypoints:
             # Find stations close to the given waypoint location
-            possible_stations: List[geopy.location.Location] | None = geolocator.reverse(
+            possible_stations: List[geopy.location.Location] | None = reverse(
                 geopy.Point(latitude=waypoint.latitude, longitude=waypoint.longitude),
                 exactly_one=False,
                 limit=6,

@@ -17,6 +17,7 @@ from validation.graph import build_tc_graph
 from structures.country import country_for_code, countries, germany
 from validation.shortest_paths import get_shortest_path
 from cli_utils import format_list_double_quotes
+from validation.graph import flatten_objects
 
 
 def print_path(path: Dict[str, Any]) -> str:
@@ -219,6 +220,7 @@ def validate(tc_directory: PathLike | str = '..',
                   if path['start'] in selected_codes and path['end'] in selected_codes]
 
     graph = build_tc_graph(selected_codes, path_edges)
+    # 3.1. Check if the graph is connected
     if not is_connected(graph):
         issues_score = 10000
         logging.error("+{: <6} Das Netz ist nicht zusammenhängend.".format(issues_score))
@@ -226,6 +228,14 @@ def validate(tc_directory: PathLike | str = '..',
             if degree == 0:
                 logging.error(" {: <6} Haltepunkt ohne Route: {}".format('', node))
         issues += issues_score
+    # 3.2. Only visible stations are allowed to have branches
+    for station in flatten_objects(station_json.data):
+        if station['group'] in (5, 6):
+            if graph.degree(station['ril100']) != 2:
+                issues_score = 100
+                logging.error("+{: <6} Nicht dargestellte Haltestelle mit Abzwieg/Ende: {}".format(issues_score,
+                                                                                                   station['ril100']))
+                issues += issues_score
 
     # Step 4: trains
     logging.info(" --- Train.json --- ")
