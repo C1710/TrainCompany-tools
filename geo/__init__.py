@@ -5,11 +5,16 @@ from typing import Callable, Tuple
 
 import geopy.distance
 import pyproj
+from pyproj.enums import TransformDirection
+
+default_projection_version = 1
 
 crs_wgs84 = pyproj.CRS('WGS84')
 crs_proj = pyproj.CRS('epsg:3035')
+crs_robinson = pyproj.CRS('esri:54030')
 transformer = pyproj.Transformer.from_crs(crs_wgs84, crs_proj)
 transformer_reverse = pyproj.Transformer.from_crs(crs_proj, crs_wgs84)
+transformer_robinson = pyproj.Transformer.from_crs(crs_wgs84, crs_robinson)
 projection = pyproj.Proj('epsg:3035')
 
 origin_x_tc: float = 6.482451
@@ -46,11 +51,12 @@ class Location:
         return location
 
     @staticmethod
-    def from_projection(x: int, y: int, version: int = 1) -> Location:
+    def from_projection(x: int, y: int, version: int = default_projection_version) -> Location:
         if version == 0:
             return Location.from_tc(x, y)
         if version == 1:
-            origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: projection(longitude=lon, latitude=lat, errcheck=True))
+            origin_x, origin_y, scale_x, scale_y = get_origin_scale(
+                lambda lon, lat: projection(longitude=lon, latitude=lat, errcheck=True))
             y = -y
             x /= scale_x
             y /= scale_y
@@ -58,27 +64,41 @@ class Location:
             y += origin_y
             longitude, latitude = projection(x, y, inverse=True)
         elif version == 2:
-            origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
+            origin_x, origin_y, scale_x, scale_y = get_origin_scale(
+                lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
             y = -y
             x /= scale_x
             y /= scale_y
             x += origin_x
             y += origin_y
             longitude, latitude = transformer_reverse.transform(x, y)
-        if abs(x -   0) < 2:
+        elif version == 3:
+            origin_x, origin_y, scale_x, scale_y = get_origin_scale(
+                lambda lon, lat: transformer.transform(yy=lon, xx=lat, errcheck=True))
+            y = -y
+            x /= scale_x
+            y /= scale_y
+            x += origin_x
+            y += origin_y
+            longitude, latitude = transformer_robinson.transform(x, y, direction=TransformDirection.INVERSE)
+        if abs(x - 0) < 2:
             assert abs(longitude - origin_x_tc) < 0.002, abs(longitude - origin_x_tc)
-        if abs(y -   0) < 2:
+        if abs(y - 0) < 2:
             assert abs(latitude - origin_y_tc) < 0.002, abs(latitude - origin_y_tc)
         if abs(x - 625) < 2:
             assert abs(longitude - location_nn.longitude) < 0.002, abs(longitude - location_nn.longitude)
         if abs(y - 385) < 2:
             assert abs(latitude - location_nn.latitude) < 0.002, abs(latitude - location_nn.latitude)
+        assert -180.0 <= longitude <= 180.0
+        assert -90.0 <= latitude <= 90.0
         return Location(
             latitude=latitude,
             longitude=longitude
         )
 
-    def to_projection(self, version: int = 1) -> Tuple[int, int]:
+    def to_projection(self, version: int = default_projection_version) -> Tuple[int, int]:
+        assert -180.0 <= self.longitude <= 180.0
+        assert -90.0 <= self.latitude <= 90.0
         if version == -1:
             return int(self.longitude), int(self.latitude)
         elif version == 0:
@@ -86,10 +106,22 @@ class Location:
         else:
             if version == 1:
                 x, y = projection(longitude=self.longitude, latitude=self.latitude, errcheck=True)
-                origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: projection(longitude=lon, latitude=lat, errcheck=True))
+                origin_x, origin_y, scale_x, scale_y = get_origin_scale(
+                    lambda lon, lat: projection(longitude=lon, latitude=lat, errcheck=True))
             elif version == 2:
                 x, y = transformer.transform(xx=self.longitude, yy=self.latitude, errcheck=True)
-                origin_x, origin_y, scale_x, scale_y = get_origin_scale(lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
+                origin_x, origin_y, scale_x, scale_y = get_origin_scale(
+                    lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
+            elif version == 3:
+                try:
+                    x, y = transformer_robinson.transform(yy=self.longitude, xx=self.latitude, errcheck=True)
+                except Exception as e:
+                    print(self.longitude, self.latitude)
+                    raise e
+                origin_x, origin_y, scale_x, scale_y = get_origin_scale(
+                    lambda lon, lat: transformer_robinson.transform(yy=lon, xx=lat, errcheck=True))
+            else:
+                raise ValueError("Projection version is not supported")
             x -= origin_x
             y -= origin_y
             # Note that we negate y here, as we want y to face southwards

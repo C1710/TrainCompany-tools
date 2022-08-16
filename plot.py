@@ -12,14 +12,13 @@ import os
 
 from cli_utils import add_default_cli_args, process_station_input, add_station_cli_args, parse_station_args, \
     use_default_cli_args
-from geo import Location
+from geo import default_projection_version
 from project_coordinates import project_coordinate_for_station
 from structures import DataSet
 from structures.country import split_country, CountryRepresentation
-from tc_utils import TcFile, expand_objects, flatten_objects
+from tc_utils import TcFile
 from validation import get_shortest_path
 from validation.graph import graph_from_files
-from validation.shortest_paths import get_shortest_path_distance
 
 
 def get_routes_plot_data(station_data: List[dict], path_data: List[dict],
@@ -75,8 +74,8 @@ def flag_to_colon(code: str) -> str:
 
 
 def plot_map(tc_directory: os.PathLike | str = '..',
-             projection_version: int = 1,
-             station_sizes = (2.8, 1.6, 1.2, 1.2, 1.2, 0.4, 0.4),
+             projection_version: int = default_projection_version,
+             station_sizes=(2.8, 1.6, 1.2, 1.2, 1.2, 0.4, 0.4),
              out_file: str = "map_plot.svg",
              highlight_path: Optional[List[str]] = None,
              data_directory: Optional[os.PathLike | str] = None,
@@ -129,15 +128,17 @@ def plot_map(tc_directory: os.PathLike | str = '..',
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Aktuelle Karte rendern")
     add_default_cli_args(parser)
-    parser.add_argument('--out_file', metavar="DATEI", type=str,
+    parser.add_argument('--out-file', "--out_file", metavar="DATEI", type=str,
                         help="Die Datei, in die gespeichert werden soll. Standard: map_plot.svg")
-    parser.add_argument('--projection_version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2),
+    parser.add_argument('--projection-version', "--projection_version", metavar="VERSION", type=int,
+                        choices=(-1, 0, 1, 2, 3),
                         default=1,
                         help="Die Version der Projektion, die verwendet werden soll:\n"
                              "-1 - WGS84\n"
                              " 0 - Linear von WGS84\n"
                              " 1 - Direkte Projektion auf EPSG:3035\n"
-                             " 2 - Von WGS84 auf EPSG:3035\n")
+                             " 2 - Von WGS84 auf EPSG:3035\n"
+                             " 3 - Robinson-Projektion")
     add_station_cli_args(parser,
                          allow_unordered=False,
                          help="Ein Pfad, der hervorgehoben werden soll",
@@ -154,5 +155,5 @@ if __name__ == '__main__':
              data_directory=args.data_directory,
              out_file=args.out_file,
              highlight_path=highlight_path,
+             projection_version=args.projection_version,
              add_text=not args.hide_text)
-
