@@ -75,11 +75,12 @@ def flag_to_colon(code: str) -> str:
 
 def plot_map(tc_directory: os.PathLike | str = '..',
              projection_version: int = default_projection_version,
-             station_sizes=(2.8, 1.6, 1.2, 1.2, 1.2, 0.4, 0.4),
+             station_sizes=(2.8, 1.6, 1.2, 1.2, 1.2, 0.25, 0.25),
              out_file: str = "map_plot.svg",
              highlight_path: Optional[List[str]] = None,
              data_directory: Optional[os.PathLike | str] = None,
-             add_text: bool = True):
+             add_text: bool = True,
+             add_paths: bool = True):
     station_json = TcFile('Station', tc_directory)
     path_json = TcFile('Path', tc_directory)
     for station in station_json.data:
@@ -139,8 +140,9 @@ def plot_map(tc_directory: os.PathLike | str = '..',
 
     x, y, s, codes, colors = zip(*point_data)
     plt.scatter(x=x, y=y, s=s, marker=".", linewidths=0, c=colors)
-    for route_x, route_y, color, linewidth in route_xy:
-        plt.plot(route_x, route_y, color=color, linewidth=linewidth, solid_capstyle='round')
+    if add_paths:
+        for route_x, route_y, color, linewidth in route_xy:
+            plt.plot(route_x, route_y, color=color, linewidth=linewidth, solid_capstyle='round')
     if add_text:
         for x, y, s, text in zip(x, y, s, codes):
             plt.text(x + 1, y + 4, text, fontsize=s * 1.1 / max(station_sizes))
@@ -175,6 +177,8 @@ if __name__ == '__main__':
     # TODO: Allow to highlight multiple paths at once
     parser.add_argument('--hide-text', action='store_true',
                         help="Fügt keine Stationscodes hinzu")
+    parser.add_argument("--hide-paths", action='store_true',
+                        help="Fügt keine Strecken hinzu")
     args = parser.parse_args()
     use_default_cli_args(args)
     highlight_path = parse_station_args(args)
@@ -185,4 +189,5 @@ if __name__ == '__main__':
              out_file=args.out_file,
              highlight_path=highlight_path,
              projection_version=args.projection_version,
-             add_text=not args.hide_text)
+             add_text=not args.hide_text,
+             add_paths=not args.hide_paths)
