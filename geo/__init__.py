@@ -7,11 +7,12 @@ import geopy.distance
 import pyproj
 from pyproj.enums import TransformDirection
 
-default_projection_version = 1
+default_projection_version = 3
 
 crs_wgs84 = pyproj.CRS('WGS84')
 crs_proj = pyproj.CRS('epsg:3035')
-crs_robinson = pyproj.CRS('esri:54030')
+# The map is centered at longitude 10
+crs_robinson = pyproj.CRS('+proj=robin +lon_0=10 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
 
 transformer = pyproj.Transformer.from_crs(crs_wgs84, crs_proj)
 transformer_robinson = pyproj.Transformer.from_crs(crs_wgs84, crs_robinson)
