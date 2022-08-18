@@ -38,13 +38,13 @@ def project_coordinate_for_station(station: Dict[str, Any], new_projection: int 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Rechne die Koordinaten auf eine andere Projektion um')
     add_default_cli_args(parser, data_directory=False)
-    parser.add_argument('--version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2),
+    parser.add_argument('--version', '--projection-version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2, 3),
                         default=1,
                         help="Die Version der Projektion, die verwendet werden soll:\n"
-                        "-1 - WGS84\n"
-                        " 0 - Linear von WGS84\n"
-                        " 1 - Direkte Projektion auf EPSG:3035\n"
-                        " 2 - Von WGS84 auf EPSG:3035\n")
+                             "-1 - WGS84\n"
+                             " 0 - Linear von WGS84\n"
+                             " 1 - Direkte Projektion auf EPSG:3035\n"
+                             " 2 - Von WGS84 auf EPSG:3035\n")
     args = parser.parse_args()
     use_default_cli_args(args)
 
