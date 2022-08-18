@@ -14,8 +14,8 @@ crs_proj = pyproj.CRS('epsg:3035')
 # The map is centered at longitude 10
 crs_robinson = pyproj.CRS('+proj=robin +lon_0=10 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs')
 
-transformer = pyproj.Transformer.from_crs(crs_wgs84, crs_proj)
-transformer_robinson = pyproj.Transformer.from_crs(crs_wgs84, crs_robinson)
+transformer = pyproj.Transformer.from_crs(crs_wgs84, crs_proj, always_xy=True)
+transformer_robinson = pyproj.Transformer.from_crs(crs_wgs84, crs_robinson, always_xy=True)
 projection = pyproj.Proj('epsg:3035')
 
 
@@ -63,12 +63,11 @@ class Location:
                                                                           errcheck=True),
                 x=x, y=y)
         elif version == 3:
-            # There seems to be a bug in the robinson transformer that longitude and latitude are swapped
             return cls.from_projection_with_fun(
-                projection_fun=lambda lon, lat: transformer_robinson.transform(xx=lat, yy=lon, errcheck=True),
-                projection_fun_reverse=lambda x, y: tuple(reversed(transformer_robinson.transform(xx=x, yy=y,
-                                                                                                  direction=TransformDirection.INVERSE,
-                                                                                                  errcheck=True))),
+                projection_fun=lambda lon, lat: transformer_robinson.transform(xx=lon, yy=lat, errcheck=True),
+                projection_fun_reverse=lambda x, y: transformer_robinson.transform(xx=x, yy=y,
+                                                                                   direction=TransformDirection.INVERSE,
+                                                                                   errcheck=True),
                 x=x, y=y)
 
     @classmethod
@@ -114,9 +113,8 @@ class Location:
                 return self.to_projection_with_fun(
                     lambda lon, lat: transformer.transform(xx=lon, yy=lat, errcheck=True))
             elif version == 3:
-                # There seems to be a bug in the robinson transformer that longitude and latitude are swapped
                 return self.to_projection_with_fun(
-                    lambda lon, lat: transformer_robinson.transform(xx=lat, yy=lon, errcheck=True))
+                    lambda lon, lat: transformer_robinson.transform(xx=lon, yy=lat, errcheck=True))
             else:
                 raise ValueError("Projection version is not supported")
 
