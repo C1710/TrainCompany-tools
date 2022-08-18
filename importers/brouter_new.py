@@ -24,21 +24,28 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
     stations: List[Station]
     name_to_station: Dict[str, Station]
     language: str | bool
+    fallback_town: bool
 
-    def __init__(self, station_data: List[Station], language: str | bool = False):
+    def __init__(self, station_data: List[Station],
+                 language: str | bool = False,
+                 fallback_town: bool = False):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
         self.language = language
+        self.fallback_town = fallback_town
 
     def import_data(self, file_name: str) -> List[CodeWaypoint]:
         with open(file_name, encoding='utf-8') as input_file:
             gpx = gpxpy.parse(input_file)
 
-        stops = []
         # Step 1: Find the OSM railway stations for all waypoints
         geolocator = PhotonAdvancedReverse()
         reverse = RateLimiter(geolocator.reverse, min_delay_seconds=0.5, max_retries=3)
+
+        # It may be possible that the waypoint has a different location to its station
+        waypoint_location_to_station_location = {}
+
         for waypoint in gpx.waypoints:
             # Find stations close to the given waypoint location
             possible_stations: List[geopy.location.Location] | None = reverse(
@@ -46,10 +53,16 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                 exactly_one=False,
                 limit=6,
                 query_string_filter='+'.join(["osm_value:stop", "osm_value:station", "osm_value:halt"]),
-                language=self.language
+                language=self.language,
+                timeout=10
             )
             if possible_stations is None:
-                logging.error(f"No station found for location (lat={waypoint.latitude}, lon={waypoint.longitude})")
+                if self.fallback_town:
+                    logging_fn = logging.info
+                else:
+                    logging_fn = logging.error
+
+                logging_fn(f"No station found for location (lat={waypoint.latitude}, lon={waypoint.longitude})")
                 logging.debug("On G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
                     waypoint.latitude,
                     waypoint.longitude
@@ -58,8 +71,35 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     waypoint.latitude,
                     waypoint.longitude
                 ))
-                logging.error("Ignoring station")
-                continue
+
+                if self.fallback_town:
+                    # Now we will try to look for a nearby town/city/village instead
+                    possible_stations = reverse(
+                        geopy.Point(latitude=waypoint.latitude, longitude=waypoint.longitude),
+                        exactly_one=False,
+                        limit=6,
+                        query_string_filter='+'.join(["osm_value:city", "osm_value:town", "osm_value:borough",
+                                                      "osm_value:hamlet", "osm_value:village",
+                                                      "osm_value:municipality"]),
+                        language=self.language,
+                        timeout=10
+                    )
+                    if possible_stations is None:
+                        logging.error(
+                            f"No station or town found for location (lat={waypoint.latitude}, lon={waypoint.longitude})")
+                        logging.debug("On G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
+                            waypoint.latitude,
+                            waypoint.longitude
+                        ))
+                        logging.debug("On OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T".format(
+                            waypoint.latitude,
+                            waypoint.longitude
+                        ))
+                        logging.error("Ignoring station")
+                        continue
+                else:
+                    logging.error("Ignoring station")
+                    continue
 
             for possible_station in possible_stations:
                 if 'name' not in possible_station.raw['properties']:
@@ -113,13 +153,15 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                         longitude=new_station.longitude
                     ),
                     _group=largest_group(possible_station_groups)
-
                 )
+
+                logging.debug(f"New station: {station}")
 
                 # Add to the data set (it should propagate to the original data set as well)
                 self.stations.append(station)
                 # We do not want to add it to the lookup table to ensure that we only have unique stations
-            stops.append(station)
+            waypoint_location_to_station_location[Location(longitude=waypoint.longitude,
+                                                           latitude=waypoint.latitude)] = station
 
         # Now we go through the file, accumulate distances and create the new waypoints
         distance_total = 0.0
@@ -133,8 +175,8 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
             if last_location:
                 distance_total += location.distance_float(last_location)
             # Check if we have a stop here
-            for stop in stops:
-                if stop.location.distance_float(location) < 0.08:
+            for waypoint_location, stop in waypoint_location_to_station_location.items():
+                if waypoint_location.distance_float(location) < 0.08:
                     # We have a stop here - add the CodeWaypoint
                     code_waypoints.append(CodeWaypoint(
                         code=stop.codes[0],
@@ -143,7 +185,7 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                         next_route_number=0
                     ))
                     # We don't want to match the stop multiple times
-                    stops.remove(stop)
+                    waypoint_location_to_station_location.pop(waypoint_location)
                     break
             last_location = location
         return code_waypoints
@@ -165,7 +207,7 @@ def normalize_name(name: str) -> str:
     return name
 
 
-def group_from_photon_response(response: Dict[str, Any]) -> int:
+def group_from_photon_response(response: Dict[str, Any]) -> int | None:
     value = response['osm_value']
     if value == 'station':
         group = 2
@@ -176,11 +218,11 @@ def group_from_photon_response(response: Dict[str, Any]) -> int:
     elif value == 'junction':
         group = 4
     else:
-        group = -1
+        group = None
     return group
 
 
-def largest_group(groups: List[int]) -> int:
+def largest_group(groups: List[int]) -> int | None:
     if 0 in groups:
         return 0
     if 1 in groups:
@@ -196,4 +238,4 @@ def largest_group(groups: List[int]) -> int:
     if 4 in groups:
         return 4
     else:
-        return -1
+        return None

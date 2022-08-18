@@ -12,14 +12,13 @@ import os
 
 from cli_utils import add_default_cli_args, process_station_input, add_station_cli_args, parse_station_args, \
     use_default_cli_args
-from geo import Location
+from geo import default_projection_version
 from project_coordinates import project_coordinate_for_station
 from structures import DataSet
 from structures.country import split_country, CountryRepresentation
-from tc_utils import TcFile, expand_objects, flatten_objects
+from tc_utils import TcFile
 from validation import get_shortest_path
 from validation.graph import graph_from_files
-from validation.shortest_paths import get_shortest_path_distance
 
 
 def get_routes_plot_data(station_data: List[dict], path_data: List[dict],
@@ -75,12 +74,13 @@ def flag_to_colon(code: str) -> str:
 
 
 def plot_map(tc_directory: os.PathLike | str = '..',
-             projection_version: int = 1,
-             station_sizes = (2.8, 1.6, 1.2, 1.2, 1.2, 0.4, 0.4),
+             projection_version: int = default_projection_version,
+             station_sizes=(2.8, 1.6, 1.2, 1.2, 1.2, 0.25, 0.25),
              out_file: str = "map_plot.svg",
              highlight_path: Optional[List[str]] = None,
              data_directory: Optional[os.PathLike | str] = None,
-             add_text: bool = True):
+             add_text: bool = True,
+             add_paths: bool = True):
     station_json = TcFile('Station', tc_directory)
     path_json = TcFile('Path', tc_directory)
     for station in station_json.data:
@@ -96,6 +96,33 @@ def plot_map(tc_directory: os.PathLike | str = '..',
                    flag_to_colon(station['ril100']),
                    'maroon' if highlight_path and station['ril100'] in highlight_path else '#1f77b4') for station in
                   station_json.data]
+
+    # Rescale map
+
+    # Lisboa Oriente XXLO
+    base_x_min = -2693
+    # Istanbul Sirkeci XQIS
+    base_x_max = 2509
+    # Málaga 🇪🇸54413
+    base_y_max = 2306
+    # Stockholm C XVS
+    base_y_min = -1291
+    base_x_delta = abs(base_x_max - base_x_min)
+    base_y_delta = abs(base_y_max - base_y_min)
+
+    x_min, y_min, x_max, y_max = 0, 0, 0, 0
+    for x, y, _, _, _ in point_data:
+        x_min = min(x, x_min)
+        y_min = min(y, y_min)
+        x_max = max(x, x_max)
+        y_max = max(y, y_max)
+
+    new_x_delta = abs(x_max - x_min)
+    new_y_delta = abs(y_max - y_min)
+    scale_x = new_x_delta / base_x_delta
+    scale_y = new_y_delta / base_y_delta
+
+    plt.rcParams['figure.figsize'] = (6.4 * scale_x, 4.8 * scale_y)
 
     if highlight_path is not None:
         graph = graph_from_files(station_json, path_json)
@@ -113,12 +140,15 @@ def plot_map(tc_directory: os.PathLike | str = '..',
 
     x, y, s, codes, colors = zip(*point_data)
     plt.scatter(x=x, y=y, s=s, marker=".", linewidths=0, c=colors)
-    for route_x, route_y, color, linewidth in route_xy:
-        plt.plot(route_x, route_y, color=color, linewidth=linewidth, solid_capstyle='round')
+    if add_paths:
+        for route_x, route_y, color, linewidth in route_xy:
+            plt.plot(route_x, route_y, color=color, linewidth=linewidth, solid_capstyle='round')
     if add_text:
         for x, y, s, text in zip(x, y, s, codes):
             plt.text(x + 1, y + 4, text, fontsize=s * 1.1 / max(station_sizes))
+
     plt.gca().invert_yaxis()
+
     plt.gca().set_aspect('equal', adjustable='box')
     plt.rcParams['font.family'] = ['sans-serif']
     plt.rcParams['font.sans-serif'] = ['Arial']
@@ -129,15 +159,17 @@ def plot_map(tc_directory: os.PathLike | str = '..',
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Aktuelle Karte rendern")
     add_default_cli_args(parser)
-    parser.add_argument('--out_file', metavar="DATEI", type=str,
+    parser.add_argument('--out-file', "--out_file", metavar="DATEI", type=str,
                         help="Die Datei, in die gespeichert werden soll. Standard: map_plot.svg")
-    parser.add_argument('--projection_version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2),
+    parser.add_argument('--projection-version', "--projection_version", metavar="VERSION", type=int,
+                        choices=(-1, 0, 1, 2, 3),
                         default=1,
                         help="Die Version der Projektion, die verwendet werden soll:\n"
                              "-1 - WGS84\n"
                              " 0 - Linear von WGS84\n"
                              " 1 - Direkte Projektion auf EPSG:3035\n"
-                             " 2 - Von WGS84 auf EPSG:3035\n")
+                             " 2 - Von WGS84 auf EPSG:3035\n"
+                             " 3 - Robinson-Projektion")
     add_station_cli_args(parser,
                          allow_unordered=False,
                          help="Ein Pfad, der hervorgehoben werden soll",
@@ -145,6 +177,8 @@ if __name__ == '__main__':
     # TODO: Allow to highlight multiple paths at once
     parser.add_argument('--hide-text', action='store_true',
                         help="Fügt keine Stationscodes hinzu")
+    parser.add_argument("--hide-paths", action='store_true',
+                        help="Fügt keine Strecken hinzu")
     args = parser.parse_args()
     use_default_cli_args(args)
     highlight_path = parse_station_args(args)
@@ -154,5 +188,6 @@ if __name__ == '__main__':
              data_directory=args.data_directory,
              out_file=args.out_file,
              highlight_path=highlight_path,
-             add_text=not args.hide_text)
-
+             projection_version=args.projection_version,
+             add_text=not args.hide_text,
+             add_paths=not args.hide_paths)

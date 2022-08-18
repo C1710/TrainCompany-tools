@@ -43,6 +43,8 @@ class PhotonAdvancedReverse(Photon):
         :param int limit: Limit the number of returned results, defaults to no
             limit.
 
+        :param int radius: The radius in km to look around the location
+
         :param query_string_filter: Filters for the search result(s)
 
         :rtype: ``None``, :class:`geopy.location.Location` or a list of them, if

@@ -7,7 +7,7 @@ from os import PathLike
 from typing import Dict, Any
 
 from cli_utils import add_default_cli_args, use_default_cli_args
-from geo import Location
+from geo import Location, default_projection_version
 from tc_utils import TcFile
 
 
@@ -18,7 +18,7 @@ def project_coordinates(tc_directory: PathLike | str = '..', projection_version:
     return station_json
 
 
-def project_coordinate_for_station(station: Dict[str, Any], new_projection: int = 1):
+def project_coordinate_for_station(station: Dict[str, Any], new_projection: int = default_projection_version):
     if 'laea' not in station and 'proj' not in station:
         current_projection = 0
     else:
@@ -38,13 +38,13 @@ def project_coordinate_for_station(station: Dict[str, Any], new_projection: int 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Rechne die Koordinaten auf eine andere Projektion um')
     add_default_cli_args(parser, data_directory=False)
-    parser.add_argument('--version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2),
+    parser.add_argument('--version', '--projection-version', metavar="VERSION", type=int, choices=(-1, 0, 1, 2, 3),
                         default=1,
                         help="Die Version der Projektion, die verwendet werden soll:\n"
-                        "-1 - WGS84\n"
-                        " 0 - Linear von WGS84\n"
-                        " 1 - Direkte Projektion auf EPSG:3035\n"
-                        " 2 - Von WGS84 auf EPSG:3035\n")
+                             "-1 - WGS84\n"
+                             " 0 - Linear von WGS84\n"
+                             " 1 - Direkte Projektion auf EPSG:3035\n"
+                             " 2 - Von WGS84 auf EPSG:3035\n")
     args = parser.parse_args()
     use_default_cli_args(args)
 
