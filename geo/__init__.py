@@ -66,9 +66,9 @@ class Location:
             # There seems to be a bug in the robinson transformer that longitude and latitude are swapped
             return cls.from_projection_with_fun(
                 projection_fun=lambda lon, lat: transformer_robinson.transform(xx=lat, yy=lon, errcheck=True),
-                projection_fun_reverse=lambda x, y: transformer_robinson.transform(xx=y, yy=x,
-                                                                                   direction=TransformDirection.INVERSE,
-                                                                                   errcheck=True),
+                projection_fun_reverse=lambda x, y: tuple(reversed(transformer_robinson.transform(xx=x, yy=y,
+                                                                                                  direction=TransformDirection.INVERSE,
+                                                                                                  errcheck=True))),
                 x=x, y=y)
 
     @classmethod
@@ -76,6 +76,7 @@ class Location:
                                  projection_fun_reverse: Callable[[float, float], Tuple[float, float]],
                                  x: float, y: float) -> Location:
         origin_x, origin_y, scale_x, scale_y = get_origin_scale(projection_fun)
+        x_original, y_original = x, y
         x /= scale_x
         y = -y / scale_y
         x += origin_x
@@ -90,8 +91,8 @@ class Location:
             assert abs(longitude - location_nn.longitude) < 0.002, abs(longitude - location_nn.longitude)
         if abs(y - 385) < 2:
             assert abs(latitude - location_nn.latitude) < 0.002, abs(latitude - location_nn.latitude)
-        assert -180.0 <= longitude <= 180.0
-        assert -90.0 <= latitude <= 90.0
+        assert -180.0 <= longitude <= 180.0, f"invalid longitude: {longitude}. From location {x_original}, {y_original}"
+        assert -90.0 <= latitude <= 90.0, f"invalid latitude: {latitude}. From location {x_original}, {y_original}"
 
         return cls(
             longitude=longitude,
