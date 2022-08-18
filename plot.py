@@ -96,6 +96,33 @@ def plot_map(tc_directory: os.PathLike | str = '..',
                    'maroon' if highlight_path and station['ril100'] in highlight_path else '#1f77b4') for station in
                   station_json.data]
 
+    # Rescale map
+
+    # Lisboa Oriente XXLO
+    base_x_min = -2693
+    # Istanbul Sirkeci XQIS
+    base_x_max = 2509
+    # Málaga 🇪🇸54413
+    base_y_max = 2306
+    # Stockholm C XVS
+    base_y_min = -1291
+    base_x_delta = abs(base_x_max - base_x_min)
+    base_y_delta = abs(base_y_max - base_y_min)
+
+    x_min, y_min, x_max, y_max = 0, 0, 0, 0
+    for x, y, _, _, _ in point_data:
+        x_min = min(x, x_min)
+        y_min = min(y, y_min)
+        x_max = max(x, x_max)
+        y_max = max(y, y_max)
+
+    new_x_delta = abs(x_max - x_min)
+    new_y_delta = abs(y_max - y_min)
+    scale_x = new_x_delta / base_x_delta
+    scale_y = new_y_delta / base_y_delta
+
+    plt.rcParams['figure.figsize'] = (6.4 * scale_x, 4.8 * scale_y)
+
     if highlight_path is not None:
         graph = graph_from_files(station_json, path_json)
         highlight_path = get_shortest_path(graph, highlight_path)
@@ -117,7 +144,9 @@ def plot_map(tc_directory: os.PathLike | str = '..',
     if add_text:
         for x, y, s, text in zip(x, y, s, codes):
             plt.text(x + 1, y + 4, text, fontsize=s * 1.1 / max(station_sizes))
+
     plt.gca().invert_yaxis()
+
     plt.gca().set_aspect('equal', adjustable='box')
     plt.rcParams['font.family'] = ['sans-serif']
     plt.rcParams['font.sans-serif'] = ['Arial']
