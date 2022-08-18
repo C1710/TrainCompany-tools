@@ -68,11 +68,13 @@ def add_default_cli_args(parser: ArgumentParser,
         default_data_directory = os.environ["TRAINCOMPANY_TOOLS_DATA"]
 
     if tc_directory:
-        parser.add_argument('--tc_directory', '--tc-dir', dest='tc_directory', metavar='VERZEICHNIS', type=str,
+        parser.add_argument('--tc-directory', '--tc_directory', '--tc-dir', dest='tc_directory', metavar='VERZEICHNIS',
+                            type=str,
                             default=default_tc_directory,
                             help="Das Verzeichnis, in dem sich die TrainCompany-Daten befinden")
     if data_directory:
-        parser.add_argument('--data_directory', "--data-dir", dest='data_directory', metavar='VERZEICHNIS', type=str,
+        parser.add_argument('--data-directory', '--data_directory', "--data-dir", dest='data_directory',
+                            metavar='VERZEICHNIS', type=str,
                             default=default_data_directory,
                             help="Das Verzeichnis, in dem sich die OpenData-Datensätze befinden")
     logging_args = parser.add_mutually_exclusive_group(required=False)
