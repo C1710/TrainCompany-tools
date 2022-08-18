@@ -25,13 +25,14 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        add_annotation: bool = False,
                        use_google: bool = False,
                        use_old_importer: bool = False,
-                       language: str | bool = False
+                       language: str | bool = False,
+                       fallback_town: bool = False
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     if use_old_importer:
         importer = BrouterImporter(data_set.station_data)
     else:
-        importer = BrouterImporterNew(data_set.station_data, language=language)
+        importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town)
     waypoints = importer.import_data(gpx)
 
     station_json = TcFile('Station', tc_directory)
@@ -64,6 +65,8 @@ if __name__ == '__main__':
                         help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
     parser.add_argument("--language", choices=['de', 'en', 'fr'],
                         help="Sprache für die Bahnhofsnamen")
+    parser.add_argument("--towns", action="store_true",
+                        help="Falls kein Bahnhof gefunden wird, wird der Ort genommen")
     parser.add_argument("--old-importer", action='store_true',
                         help="Nutzt den alten Importer, der auf Standorten basiert und nur bekannte Haltestellen hinzufügt.")
     args = parser.parse_args()
@@ -78,7 +81,8 @@ if __name__ == '__main__':
         args.override_stations,
         add_annotation=args.annotate,
         use_old_importer=args.old_importer,
-        language=args.language if args.language else False
+        language=args.language if args.language else False,
+        fallback_town=args.towns
     )
 
     station_json.save()

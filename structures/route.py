@@ -66,6 +66,7 @@ class TcRoute:
         code_to_station = {code: station for code, station in iter_stations_by_codes_reverse(station_data)}
         stations = [code_to_station[waypoint.code] if waypoint.code in code_to_station else invalid_station(waypoint.code)
                     for waypoint in route.waypoints if waypoint.is_stop]
+        assert len(stations) > 1, f"Not enough stations: {stations}"
         paths = TcPath.merge(TcPath.from_route(route, add_annotations=add_annotations, code_to_station=code_to_station))
         return TcRoute(stations, paths)
 
