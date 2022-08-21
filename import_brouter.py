@@ -87,7 +87,7 @@ if __name__ == '__main__':
         language=args.language if args.language else False,
         fallback_town=args.towns,
         tolerance=args.tolerance,
-        use_overpass=not args.use_overpass
+        use_overpass=not args.no_overpass
     )
 
     station_json.save()

@@ -22,7 +22,7 @@ from geo.overpass import query_rail_around_gpx, request_overpass, douglas_peucke
 from geo.photon_advanced_reverse import PhotonAdvancedReverse
 from structures.country import countries
 from structures.route import TcPath, TrackKind, sinousity_to_twisting_factor
-from structures.station import Station, CodeTuple
+from structures.station import Station, CodeTuple, Platform
 
 
 class BrouterImporterNew:
@@ -33,13 +33,15 @@ class BrouterImporterNew:
     fail_on_unknown: bool
     path_tolerance: float
     use_overpass: bool
+    get_platform_data: bool
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
                  fallback_town: bool = False,
                  fail_on_unknown: bool = False,
                  path_tolerance: float = 0.4,
-                 use_overpass: bool = True):
+                 use_overpass: bool = True,
+                 get_platform_data: bool = True):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
@@ -48,6 +50,7 @@ class BrouterImporterNew:
         self.fail_on_unknown = fail_on_unknown
         self.path_tolerance = path_tolerance
         self.use_overpass = use_overpass
+        self.get_platform_data = get_platform_data
 
     def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -145,7 +148,6 @@ class BrouterImporterNew:
                         if station.group == -1:
                             station_dict["_group"] = largest_group(possible_station_groups)
                         station = Station(**station_dict)
-                        self.stations.append(station)
                     break
             else:
                 logging.info("Couldn't find any of these stations: {}. Creating new one.".format(
@@ -177,9 +179,13 @@ class BrouterImporterNew:
 
                 logging.debug(f"New station: {station}")
 
-                # Add to the data set (it should propagate to the original data set as well)
-                self.stations.append(station)
-                # We do not want to add it to the lookup table to ensure that we only have unique stations
+            if station.platform_length == 0 and self.get_platform_data:
+                station = with_osm_platform_data(station)
+
+            # Add to the data set (it should propagate to the original data set as well)
+            self.stations.append(station)
+            # We do not want to add it to the lookup table to ensure that we only have unique stations
+
             waypoint_location_to_station_location[Location(longitude=waypoint.longitude,
                                                            latitude=waypoint.latitude)] = station
 
@@ -222,7 +228,106 @@ class BrouterImporterNew:
                        for (start, segment, end), overpass_response in zip(path_segments, overpass_responses)]
 
 
+def with_osm_platform_data(station: Station) -> Station:
+    geolocator = PhotonAdvancedReverse()
+    geocode = RateLimiter(geolocator.geocode, min_delay_seconds=0.5, max_retries=3)
+    station_location = geopy.Point(latitude=station.location.latitude,
+                                   longitude=station.location.longitude)
+    platforms: List[geopy.Location] | None = geocode(station.name, location_bias=station_location,
+                                                     osm_tag="railway:platform",
+                                                     exactly_one=False, limit=30)
+    station_platforms = []
+    if platforms:
+        for platform in platforms:
+            if geopy.distance.geodesic(platform.point, station_location).kilometers > 0.8:
+                continue
+            platform = platform.raw["properties"]
+            if "extent" in platform and len(platform["extent"]) in (4, 8):
+                if len(platform["extent"]) == 4:
+                    # We have a platform with a line shape
+                    longitude_a, latitude_a, longitude_b, latitude_b = platform["extent"]
+                    point_a = geopy.Point(
+                        latitude=latitude_a,
+                        longitude=longitude_a
+                    )
+                    point_b = geopy.Point(
+                        latitude=latitude_b,
+                        longitude=longitude_b
+                    )
+                    length = geopy.distance.geodesic(point_a, point_b).meters
+                elif len(platform["extent"]) == 8:
+                    # It's a rectangle (or similar)
+                    lon_a, lat_a, lon_b, lat_b, lon_c, lat_c, lon_d, lat_d = platform["extent"]
+                    point_a = geopy.Point(
+                        latitude=lat_a,
+                        longitude=lon_a
+                    )
+                    point_b = geopy.Point(
+                        latitude=lat_b,
+                        longitude=lon_b
+                    )
+                    point_c = geopy.Point(
+                        latitude=lat_c,
+                        longitude=lon_c
+                    )
+                    point_d = geopy.Point(
+                        latitude=lat_d,
+                        longitude=lon_d
+                    )
+                    length = max(geopy.distance.geodesic(point_start, point_end) for point_start, point_end in (
+                        (point_a, point_b),
+                        (point_b, point_c),
+                        (point_c, point_d),
+                        (point_d, point_a)
+                    )).meters
+                else:
+                    raise ValueError("But that is unpossible!")
+                if station_platforms:
+                    # We assume that there is one Hausbahnsteig and otherwise Mittelbahnsteige
+                    station_platforms.append(Platform(
+                        length=length,
+                        station=station.number
+                    ))
+                station_platforms.append(Platform(
+                    length=length,
+                    station=station.number
+                ))
+            else:
+                logging.debug("Bahnsteig ohne Größe gefunden bei {}".format(station))
+        if station_platforms:
+            station_dict = station.__dict__
+            station_dict.pop("platform_length", 0)
+            station_dict.pop("platform_count", 0)
+            station_dict.pop("group", 0)
+            station_dict.pop("country", None)
+            if not station_dict["platforms"]:
+                station_dict["platforms"] = station_platforms
+            else:
+                station_dict["_platform_length"] = max((platform.length for platform in station_platforms))
+            return Station(**station_dict)
+    logging.debug("Keine Bahnsteige gefunden für {}".format(station))
+    return station
+
+
+def bbox(location: Location, radius: float = 0.004) -> (geopy.Point, geopy.Point):
+    a = geopy.Point(
+        latitude=round(location.latitude - radius, 3),
+        longitude=round(location.longitude - radius, 3)
+    )
+    b = geopy.Point(
+        latitude=round(location.latitude + radius, 3),
+        longitude=round(location.longitude - radius, 3)
+    )
+    return a, b
+
+
 def overpass_to_path(overpass_tags: Dict[str, Any]) -> TcPath:
+    if "maxspeed" in overpass_tags:
+        max_speed: str = overpass_tags["maxspeed"]
+        if "mph" in max_speed:
+            max_speed = max_speed.replace(" mph", "")
+            max_speed = str(int(int(max_speed) * 1.609344))
+            overpass_tags["maxspeed"] = max_speed
     return TcPath(
         start="",
         end="",
@@ -281,7 +386,6 @@ def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
 
     # TODO: Check if this makes sense?
     max_speeds = [sub_path.maxSpeed for sub_path in sub_paths if sub_path.maxSpeed]
-    logging.debug(max_speeds)
     max_max_speed = max(max_speeds)
     avg_max_speed = statistics.mean(max_speeds)
     # We mostly use the maximum speed, but also add a bit of the average one in.
@@ -289,8 +393,8 @@ def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
     max_speed = max_max_speed
     needed_equipments = set((equipment for sub_path in sub_paths for equipment in sub_path.neededEquipments))
 
-    start_country = start.country.flag
-    end_country = end.country.flag
+    start_country = start.country.iso_3166
+    end_country = end.country.iso_3166
     if start.country.iso_3166 != "DE" or end.country.iso_3166 != "DE":
         needed_equipments.add(start_country)
         needed_equipments.add(end_country)

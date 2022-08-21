@@ -6,7 +6,7 @@ from functools import cached_property
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
 # It will add all of them in that order if one is added
-from geo import Location
+from geo import Location, default_projection_version
 from structures.country import Country, country_for_station, country_for_code, split_country
 
 special_codes: Tuple[Tuple[str, ...], ...] = (
@@ -103,6 +103,7 @@ class Station:
     platforms: Tuple[Platform] = field(default_factory=tuple)
     station_category: Optional[int] = field(default=None)
     _group: Optional[int] = field(default=None)
+    _platform_length: Optional[int] = field(default=None)
 
     @property
     def group(self) -> int:
@@ -134,7 +135,10 @@ class Station:
 
     @cached_property
     def platform_length(self) -> int:
-        return max((platform.length for platform in self.platforms)) if self.platforms else 0
+        if not self._platform_length:
+            return max((platform.length for platform in self.platforms)) if self.platforms else 0
+        else:
+            return self._platform_length
 
     @cached_property
     def country(self) -> Country:
@@ -269,7 +273,7 @@ class TcStation:
     proj: Optional[bool | int] = None
 
     @staticmethod
-    def from_station(station: Station, projection: int = 1) -> TcStation:
+    def from_station(station: Station, projection: int = default_projection_version) -> TcStation:
         x, y = station.location.to_projection(projection) if station.location else (0, 0)
         return TcStation(
             name=station.name,
@@ -277,7 +281,8 @@ class TcStation:
             group=station.group if station.group is not None else 2,
             x=x,
             y=y,
-            platformLength=int(station.platform_length) if station.platform_length != 0 or station.platform_count != 0 else None,
+            platformLength=int(
+                station.platform_length) if station.platform_length != 0 or station.platform_count != 0 else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
             proj=projection
