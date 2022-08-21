@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import logging
 import re
 from collections import Counter
@@ -31,12 +32,14 @@ class BrouterImporterNew:
     fallback_town: bool
     fail_on_unknown: bool
     path_tolerance: float
+    use_overpass: bool
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
                  fallback_town: bool = False,
                  fail_on_unknown: bool = False,
-                 path_tolerance: float = 0.4):
+                 path_tolerance: float = 0.4,
+                 use_overpass: bool = True):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
@@ -44,6 +47,7 @@ class BrouterImporterNew:
         self.fallback_town = fallback_town
         self.fail_on_unknown = fail_on_unknown
         self.path_tolerance = path_tolerance
+        self.use_overpass = use_overpass
 
     def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -207,11 +211,14 @@ class BrouterImporterNew:
         path_segments.pop(0)
         assert path_segments
 
-        overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
-                            for _, segment, _ in path_segments]
-        overpass_responses = overpass.query_multiple(overpass_queries)
+        if self.use_overpass:
+            overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
+                                for _, segment, _ in path_segments]
+            overpass_responses = overpass.query_multiple(overpass_queries)
+        else:
+            overpass_responses = itertools.repeat(None)
 
-        return stops, [tc_path_from_gpx(start, segment, end, self.path_tolerance, overpass_response=overpass_response)
+        return stops, [tc_path_from_gpx(start, segment, end, overpass_response=overpass_response)
                        for (start, segment, end), overpass_response in zip(path_segments, overpass_responses)]
 
 
@@ -248,23 +255,16 @@ def get_group_from_overpass(overpass_tags: Dict[str, Any]) -> int | None:
 
 
 def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
-                     tolerance: float = 0.4,
                      overpass_response: List[Dict[str, Any]] | None = None) -> TcPath:
     length = sum((geopy.distance.geodesic(
         (last_trackpoint.latitude, last_trackpoint.longitude),
         (trackpoint.latitude, trackpoint.longitude)).km for last_trackpoint, trackpoint in pairwise(segment)))
 
-    if not overpass_response:
-        overpass_query = create_query(query_rail_around_gpx(min(0.001, tolerance - 0.02), segment))
-        print(len(overpass_query))
-        assert len(overpass_query) <= 30000
-
-        overpass_response = overpass.request_overpass(overpass_query)
+    if overpass_response is None:
+        overpass_response = []
     sub_paths = [overpass_to_path(sub_path['tags']) for sub_path in overpass_response]
     if not sub_paths:
-        sub_paths = [
-            TcPath()
-        ]
+        sub_paths = [TcPath()]
 
     names = Counter((sub_path.name for sub_path in sub_paths)).most_common(2)
     # We now have (at most) the two most common names, which could be None

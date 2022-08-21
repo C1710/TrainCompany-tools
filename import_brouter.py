@@ -27,11 +27,12 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        use_google: bool = False,
                        language: str | bool = False,
                        fallback_town: bool = False,
-                       tolerance: float = 0.4
+                       tolerance: float = 0.4,
+                       use_overpass: bool = True
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town,
-                                  path_tolerance=tolerance)
+                                  path_tolerance=tolerance, use_overpass=True)
     stations, paths = importer.import_data(gpx)
 
     path = TcPath.merge(paths)
@@ -71,6 +72,8 @@ if __name__ == '__main__':
     parser.add_argument("--tolerance", default=0.05, type=float,
                         help="Gibt an, wie stark die Strecke für Online-Abfragen vereinfacht werden soll in km.\n"
                              "Ein kleinerer Wert funktioniert genauer, ist aber aufwändiger")
+    parser.add_argument("--no-overpass", action="store_true",
+                        help="Nutzt nicht die Overpass-API, um Daten zu vervollständigen.")
     args = parser.parse_args()
     use_default_cli_args(args)
 
@@ -83,7 +86,8 @@ if __name__ == '__main__':
         args.override_stations,
         language=args.language if args.language else False,
         fallback_town=args.towns,
-        tolerance=args.tolerance
+        tolerance=args.tolerance,
+        use_overpass=not args.use_overpass
     )
 
     station_json.save()
