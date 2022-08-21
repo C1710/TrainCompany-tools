@@ -110,7 +110,6 @@ class TcPath:
                 length = current_stop.distance_from_start - last_stop.distance_from_start
 
                 twisting_factor = None
-                sinuosity = None
                 if code_to_station:
                     current_station = code_to_station[current_stop.code]
                     last_station = code_to_station[last_stop.code]

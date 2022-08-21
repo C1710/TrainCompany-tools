@@ -1,15 +1,17 @@
 from __future__ import annotations
+
+import itertools
 import logging
 import re
-from dataclasses import dataclass
 from functools import lru_cache
-from typing import List, Optional, Tuple, Dict, Set, Any
+from typing import List, Optional, Tuple, Dict, Set, Any, Iterator
 
 import geopy.distance
 import gpxpy
+import rdp
 import unidecode
-from geopy.exc import GeocoderServiceError
 from geopy.extra.rate_limiter import RateLimiter
+from gpxpy.gpx import GPXTrackPoint
 
 import geo
 from geo import Location
@@ -18,6 +20,7 @@ from importer import Importer
 from structures.country import countries
 from structures.route import CodeWaypoint
 from structures.station import Station, CodeTuple
+import numpy as np
 
 
 class BrouterImporterNew(Importer[CodeWaypoint]):
@@ -166,8 +169,11 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
         # Now we go through the file, accumulate distances and create the new waypoints
         distance_total = 0.0
         code_waypoints = []
+        track_paths: List[Tuple[List[GPXTrackPoint], Station]] = []
         last_location: Optional[Location] = None
-        for trackpoint in gpx.tracks[0].segments[0].points:
+        last_stop_index: int = 0
+        points = gpx.tracks[0].segments[0].points
+        for index, trackpoint in enumerate(gpx.tracks[0].segments[0].points):
             location = Location(
                 latitude=trackpoint.latitude,
                 longitude=trackpoint.longitude
@@ -184,11 +190,37 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                         is_stop=True,
                         next_route_number=0
                     ))
+                    track_paths.append((points[last_stop_index:index], stop))
+                    last_stop_index = index
                     # We don't want to match the stop multiple times
                     waypoint_location_to_station_location.pop(waypoint_location)
                     break
             last_location = location
         return code_waypoints
+
+
+def simplify_path_with_stops(path: List[Tuple[List[GPXTrackPoint], Station]], max_radius: float):
+    for index, (segment, station) in enumerate(path):
+        path[index] = (list(douglas_peucker(segment, max_radius)), station)
+
+
+# Based on https://towardsdatascience.com/simplify-polylines-with-the-douglas-peucker-algorithm-ac8ed487a4a1
+def douglas_peucker(points: List[GPXTrackPoint], max_radius: float) -> Iterator[GPXTrackPoint]:
+    points_array = np.ndarray((len(points), 2), dtype=float)
+    for index, point in enumerate(points):
+        # We use lat, lon here, because geopy.distance.geodesic uses this format.
+        # For the geometric stuff it doesn't matter, as we only care about distances and not directions, etc.
+        points_array[index] = (point.latitude, point.longitude)
+    selected_points = rdp.rdp(points_array, dist=approximate_distance_to_line, epsilon=max_radius, return_mask=True)
+    return itertools.compress(points, selected_points)
+
+
+def approximate_distance_to_line(point: np.ndarray, start: np.ndarray, end: np.ndarray) -> float:
+    # NOTE: We assume here that distances are roughly linear to the longitude and latitude difference
+    # Step 1: Get the "scale" - i.e., distance_km / distance_lon_lat.
+    km_per_lon_lat = geopy.distance.geodesic(start, end).km / np.linalg.norm(start - end)
+    distance_lon_lat = rdp.pldist(point, start, end)
+    return distance_lon_lat * km_per_lon_lat
 
 
 delimiters = re.compile(r"[- _]", flags=re.IGNORECASE)
