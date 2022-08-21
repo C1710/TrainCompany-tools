@@ -1,44 +1,51 @@
 from __future__ import annotations
 
-import itertools
 import logging
 import re
+from collections import Counter
 from functools import lru_cache
-from typing import List, Optional, Tuple, Dict, Set, Any, Iterator
+
+import statistics
+from typing import List, Tuple, Dict, Any
 
 import geopy.distance
 import gpxpy
-import rdp
 import unidecode
 from geopy.extra.rate_limiter import RateLimiter
 from gpxpy.gpx import GPXTrackPoint
+from networkx.utils import pairwise
 
 import geo
-from geo import Location
+from geo import Location, overpass
+from geo.overpass import query_rail_around_gpx, request_overpass, douglas_peucker, create_query
 from geo.photon_advanced_reverse import PhotonAdvancedReverse
-from importer import Importer
 from structures.country import countries
-from structures.route import CodeWaypoint
+from structures.route import TcPath, TrackKind, sinousity_to_twisting_factor
 from structures.station import Station, CodeTuple
-import numpy as np
 
 
-class BrouterImporterNew(Importer[CodeWaypoint]):
+class BrouterImporterNew:
     stations: List[Station]
     name_to_station: Dict[str, Station]
     language: str | bool
     fallback_town: bool
+    fail_on_unknown: bool
+    path_tolerance: float
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
-                 fallback_town: bool = False):
+                 fallback_town: bool = False,
+                 fail_on_unknown: bool = False,
+                 path_tolerance: float = 0.4):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
         self.language = language
         self.fallback_town = fallback_town
+        self.fail_on_unknown = fail_on_unknown
+        self.path_tolerance = path_tolerance
 
-    def import_data(self, file_name: str) -> List[CodeWaypoint]:
+    def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
             gpx = gpxpy.parse(input_file)
 
@@ -90,18 +97,24 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     if possible_stations is None:
                         logging.error(
                             f"No station or town found for location (lat={waypoint.latitude}, lon={waypoint.longitude})")
-                        logging.debug("On G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
+                        logging.info("On G/M: https://maps.google.com/maps/@{},{},17z/data=!3m1!1e3".format(
                             waypoint.latitude,
                             waypoint.longitude
                         ))
-                        logging.debug("On OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T".format(
+                        logging.info("On OSM: https://openstreetmap.org/#map=17/{}/{}&layers=T".format(
                             waypoint.latitude,
                             waypoint.longitude
                         ))
-                        logging.error("Ignoring station")
+                        if self.fail_on_unknown:
+                            raise ValueError("Unknown station")
+                        else:
+                            logging.error("Ignoring station")
                         continue
                 else:
-                    logging.error("Ignoring station")
+                    if self.fail_on_unknown:
+                        raise ValueError("Unknown station")
+                    else:
+                        logging.error("Ignoring station")
                     continue
 
             for possible_station in possible_stations:
@@ -118,16 +131,16 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
                     # Remove it from the lookup table to prevent having the same station twice
                     station = self.name_to_station.pop(name)
                     # Add this location if necessary
-                    if station.location is None:
+                    if station.location is None or station.group == -1:
                         station_dict = station.__dict__
-                        station_dict.pop('location')
-                        station = Station(
-                            **station_dict,
-                            location=Location(
+                        if station.location is None:
+                            station_dict["location"] = Location(
                                 latitude=waypoint.latitude,
                                 longitude=waypoint.longitude
                             )
-                        )
+                        if station.group == -1:
+                            station_dict["_group"] = largest_group(possible_station_groups)
+                        station = Station(**station_dict)
                         self.stations.append(station)
                     break
             else:
@@ -166,61 +179,145 @@ class BrouterImporterNew(Importer[CodeWaypoint]):
             waypoint_location_to_station_location[Location(longitude=waypoint.longitude,
                                                            latitude=waypoint.latitude)] = station
 
-        # Now we go through the file, accumulate distances and create the new waypoints
-        distance_total = 0.0
-        code_waypoints = []
-        track_paths: List[Tuple[List[GPXTrackPoint], Station]] = []
-        last_location: Optional[Location] = None
+        # Now we go through the trackpoints and add stations and segments
+        path_segments: List[Tuple[Station, List[GPXTrackPoint], Station]] = []
+        # Collect the visited stations here
+        stops: List[Station] = []
+        # The index in the track segment where the last stop was located
         last_stop_index: int = 0
+        last_stop: Station | None = None
         points = gpx.tracks[0].segments[0].points
         for index, trackpoint in enumerate(gpx.tracks[0].segments[0].points):
             location = Location(
                 latitude=trackpoint.latitude,
                 longitude=trackpoint.longitude
             )
-            if last_location:
-                distance_total += location.distance_float(last_location)
-            # Check if we have a stop here
+            # Check if this trackpoint is a stop
             for waypoint_location, stop in waypoint_location_to_station_location.items():
                 if waypoint_location.distance_float(location) < 0.08:
-                    # We have a stop here - add the CodeWaypoint
-                    code_waypoints.append(CodeWaypoint(
-                        code=stop.codes[0],
-                        distance_from_start=distance_total,
-                        is_stop=True,
-                        next_route_number=0
-                    ))
-                    track_paths.append((points[last_stop_index:index], stop))
+                    # We have a stop here, add it to the list
+                    path_segments.append((last_stop, points[last_stop_index:index], stop))
                     last_stop_index = index
+                    last_stop = stop
+                    stops.append(stop)
                     # We don't want to match the stop multiple times
                     waypoint_location_to_station_location.pop(waypoint_location)
                     break
-            last_location = location
-        return code_waypoints
+        # The first entry is garbage
+        path_segments.pop(0)
+        assert path_segments
+
+        overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
+                            for _, segment, _ in path_segments]
+        overpass_responses = overpass.query_multiple(overpass_queries)
+
+        return stops, [tc_path_from_gpx(start, segment, end, self.path_tolerance, overpass_response=overpass_response)
+                       for (start, segment, end), overpass_response in zip(path_segments, overpass_responses)]
 
 
-def simplify_path_with_stops(path: List[Tuple[List[GPXTrackPoint], Station]], max_radius: float):
-    for index, (segment, station) in enumerate(path):
-        path[index] = (list(douglas_peucker(segment, max_radius)), station)
+def overpass_to_path(overpass_tags: Dict[str, Any]) -> TcPath:
+    return TcPath(
+        start="",
+        end="",
+        name=overpass_tags.get("name", None),
+        electrified=overpass_tags.get("electrified", "no") != "no",
+        group=get_group_from_overpass(overpass_tags),
+        length=0,
+        maxSpeed=int(overpass_tags.get("maxspeed", "0")),
+        twistingFactor=None,
+        sinuosity=None,
+        neededEquipments=get_equipments_from_overpass(overpass_tags)
+    )
 
 
-# Based on https://towardsdatascience.com/simplify-polylines-with-the-douglas-peucker-algorithm-ac8ed487a4a1
-def douglas_peucker(points: List[GPXTrackPoint], max_radius: float) -> Iterator[GPXTrackPoint]:
-    points_array = np.ndarray((len(points), 2), dtype=float)
-    for index, point in enumerate(points):
-        # We use lat, lon here, because geopy.distance.geodesic uses this format.
-        # For the geometric stuff it doesn't matter, as we only care about distances and not directions, etc.
-        points_array[index] = (point.latitude, point.longitude)
-    selected_points = rdp.rdp(points_array, dist=approximate_distance_to_line, epsilon=max_radius, return_mask=True)
-    return itertools.compress(points, selected_points)
+def get_equipments_from_overpass(overpass_tags: Dict[str, Any]) -> List[str]:
+    needed_equipments = []
+    if overpass_tags.get("gauge", "1435") != "1435":
+        needed_equipments.append(f"{overpass_tags.get('gauge')}mm")
+    return needed_equipments
 
 
-def approximate_distance_to_line(point: np.ndarray, start: np.ndarray, end: np.ndarray) -> float:
-    # NOTE: We assume here that distances are roughly linear to the longitude and latitude difference
-    # Step 1: Get the "scale" - i.e., distance_km / distance_lon_lat.
-    km_per_lon_lat = geopy.distance.geodesic(start, end).km / np.linalg.norm(start - end)
-    distance_lon_lat = rdp.pldist(point, start, end)
-    return distance_lon_lat * km_per_lon_lat
+def get_group_from_overpass(overpass_tags: Dict[str, Any]) -> int | None:
+    usage = overpass_tags.get("usage", "main")
+    if usage in ("branch", "industrial", "military", "test", "tourism"):
+        return 1
+    if int(overpass_tags.get("maxspeed", "0")) >= 230:
+        return 2
+    else:
+        return 0
+
+
+def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
+                     tolerance: float = 0.4,
+                     overpass_response: List[Dict[str, Any]] | None = None) -> TcPath:
+    length = sum((geopy.distance.geodesic(
+        (last_trackpoint.latitude, last_trackpoint.longitude),
+        (trackpoint.latitude, trackpoint.longitude)).km for last_trackpoint, trackpoint in pairwise(segment)))
+
+    if not overpass_response:
+        overpass_query = create_query(query_rail_around_gpx(min(0.001, tolerance - 0.02), segment))
+        print(len(overpass_query))
+        assert len(overpass_query) <= 30000
+
+        overpass_response = overpass.request_overpass(overpass_query)
+    sub_paths = [overpass_to_path(sub_path['tags']) for sub_path in overpass_response]
+    if not sub_paths:
+        sub_paths = [
+            TcPath()
+        ]
+
+    names = Counter((sub_path.name for sub_path in sub_paths)).most_common(2)
+    # We now have (at most) the two most common names, which could be None
+    # [(None, _), ...]
+    if names[0][0] is None:
+        # Using the last value ensures that we always get some value, even if the names are _only_ None
+        name = names[-1][0]
+    else:
+        # If the most common name is something, take that!
+        name = names[0][0]
+
+    group = max((sub_path.group for sub_path in sub_paths if sub_path.group is not None),
+                key=lambda group: TrackKind(group))
+
+    # TODO: Check if this makes sense?
+    max_speeds = [sub_path.maxSpeed for sub_path in sub_paths if sub_path.maxSpeed]
+    logging.debug(max_speeds)
+    max_max_speed = max(max_speeds)
+    avg_max_speed = statistics.mean(max_speeds)
+    # We mostly use the maximum speed, but also add a bit of the average one in.
+    # It would be better if we could weigh it according to the segment lengths, but that would get more complicated
+    max_speed = max_max_speed
+    needed_equipments = set((equipment for sub_path in sub_paths for equipment in sub_path.neededEquipments))
+
+    start_country = start.country.flag
+    end_country = end.country.flag
+    if start.country.iso_3166 != "DE" or end.country.iso_3166 != "DE":
+        needed_equipments.add(start_country)
+        needed_equipments.add(end_country)
+
+    direct_distance = start.location.distance(end.location)
+    sinuosity = round(length / direct_distance, ndigits=3)
+    twisting_factor = round(sinousity_to_twisting_factor(sinuosity), ndigits=2)
+
+    return TcPath(
+        start=start.codes[0],
+        start_long=start.name,
+        end=end.codes[0],
+        end_long=end.name,
+        name=name,
+        electrified=statistics.median_low((sub_path.electrified for sub_path in sub_paths)),
+        group=group,
+        length=int(length),
+        maxSpeed=int(max_speed),
+        twistingFactor=twisting_factor,
+        sinuosity=sinuosity,
+        neededEquipments=list(needed_equipments)
+    )
+
+
+def simplify_path_with_stops(path: List[Tuple[Station, List[GPXTrackPoint], Station]], max_radius: float):
+    for index, (start, segment, end) in enumerate(path):
+        path[index] = (start, list(douglas_peucker(segment, max_radius)), end)
 
 
 delimiters = re.compile(r"[- _]", flags=re.IGNORECASE)

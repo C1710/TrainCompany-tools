@@ -7,45 +7,48 @@ import os.path
 from os import PathLike
 from typing import Tuple
 
+from cleanup import remove_annotations_from_path
 from cli_utils import check_files, add_default_cli_args, use_default_cli_args
 from geo.location_data import add_location_data_to_list
 from importers.brouter import BrouterImporter
 from importers.brouter_new import BrouterImporterNew
 from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
 from structures import DataSet
-from structures.route import TcRoute
+from structures.route import TcRoute, TcPath
 from tc_utils import TcFile
-from tc_utils.paths import add_route_to_files
+from tc_utils.paths import add_route_to_files, add_path_to_file
+from tc_utils.stations import add_stations_to_file
 
 
 def import_gpx_into_tc(gpx: PathLike | str,
                        tc_directory: PathLike | str = '..',
                        data_directory: PathLike | str = 'data',
                        override_stations: bool = False,
-                       add_annotation: bool = False,
                        use_google: bool = False,
-                       use_old_importer: bool = False,
                        language: str | bool = False,
-                       fallback_town: bool = False
+                       fallback_town: bool = False,
+                       tolerance: float = 0.4
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
-    if use_old_importer:
-        importer = BrouterImporter(data_set.station_data)
-    else:
-        importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town)
-    waypoints = importer.import_data(gpx)
+    importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town,
+                                  path_tolerance=tolerance)
+    stations, paths = importer.import_data(gpx)
+
+    path = TcPath.merge(paths)
 
     station_json = TcFile('Station', tc_directory)
     path_json = TcFile('Path', tc_directory)
 
-    route = convert_waypoints_to_route(waypoints, data_set.station_data, data_set.path_data)
-    tc_route = TcRoute.from_route(route, data_set.station_data, add_annotations=add_annotation)
+    # Add location data, if necessary
+    add_location_data_to_list(stations, use_google=use_google)
 
-    # Add location data from Google, if necessary
-    add_location_data_to_list(tc_route.stations, use_google=use_google)
+    add_stations_to_file(stations, station_json, override_stations=override_stations)
 
-    add_route_to_files(tc_route, station_json, path_json,
-                       override_stations=override_stations)
+    # The top-level path might have a 0 twistingFactor which we don't want to keep
+    if path.twistingFactor == 0:
+        path.twistingFactor = None
+
+    add_path_to_file(path, path_json, clean=True)
 
     return station_json, path_json
 
@@ -59,16 +62,15 @@ if __name__ == '__main__':
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
-    parser.add_argument('--annotate', action='store_true',
-                        help="Fügt die vollen Stationsnamen hinzu. Die müssen später wieder gelöscht werden!")
     parser.add_argument("--use-google", action='store_true',
                         help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
     parser.add_argument("--language", choices=['de', 'en', 'fr'],
                         help="Sprache für die Bahnhofsnamen")
     parser.add_argument("--towns", action="store_true",
                         help="Falls kein Bahnhof gefunden wird, wird der Ort genommen")
-    parser.add_argument("--old-importer", action='store_true',
-                        help="Nutzt den alten Importer, der auf Standorten basiert und nur bekannte Haltestellen hinzufügt.")
+    parser.add_argument("--tolerance", default=0.05, type=float,
+                        help="Gibt an, wie stark die Strecke für Online-Abfragen vereinfacht werden soll in km.\n"
+                             "Ein kleinerer Wert funktioniert genauer, ist aber aufwändiger")
     args = parser.parse_args()
     use_default_cli_args(args)
 
@@ -79,10 +81,9 @@ if __name__ == '__main__':
         args.tc_directory,
         args.data_directory,
         args.override_stations,
-        add_annotation=args.annotate,
-        use_old_importer=args.old_importer,
         language=args.language if args.language else False,
-        fallback_town=args.towns
+        fallback_town=args.towns,
+        tolerance=args.tolerance
     )
 
     station_json.save()

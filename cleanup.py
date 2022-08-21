@@ -24,6 +24,9 @@ def cleanup(tc_directory: PathLike | str, force: bool = False) -> Tuple[TcFile, 
 def remove_annotations_from_path(path: Dict[str, Any]):
     path.pop('start_long', '')
     path.pop('end_long', '')
+    path.pop('sinuosity', 0)
+    if "maxSpeed" in path and path.get("maxSpeed") == 0:
+        path.pop("maxSpeed")
     if 'objects' in path:
         for sub_path in path['objects']:
             remove_annotations_from_path(sub_path)

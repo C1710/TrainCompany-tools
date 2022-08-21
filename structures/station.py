@@ -124,7 +124,7 @@ class Station:
                 # Abzweig
                 return 4
             else:
-                return 3
+                return -1
         else:
             return self._group
 
