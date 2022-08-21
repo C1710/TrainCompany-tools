@@ -257,7 +257,7 @@ sinuosity_to_twist = [
 @functools.lru_cache
 def sinousity_to_twisting_factor(sinuosity: float) -> float:
     if sinuosity < 1.0:
-        return 0.0
+        return 0.01
     for (start_sin, start_twist), (end_sin, end_twist) in zip(sinuosity_to_twist, sinuosity_to_twist[1:]):
         if start_sin <= sinuosity < end_sin:
             return sinuosity_between_points(sinuosity, start_sin, start_twist, end_sin, end_twist)
