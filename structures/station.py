@@ -5,10 +5,11 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
-# It will add all of them in that order if one is added
 from geo import Location, default_projection_version
-from structures.country import Country, country_for_station, country_for_code, split_country
+from structures.country import Country, country_for_station, country_for_code, split_country, CountryRepresentation, \
+    strip_country
 
+# It will add all of them in that order if one is added
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
     ("BL", "BLS"),
@@ -23,6 +24,7 @@ class _CodeList(List[str]):
         for code in expand_codes(__object):
             if code not in self:
                 super().append(code)
+        self.sort(key=CodeTuple._rank_for_code)
 
     def extend(self, __iterable: Iterable[str]):
         for code in __iterable:
@@ -66,9 +68,46 @@ class CodeTuple(Tuple[str]):
     def __new__(cls, *args):
         if not len(args):
             return tuple.__new__(cls)
-        return tuple.__new__(cls, _without_duplicates(
-            (expanded_code for code in args for expanded_code in expand_codes(code))
-        ))
+        codes = _without_duplicates((expanded_code for code in args for expanded_code in expand_codes(code)))
+        codes.sort(key=cls._rank_for_code)
+        return tuple.__new__(cls, codes)
+
+    @classmethod
+    def _rank_for_code(cls, code: str) -> int:
+        _, country_representation = country_for_code(code)
+        if not code:
+            return 1000
+        if country_representation in (CountryRepresentation.NONE,
+                                      CountryRepresentation.RIL100_X,
+                                      CountryRepresentation.RIL100_Z):
+            return 0
+        elif country_representation in (CountryRepresentation.FLAG,):
+            # Here, we need to distinguish further
+            bare_code = strip_country(code)
+            if not bare_code:
+                return 1000
+            return 10 + cls._sub_rank_for_bare_code(bare_code)
+        elif country_representation in (CountryRepresentation.UIC,):
+            return 20
+        elif country_representation in (CountryRepresentation.COLON,):
+            bare_code = strip_country(code)
+            if not bare_code:
+                return 1000
+            return 30 + cls._sub_rank_for_bare_code(bare_code)
+        else:
+            return 1000
+
+    @classmethod
+    def _sub_rank_for_bare_code(cls, bare_code: str) -> int:
+        if bare_code[0].isdigit():
+            # Flag + UIC
+            return 1
+        elif bare_code[0] == "O" and bare_code[1].isdigit():
+            # Flag + O + osm_id
+            return 2
+        else:
+            # Otherwise: Flag + character + ...
+            return 0
 
 
 def iter_stations_by_codes(stations: List[Station]) -> Generator[Tuple[str, Station], None, None]:

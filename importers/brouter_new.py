@@ -324,6 +324,7 @@ def bbox(location: Location, radius: float = 0.004) -> (geopy.Point, geopy.Point
 def overpass_to_path(overpass_tags: Dict[str, Any]) -> TcPath:
     if "maxspeed" in overpass_tags:
         max_speed: str = overpass_tags["maxspeed"]
+        max_speed = max_speed.replace("+", "")
         if "mph" in max_speed:
             max_speed = max_speed.replace(" mph", "")
             max_speed = str(int(int(max_speed) * 1.609344))
