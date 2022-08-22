@@ -387,6 +387,8 @@ def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
 
     # TODO: Check if this makes sense?
     max_speeds = [sub_path.maxSpeed for sub_path in sub_paths if sub_path.maxSpeed]
+    if not max_speeds:
+        max_speeds = [-1]
     max_max_speed = max(max_speeds)
     avg_max_speed = statistics.mean(max_speeds)
     # We mostly use the maximum speed, but also add a bit of the average one in.
