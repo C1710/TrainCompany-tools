@@ -321,7 +321,7 @@ class TcStation:
             x=x,
             y=y,
             platformLength=int(
-                station.platform_length) if station.platform_length != 0 or station.platform_count != 0 else None,
+                station.platform_length) if station.platform_length != 0 else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
             proj=projection
