@@ -159,12 +159,14 @@ def validate(tc_directory: PathLike | str = '..',
 
         issues_score = 0
         # 2.3. Path length for Non-SFS
-        if path['group'] != 2 and path['length'] > 80:
+        if path['group'] not in (2, 3) and path['length'] > 80:
             issues_score = 45
-            logging.warning("+{: <6} >80 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
-        elif path['group'] != 2 and path['length'] > 40:
+            logging.warning(
+                "+{: <6} >80 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
+        elif path['group'] not in (2, 3) and path['length'] > 40:
             issues_score = 5
-            logging.warning("+{: <6} >40 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
+            logging.warning(
+                "+{: <6} >40 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
         issues += issues_score
 
         # 2.4. realistic twistingFactor

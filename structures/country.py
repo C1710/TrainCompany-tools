@@ -193,6 +193,13 @@ countries: Dict[str, Country] = {country.iso_3166: country for country in (
                 dative="dem Irak",
                 accusative="den Irak"
             )),
+    Country(iso_3166="US", uic=13, name="USA",
+            _name_forms=Pronouns(
+                nominative="die USA",
+                genitive="der USA",
+                dative="den USA",
+                accusative="die USA"
+            )),
     germany
 )}
 
