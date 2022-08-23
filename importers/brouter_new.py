@@ -7,13 +7,13 @@ from collections import Counter
 from functools import lru_cache
 
 import statistics
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Callable
 
 import geopy.distance
 import gpxpy
 import unidecode
 from geopy.extra.rate_limiter import RateLimiter
-from gpxpy.gpx import GPXTrackPoint
+from gpxpy.gpx import GPXTrackPoint, GPXWaypoint
 from networkx.utils import pairwise
 
 import geo
@@ -60,12 +60,62 @@ class BrouterImporterNew:
         geolocator = PhotonAdvancedReverse()
         reverse = RateLimiter(geolocator.reverse, min_delay_seconds=0.5, max_retries=3)
 
+        waypoint_location_to_station_location = self.collect_waypoint_stations(gpx.waypoints, reverse)
+
+        path_segments, stops = self.collect_path_segments(gpx.tracks[0].segments[0].points,
+                                                          waypoint_location_to_station_location)
+
+        if self.use_overpass:
+            overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
+                                for _, segment, _ in path_segments]
+            overpass_responses = overpass.query_multiple(overpass_queries)
+        else:
+            overpass_responses = itertools.repeat(None)
+
+        return stops, [tc_path_from_gpx(start, segment, end, overpass_response=overpass_response)
+                       for (start, segment, end), overpass_response in zip(path_segments, overpass_responses)]
+
+    @staticmethod
+    def collect_path_segments(points: List[GPXTrackPoint],
+                              waypoint_location_to_station_location: Dict[Location, Station]) \
+            -> Tuple[List[Tuple[Station, List[GPXTrackPoint], Station]], List[Station]]:
+        # Now we go through the trackpoints and add stations and segments
+        path_segments: List[Tuple[Station, List[GPXTrackPoint], Station]] = []
+        # Collect the visited stations here
+        stops: List[Station] = []
+        # The index in the track segment where the last stop was located
+        last_stop_index: int = 0
+        last_stop: Station | None = None
+        for index, trackpoint in enumerate(points):
+            location = Location(
+                latitude=trackpoint.latitude,
+                longitude=trackpoint.longitude
+            )
+            # Check if this trackpoint is a stop
+            for waypoint_location, stop in waypoint_location_to_station_location.items():
+                if waypoint_location.distance_float(location) < 0.08:
+                    # We have a stop here, add it to the list
+                    path_segments.append((last_stop, points[last_stop_index:index], stop))
+                    last_stop_index = index
+                    last_stop = stop
+                    stops.append(stop)
+                    # We don't want to match the stop multiple times
+                    waypoint_location_to_station_location.pop(waypoint_location)
+                    break
+        # The first entry is garbage
+        path_segments.pop(0)
+        assert path_segments
+
+        return path_segments, stops
+
+    def collect_waypoint_stations(self, waypoints: List[GPXWaypoint],
+                                  geocode_reverse) -> Dict[Location, Station]:
         # It may be possible that the waypoint has a different location to its station
         waypoint_location_to_station_location = {}
 
-        for waypoint in gpx.waypoints:
+        for waypoint in waypoints:
             # Find stations close to the given waypoint location
-            possible_stations: List[geopy.location.Location] | None = reverse(
+            possible_stations: List[geopy.location.Location] | None = geocode_reverse(
                 geopy.Point(latitude=waypoint.latitude, longitude=waypoint.longitude),
                 exactly_one=False,
                 limit=6,
@@ -91,7 +141,7 @@ class BrouterImporterNew:
 
                 if self.fallback_town:
                     # Now we will try to look for a nearby town/city/village instead
-                    possible_stations = reverse(
+                    possible_stations = geocode_reverse(
                         geopy.Point(latitude=waypoint.latitude, longitude=waypoint.longitude),
                         exactly_one=False,
                         limit=6,
@@ -188,44 +238,7 @@ class BrouterImporterNew:
 
             waypoint_location_to_station_location[Location(longitude=waypoint.longitude,
                                                            latitude=waypoint.latitude)] = station
-
-        # Now we go through the trackpoints and add stations and segments
-        path_segments: List[Tuple[Station, List[GPXTrackPoint], Station]] = []
-        # Collect the visited stations here
-        stops: List[Station] = []
-        # The index in the track segment where the last stop was located
-        last_stop_index: int = 0
-        last_stop: Station | None = None
-        points = gpx.tracks[0].segments[0].points
-        for index, trackpoint in enumerate(gpx.tracks[0].segments[0].points):
-            location = Location(
-                latitude=trackpoint.latitude,
-                longitude=trackpoint.longitude
-            )
-            # Check if this trackpoint is a stop
-            for waypoint_location, stop in waypoint_location_to_station_location.items():
-                if waypoint_location.distance_float(location) < 0.08:
-                    # We have a stop here, add it to the list
-                    path_segments.append((last_stop, points[last_stop_index:index], stop))
-                    last_stop_index = index
-                    last_stop = stop
-                    stops.append(stop)
-                    # We don't want to match the stop multiple times
-                    waypoint_location_to_station_location.pop(waypoint_location)
-                    break
-        # The first entry is garbage
-        path_segments.pop(0)
-        assert path_segments
-
-        if self.use_overpass:
-            overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
-                                for _, segment, _ in path_segments]
-            overpass_responses = overpass.query_multiple(overpass_queries)
-        else:
-            overpass_responses = itertools.repeat(None)
-
-        return stops, [tc_path_from_gpx(start, segment, end, overpass_response=overpass_response)
-                       for (start, segment, end), overpass_response in zip(path_segments, overpass_responses)]
+        return waypoint_location_to_station_location
 
 
 def with_osm_platform_data(station: Station) -> Station:
