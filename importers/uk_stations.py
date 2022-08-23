@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Optional, Dict
 
 from importer import JsonImporter
+from structures.country import countries
 
 
 class UkStationsImporter(JsonImporter):
@@ -21,7 +22,7 @@ class UkStationsImporter(JsonImporter):
             station = Station(
                 name=entry['NLCDESC'].title(),
                 station_category=5,
-                number=int(entry['UIC']),
+                number=int(countries["GB"].uic_str + entry['UIC']),
                 codes=codes,
                 location=None
             )

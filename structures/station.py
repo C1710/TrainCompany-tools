@@ -5,10 +5,11 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
-# It will add all of them in that order if one is added
-from geo import Location
-from structures.country import Country, country_for_station, country_for_code, split_country
+from geo import Location, default_projection_version
+from structures.country import Country, country_for_station, country_for_code, split_country, CountryRepresentation, \
+    strip_country
 
+# It will add all of them in that order if one is added
 special_codes: Tuple[Tuple[str, ...], ...] = (
     ("EMSTP", "EMST"),
     ("BL", "BLS"),
@@ -23,6 +24,7 @@ class _CodeList(List[str]):
         for code in expand_codes(__object):
             if code not in self:
                 super().append(code)
+        self.sort(key=CodeTuple._rank_for_code)
 
     def extend(self, __iterable: Iterable[str]):
         for code in __iterable:
@@ -66,9 +68,46 @@ class CodeTuple(Tuple[str]):
     def __new__(cls, *args):
         if not len(args):
             return tuple.__new__(cls)
-        return tuple.__new__(cls, _without_duplicates(
-            (expanded_code for code in args for expanded_code in expand_codes(code))
-        ))
+        codes = _without_duplicates((expanded_code for code in args for expanded_code in expand_codes(code)))
+        codes.sort(key=cls._rank_for_code)
+        return tuple.__new__(cls, codes)
+
+    @classmethod
+    def _rank_for_code(cls, code: str) -> int:
+        _, country_representation = country_for_code(code)
+        if not code:
+            return 1000
+        if country_representation in (CountryRepresentation.NONE,
+                                      CountryRepresentation.RIL100_X,
+                                      CountryRepresentation.RIL100_Z):
+            return 0
+        elif country_representation in (CountryRepresentation.FLAG,):
+            # Here, we need to distinguish further
+            bare_code = strip_country(code)
+            if not bare_code:
+                return 1000
+            return 10 + cls._sub_rank_for_bare_code(bare_code)
+        elif country_representation in (CountryRepresentation.UIC,):
+            return 20
+        elif country_representation in (CountryRepresentation.COLON,):
+            bare_code = strip_country(code)
+            if not bare_code:
+                return 1000
+            return 30 + cls._sub_rank_for_bare_code(bare_code)
+        else:
+            return 1000
+
+    @classmethod
+    def _sub_rank_for_bare_code(cls, bare_code: str) -> int:
+        if bare_code[0].isdigit():
+            # Flag + UIC
+            return 1
+        elif bare_code[0] == "O" and bare_code[1].isdigit():
+            # Flag + O + osm_id
+            return 2
+        else:
+            # Otherwise: Flag + character + ...
+            return 0
 
 
 def iter_stations_by_codes(stations: List[Station]) -> Generator[Tuple[str, Station], None, None]:
@@ -103,6 +142,7 @@ class Station:
     platforms: Tuple[Platform] = field(default_factory=tuple)
     station_category: Optional[int] = field(default=None)
     _group: Optional[int] = field(default=None)
+    _platform_length: Optional[int] = field(default=None)
 
     @property
     def group(self) -> int:
@@ -124,7 +164,7 @@ class Station:
                 # Abzweig
                 return 4
             else:
-                return 3
+                return -1
         else:
             return self._group
 
@@ -134,7 +174,10 @@ class Station:
 
     @cached_property
     def platform_length(self) -> int:
-        return max((platform.length for platform in self.platforms)) if self.platforms else 0
+        if not self._platform_length:
+            return max((platform.length for platform in self.platforms)) if self.platforms else 0
+        else:
+            return self._platform_length
 
     @cached_property
     def country(self) -> Country:
@@ -269,7 +312,7 @@ class TcStation:
     proj: Optional[bool | int] = None
 
     @staticmethod
-    def from_station(station: Station, projection: int = 1) -> TcStation:
+    def from_station(station: Station, projection: int = default_projection_version) -> TcStation:
         x, y = station.location.to_projection(projection) if station.location else (0, 0)
         return TcStation(
             name=station.name,
@@ -277,7 +320,8 @@ class TcStation:
             group=station.group if station.group is not None else 2,
             x=x,
             y=y,
-            platformLength=int(station.platform_length) if station.platform_length != 0 or station.platform_count != 0 else None,
+            platformLength=int(
+                station.platform_length) if station.platform_length != 0 else None,
             platforms=station.platform_count if station.platform_count != 0 else None,
             forRandomTasks=None,
             proj=projection

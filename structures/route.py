@@ -110,7 +110,6 @@ class TcPath:
                 length = current_stop.distance_from_start - last_stop.distance_from_start
 
                 twisting_factor = None
-                sinuosity = None
                 if code_to_station:
                     current_station = code_to_station[current_stop.code]
                     last_station = code_to_station[last_stop.code]
@@ -248,8 +247,9 @@ sinuosity_to_twist = [
     (1.100, 0.20),
     (1.150, 0.28),
     (1.200, 0.30),
-    (1.330, 0.40),
-    (1.400, 0.50),
+    (1.330, 0.39),
+    (1.550, 0.40),
+    (1.600, 0.50),
     (1.900, 0.80)
 ]
 
@@ -257,7 +257,7 @@ sinuosity_to_twist = [
 @functools.lru_cache
 def sinousity_to_twisting_factor(sinuosity: float) -> float:
     if sinuosity < 1.0:
-        return 0.0
+        return 0.01
     for (start_sin, start_twist), (end_sin, end_twist) in zip(sinuosity_to_twist, sinuosity_to_twist[1:]):
         if start_sin <= sinuosity < end_sin:
             return sinuosity_between_points(sinuosity, start_sin, start_twist, end_sin, end_twist)
