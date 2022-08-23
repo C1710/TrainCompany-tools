@@ -34,6 +34,7 @@ class BrouterImporterNew:
     path_tolerance: float
     use_overpass: bool
     get_platform_data: bool
+    use_waypoint_locations: bool
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
@@ -41,7 +42,8 @@ class BrouterImporterNew:
                  fail_on_unknown: bool = False,
                  path_tolerance: float = 0.4,
                  use_overpass: bool = True,
-                 get_platform_data: bool = True):
+                 get_platform_data: bool = True,
+                 use_waypoint_locations: bool = True):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
@@ -51,6 +53,7 @@ class BrouterImporterNew:
         self.path_tolerance = path_tolerance
         self.use_overpass = use_overpass
         self.get_platform_data = get_platform_data
+        self.use_waypoint_locations = use_waypoint_locations
 
     def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -188,9 +191,9 @@ class BrouterImporterNew:
                     # Remove it from the lookup table to prevent having the same station twice
                     station = self.name_to_station.pop(name)
                     # Add this location if necessary
-                    if station.location is None or station.group == -1:
+                    if station.location is None or station.group == -1 or self.use_waypoint_locations:
                         station_dict = station.__dict__
-                        if station.location is None:
+                        if station.location is None or self.use_waypoint_locations:
                             station_dict["location"] = Location(
                                 latitude=waypoint.latitude,
                                 longitude=waypoint.longitude

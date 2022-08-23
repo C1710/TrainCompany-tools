@@ -28,11 +28,13 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        language: str | bool = False,
                        fallback_town: bool = False,
                        tolerance: float = 0.4,
-                       use_overpass: bool = True
+                       use_overpass: bool = True,
+                       use_waypoint_location: bool = False
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town,
-                                  path_tolerance=tolerance, use_overpass=use_overpass)
+                                  path_tolerance=tolerance, use_overpass=use_overpass,
+                                  use_waypoint_locations=use_waypoint_location)
     stations, paths = importer.import_data(gpx)
 
     path = TcPath.merge(paths)
@@ -74,6 +76,8 @@ if __name__ == '__main__':
                              "Ein kleinerer Wert funktioniert genauer, ist aber aufwändiger")
     parser.add_argument("--no-overpass", action="store_true",
                         help="Nutzt nicht die Overpass-API, um Daten zu vervollständigen.")
+    parser.add_argument("--waypoint-location", action="store_true",
+                        help="Verwendet immer den in brouter angegebenen Standort für eine Haltestelle")
     args = parser.parse_args()
     use_default_cli_args(args)
 
@@ -87,7 +91,8 @@ if __name__ == '__main__':
         language=args.language if args.language else False,
         fallback_town=args.towns,
         tolerance=args.tolerance,
-        use_overpass=not args.no_overpass
+        use_overpass=not args.no_overpass,
+        use_waypoint_location=args.waypoint_location
     )
 
     station_json.save()
