@@ -163,7 +163,7 @@ if __name__ == '__main__':
                         help="Die Datei, in die gespeichert werden soll. Standard: map_plot.svg")
     parser.add_argument('--projection-version', "--projection_version", metavar="VERSION", type=int,
                         choices=(-1, 0, 1, 2, 3),
-                        default=1,
+                        default=default_projection_version,
                         help="Die Version der Projektion, die verwendet werden soll:\n"
                              "-1 - WGS84\n"
                              " 0 - Linear von WGS84\n"

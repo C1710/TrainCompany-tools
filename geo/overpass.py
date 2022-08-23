@@ -70,7 +70,7 @@ def query_multiple(queries: Iterator[str],
 
     logging.debug(query)
 
-    assert len(query) < 50000
+    assert len(query) < 100000
 
     response = request_overpass(query, overpass_api, sleep_time, max_num_retries)
     responses = []

@@ -229,13 +229,13 @@ class BrouterImporterNew:
 
 
 def with_osm_platform_data(station: Station) -> Station:
-    geolocator = PhotonAdvancedReverse()
+    geolocator = geopy.Photon(timeout=10)
     geocode = RateLimiter(geolocator.geocode, min_delay_seconds=0.5, max_retries=3)
     station_location = geopy.Point(latitude=station.location.latitude,
                                    longitude=station.location.longitude)
     platforms: List[geopy.Location] | None = geocode(station.name, location_bias=station_location,
                                                      osm_tag="railway:platform",
-                                                     exactly_one=False, limit=30)
+                                                     exactly_one=False, limit=20)
     station_platforms = []
     if platforms:
         for platform in platforms:

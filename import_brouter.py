@@ -32,7 +32,7 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town,
-                                  path_tolerance=tolerance, use_overpass=True)
+                                  path_tolerance=tolerance, use_overpass=use_overpass)
     stations, paths = importer.import_data(gpx)
 
     path = TcPath.merge(paths)
