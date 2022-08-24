@@ -29,12 +29,14 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        fallback_town: bool = False,
                        tolerance: float = 0.4,
                        use_overpass: bool = True,
-                       use_waypoint_location: bool = False
+                       use_waypoint_location: bool = False,
+                       raw_waypoint_prefix: str | None = None
                        ) -> Tuple[TcFile, TcFile]:
     data_set = DataSet.load_data(data_directory)
     importer = BrouterImporterNew(data_set.station_data, language=language, fallback_town=fallback_town,
                                   path_tolerance=tolerance, use_overpass=use_overpass,
-                                  use_waypoint_locations=use_waypoint_location)
+                                  use_waypoint_locations=use_waypoint_location, prefix_raw=raw_waypoint_prefix,
+                                  raw=raw_waypoint_prefix is not None)
     stations, paths = importer.import_data(gpx)
 
     path = TcPath.merge(paths)
@@ -78,6 +80,8 @@ if __name__ == '__main__':
                         help="Nutzt nicht die Overpass-API, um Daten zu vervollständigen.")
     parser.add_argument("--waypoint-location", action="store_true",
                         help="Verwendet immer den in brouter angegebenen Standort für eine Haltestelle")
+    parser.add_argument("--raw-waypoints",
+                        help="Fügt nicht existierende Stationen mit dem Präfix hinzu (nur für Fähren empfohlen)")
     args = parser.parse_args()
     use_default_cli_args(args)
 
@@ -92,7 +96,8 @@ if __name__ == '__main__':
         fallback_town=args.towns,
         tolerance=args.tolerance,
         use_overpass=not args.no_overpass,
-        use_waypoint_location=args.waypoint_location
+        use_waypoint_location=args.waypoint_location,
+        raw_waypoint_prefix=args.raw_waypoints
     )
 
     station_json.save()

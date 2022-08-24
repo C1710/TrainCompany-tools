@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import itertools
 import logging
+import random
 import re
 from collections import Counter
 from functools import lru_cache
@@ -35,6 +36,8 @@ class BrouterImporterNew:
     use_overpass: bool
     get_platform_data: bool
     use_waypoint_locations: bool
+    raw: bool
+    prefix_raw: str
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
@@ -43,7 +46,9 @@ class BrouterImporterNew:
                  path_tolerance: float = 0.4,
                  use_overpass: bool = True,
                  get_platform_data: bool = True,
-                 use_waypoint_locations: bool = True):
+                 use_waypoint_locations: bool = True,
+                 raw: bool = False,
+                 prefix_raw: str = "STATION"):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
@@ -54,6 +59,8 @@ class BrouterImporterNew:
         self.use_overpass = use_overpass
         self.get_platform_data = get_platform_data
         self.use_waypoint_locations = use_waypoint_locations
+        self.raw = raw
+        self.prefix_raw = prefix_raw
 
     def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -116,6 +123,7 @@ class BrouterImporterNew:
         # It may be possible that the waypoint has a different location to its station
         waypoint_location_to_station_location = {}
 
+        raw_stations = 1
         for waypoint in waypoints:
             # Find stations close to the given waypoint location
             possible_stations: List[geopy.location.Location] | None = geocode_reverse(
@@ -171,11 +179,30 @@ class BrouterImporterNew:
                             logging.error("Ignoring station")
                         continue
                 else:
-                    if self.fail_on_unknown:
-                        raise ValueError("Unknown station")
+                    if self.raw:
+                        possible_stations = [
+                            geopy.Location(
+                                address="",
+                                point=geopy.Point(
+                                    latitude=waypoint.latitude,
+                                    longitude=waypoint.longitude
+                                ),
+                                raw={
+                                    "properties": {
+                                        "name": "Unbekannte Haltestelle",
+                                        "osm_value": "NOTHING",
+                                        "countrycode": "UN",
+                                        "osm_id": random.randint(0, 1_000_000_000)
+                                    }
+                                }
+                            )
+                        ]
                     else:
-                        logging.error("Ignoring station")
-                    continue
+                        if self.fail_on_unknown:
+                            raise ValueError("Unknown station")
+                        else:
+                            logging.error("Ignoring station")
+                        continue
 
             for possible_station in possible_stations:
                 if 'name' not in possible_station.raw['properties']:
@@ -213,7 +240,12 @@ class BrouterImporterNew:
 
                 country = countries[new_station_properties['countrycode']]
                 # The new codes use the osm_id - Flag + O (for OpenStreetMaps) + osm_id
-                code = f"{country.flag}O{new_station_properties['osm_id']}"
+                # We (ab)use the United Nations as a placeholder for completely made up stations
+                if country.iso_3166 != "UN":
+                    code = f"{country.flag}O{new_station_properties['osm_id']}"
+                else:
+                    code = f"{country.flag}{self.prefix_raw}{raw_stations}"
+                    raw_stations += 1
                 # It might be longer than the limit...
                 assert len(bytes(code, "utf-8")) <= 20
 
@@ -232,7 +264,7 @@ class BrouterImporterNew:
 
                 logging.debug(f"New station: {station}")
 
-            if station.platform_length == 0 and self.get_platform_data:
+            if station.platform_length == 0 and self.get_platform_data and not station.country.iso_3166 == "UN":
                 station = with_osm_platform_data(station)
 
             # Add to the data set (it should propagate to the original data set as well)
@@ -387,7 +419,7 @@ def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
         overpass_response = []
     sub_paths = [overpass_to_path(sub_path['tags']) for sub_path in overpass_response]
     if not sub_paths:
-        sub_paths = [TcPath()]
+        sub_paths = [TcPath(group=-1, neededEquipments=[])]
 
     names = Counter((sub_path.name for sub_path in sub_paths)).most_common(2)
     # We now have (at most) the two most common names, which could be None

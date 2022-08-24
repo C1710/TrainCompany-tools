@@ -200,6 +200,7 @@ countries: Dict[str, Country] = {country.iso_3166: country for country in (
                 dative="den USA",
                 accusative="die USA"
             )),
+    Country(iso_3166="UN", uic=0, name=""),
     germany
 )}
 
