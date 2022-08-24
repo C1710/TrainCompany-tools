@@ -235,7 +235,7 @@ def validate(tc_directory: PathLike | str = '..',
         if station['group'] in (5, 6):
             if graph.degree(station['ril100']) != 2:
                 issues_score = 100
-                logging.error("+{: <6} Nicht dargestellte Haltestelle mit Abzwieg/Ende: {}".format(issues_score,
+                logging.error("+{: <6} Nicht dargestellte Haltestelle mit Abzweig/Ende: {}".format(issues_score,
                                                                                                    station['ril100']))
                 issues += issues_score
 
