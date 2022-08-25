@@ -38,6 +38,7 @@ class BrouterImporterNew:
     use_waypoint_locations: bool
     raw: bool
     prefix_raw: str
+    check_country: bool = True
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
@@ -48,7 +49,8 @@ class BrouterImporterNew:
                  get_platform_data: bool = True,
                  use_waypoint_locations: bool = True,
                  raw: bool = False,
-                 prefix_raw: str = "STATION"):
+                 prefix_raw: str = "STATION",
+                 check_country: bool = True):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
@@ -61,6 +63,7 @@ class BrouterImporterNew:
         self.use_waypoint_locations = use_waypoint_locations
         self.raw = raw
         self.prefix_raw = prefix_raw
+        self.check_country = check_country
 
     def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -208,15 +211,28 @@ class BrouterImporterNew:
                 if 'name' not in possible_station.raw['properties']:
                     logging.info("Station ohne Namen: {}".format(possible_station.raw))
 
-            possible_station_names = (normalize_name(station.raw['properties']['name'])
+            possible_station_names = ((normalize_name(station.raw['properties']['name']),
+                                       station)
                                       for station in possible_stations if 'name' in station.raw['properties'])
             possible_station_groups = [group_from_photon_response(station.raw['properties']) for station in
                                        possible_stations]
             # Is one of these names in our data set?
-            for name in possible_station_names:
+            for name, possible_station in possible_station_names:
                 if name in self.name_to_station:
+                    station = self.name_to_station[name]
+                    countrycode = possible_station.raw["properties"].get("countrycode", None)
+                    # We might want to assert that the station we are associating here actually is in the right country
+                    if countrycode is not None and self.check_country:
+                        country = station.country
+                        if countrycode.upper() != country.iso_3166:
+                            # Wrong country
+                            continue
+                    # Check that the station is not too far from the waypoint
+                    if station.location is not None:
+                        if geopy.distance.geodesic(station.point, possible_station.point).km > 2.0:
+                            continue
                     # Remove it from the lookup table to prevent having the same station twice
-                    station = self.name_to_station.pop(name)
+                    self.name_to_station.pop(name)
                     # Add this location if necessary
                     if station.location is None or station.group == -1 or self.use_waypoint_locations:
                         station_dict = station.__dict__
