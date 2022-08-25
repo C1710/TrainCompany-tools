@@ -30,7 +30,8 @@ def print_path(path: Dict[str, Any]) -> str:
 
 def validate(tc_directory: PathLike | str = '..',
              data_directory: PathLike | str = 'data',
-             experimental: str = "false"
+             experimental: str = "false",
+             limit_components: int = 2
              ) -> int:
     enforce_experimental = experimental == "enforce"
     enable_experimental = experimental != "false"
@@ -223,9 +224,9 @@ def validate(tc_directory: PathLike | str = '..',
 
     graph = build_tc_graph(selected_codes, path_edges)
     # 3.1. Check if the graph is connected
-    if not is_connected(graph):
+    if nx.number_connected_components(graph) > limit_components:
         issues_score = 10000
-        logging.error("+{: <6} Das Netz ist nicht zusammenhängend.".format(issues_score))
+        logging.error("+{: <6} Es gibt zu viele getrennte Netze.".format(issues_score))
         for node, degree in graph.degree():
             if degree == 0:
                 logging.error(" {: <6} Haltepunkt ohne Route: {}".format('', node))
