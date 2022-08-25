@@ -19,12 +19,15 @@ if __name__ == '__main__':
                         type=str,
                         help="Führt auch noch nicht ganz stabile Checks durch.\n"
                              "Bei warn wird der Issue-Score nicht erhöht")
+    parser.add_argument("--limit-components", type=int, default=2,
+                        help="Wie viele getrennte Netze erlaubt sind")
     args = parser.parse_args()
     use_default_cli_args(args)
 
     check_files(args.tc_directory, args.data_directory)
 
-    issues = validate(args.tc_directory, args.data_directory, experimental=args.experimental)
+    issues = validate(args.tc_directory, args.data_directory,
+                      experimental=args.experimental, limit_components=args.limit_components)
 
     logging.info("Score: {} (kleiner ist besser)".format(issues))
 
