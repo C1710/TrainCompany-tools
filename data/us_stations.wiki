@@ -1,0 +1,5145 @@
+|-
+! scope="col" style="width: 12em;" | Station
+! Station code
+! Location
+! State or province
+! scope="col" style="width: 18em;" class="unsortable" | Route
+! Opened
+! Rebuilt
+! Connections
+|-
+| {{anchor|A}}[[Aberdeen station (Maryland)|Aberdeen]]
+| ABE
+| [[Aberdeen, Maryland|Aberdeen]]
+| [[Maryland|MD]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1898
+| 1943
+| {{rint|baltimore|marc}} [[MARC Train]]
+|-
+| [[Albany station (Oregon)|Albany]]
+| ALY
+| [[Albany, Oregon|Albany]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1977<ref>{{cite news |title=Amtrak Begins Service to Albany |url=https://www.newspapers.com/clip/38164136/albany_amtrak_october_29_1977/ |access-date=October 30, 2019 |work=The Albany Democrat-Herald |date=October 29, 1977 |location=[[Albany, Oregon]] |page=1|via=Newspapers.com}}</ref>
+| —
+|
+|-
+| [[Albany–Rensselaer station|Albany–Rensselaer]]
+| ALB
+| [[Rensselaer, New York|Rensselaer]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1968<ref>{{cite news |title=Penn-Central to Open New Rensselaer Station Dec. 29 |url=https://www.newspapers.com/clip/33185748/penn_central_station_december_20_1968/ |access-date=June 23, 2019 |work=The Times-Record |date=December 20, 1968 |location=[[Troy, New York]] |page=3|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Albion station (Michigan)|Albion]]
+| ALI
+| [[Albion, Michigan|Albion]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 1882
+| —
+|
+|-
+| [[Alvarado Transportation Center|Albuquerque]]
+| ABQ
+| [[Albuquerque, New Mexico|Albuquerque]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 2008
+| —
+| {{rint|rail|size=12px}} [[New Mexico Rail Runner Express|Rail Runner Express]]
+|-
+| [[Aldershot GO station|Aldershot]]
+| AST
+| [[Aldershot, Ontario|Aldershot]]
+| [[Ontario|ON]]
+| {{rail color box|system=Amtrak|line=Maple Leaf}}
+| —
+| —
+| {{rint|ca|via}} [[Via Rail]]<br />{{rint|gotransit}} [[GO Transit]]
+|-
+| [[Alderson station|Alderson]]
+| ALD
+| [[Alderson, West Virginia|Alderson]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1896<ref>{{cite web|url=http://www.greatamericanstations.com/Stations/ALD|title=Alderson, WV, station|publisher=Great American Stations|access-date=26 March 2020}}</ref>
+| —
+|
+|-
+| [[Alexandria Union Station|Alexandria]]
+| ALX
+| [[Alexandria, Virginia|Alexandria]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1905<ref>{{cite magazine | url = https://www.alexandriava.gov/uploadedfiles/historic/haq/HistoricAlexandriaQuarterly1996Winter1.pdf | author = Al Cox | title = The Alexandria Union Station | magazine = Historic Alexandria Quarterly | publisher = Office of Historic Alexandria | volume = 1 | issue = 1 | year = 1996}}</ref>
+| 1982
+| {{rint|vre}} [[Virginia Railway Express]]<br />{{rint|washington|metro}} [[Washington Metro]]
+|-
+| [[Allensworth State Park station|Allensworth State Park]]
+| CNL
+| [[Allensworth, California|Allensworth]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| —
+| —
+|
+|-
+| [[Alliance station|Alliance]]
+| ALC
+| [[Alliance, Ohio|Alliance]]
+| [[Ohio|OH]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+| 1990
+| 2012
+|
+|-
+| [[Alpine station|Alpine]]
+| ALP
+| [[Alpine, Texas|Alpine]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1946
+| —
+|
+|-
+| [[Alton station (Illinois)|Alton]]
+| ALN
+| [[Alton, Illinois|Alton]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1928
+| 1989, 2017
+|
+|-
+| [[Altoona Transportation Center|Altoona]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| ALT
+| [[Altoona, Pennsylvania|Altoona]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1986
+| —
+|
+|-
+| [[Amsterdam station (New York)|Amsterdam]]
+| AMS
+| [[Amsterdam, New York|Amsterdam]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1970
+| —
+|
+|-
+| [[Anaheim Regional Transportation Intermodal Center|Anaheim]]
+| ANA
+| [[Anaheim, California|Anaheim]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 2014
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Ann Arbor station|Ann Arbor]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| ARB
+| [[Ann Arbor, Michigan|Ann Arbor]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 1983
+| —
+|
+|-
+| [[Anniston station|Anniston]]
+| ATN
+| [[Anniston, Alabama|Anniston]]
+| [[Alabama|AL]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| —
+| 1926<ref>{{cite news |title=Southern Will Begin Use of New Station Shortly After Noon |url=https://www.newspapers.com/clip/33515866/anniston_station_september_26_1926/ |access-date=July 4, 2019 |work=The Selma Times-Journal |date=September 26, 1926 |page=6|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Antioch–Pittsburg station|Antioch–Pittsburg]]
+| ACA
+| [[Antioch, California|Antioch]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 1984
+| —
+|
+|-
+| [[Arcadia Valley station|Arcadia Valley]]
+| ACD
+| [[Ironton, Missouri|Ironton]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 2016
+| —
+|
+|-
+| [[Ardmore station (Oklahoma)|Ardmore]]
+| ADM
+| [[Ardmore, Oklahoma|Ardmore]]
+| [[Oklahoma|OK]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+| 1909
+| 1916
+|
+|-
+| [[Ardmore station (Pennsylvania)|Ardmore]]
+| ARD
+| [[Ardmore, Pennsylvania|Ardmore]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+| 1870
+| 1957
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Arkadelphia station|Arkadelphia]]
+| ARK
+| [[Arkadelphia, Arkansas|Arkadelphia]]
+| [[Arkansas|AR]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1917
+| —
+|
+|-
+| [[Ashland Transportation Center|Ashland]]
+| AKY
+| [[Ashland, Kentucky|Ashland]]
+| [[Kentucky|KY]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1998
+| —
+|
+|-
+| [[Ashland station (Virginia)|Ashland]]
+| ASD
+| [[Ashland, Virginia|Ashland]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1866
+| 1890, 1923, 1985
+|
+|-
+| [[Peachtree station|Atlanta Peachtree]]
+| ATL
+| [[Atlanta, Georgia|Atlanta]]
+| [[Georgia (U.S. state)|GA]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1918<ref>{{cite news |title=Peachtree Station Will Open March 17 for Public Service |url=https://www.newspapers.com/clip/33515798/atlanta_peachtree_march_7_1918/ |access-date=July 4, 2019 |work=The Atlanta Constitution |date=March 7, 1918 |page=1|via=Newspapers.com}} {{open access}}</ref>
+| 1918
+|
+|-
+| [[Auburn station (California)|Auburn]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| ARN
+| [[Auburn, California|Auburn]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 1865
+| 1998
+|
+|-
+| [[Austin station (Texas)|Austin]]
+| AUS
+| [[Austin, Texas|Austin]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1947
+| —
+|
+|-
+| {{anchor|B}}[[Bakersfield station (Amtrak)|Bakersfield]]
+| BFD
+| [[Bakersfield, California|Bakersfield]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 1899
+| 2000
+|
+|-
+| [[Pennsylvania Station (Baltimore)|Baltimore Penn]]
+| BAL
+| [[Baltimore, Maryland|Baltimore]]
+| [[Maryland|MD]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1911
+| 1984
+| {{rint|baltimore|marc}} [[MARC Train]]<br />{{rint|baltimore|raillink}} [[Baltimore Light RailLink]]
+|-
+| [[Bangor station (Michigan)|Bangor]]
+| BAM
+| [[Bangor, Michigan|Bangor]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Pere Marquette}}
+| 1926
+| 2005
+|
+|-
+| [[Barstow Harvey House|Barstow]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| BAR
+| [[Barstow, California|Barstow]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1911
+| —
+|
+|-
+| [[Battle Creek Transportation Center|Battle Creek]]
+| BTL
+| [[Battle Creek, Michigan|Battle Creek]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+{{rail color box|system=Amtrak|line=Wolverine}}
+| 1982
+| 2012
+|
+|-
+| [[Beaumont station|Beaumont]]
+| BMT
+| [[Beaumont, Texas|Beaumont]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+| —
+| —
+|
+|-
+| [[Fairhaven Station|Bellingham Fairhaven]]
+| BEL
+| [[Bellingham, Washington|Bellingham]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+| 1995<ref name="mtbakerintl">{{cite news |title=Travel Advisory; Amtrak Resumes Seattle-Vancouver Run |url=https://www.nytimes.com/1995/06/11/travel/travel-advisory-amtrak-resumes-seattle-vancouver-run.html |access-date=November 22, 2018 |work=The New York Times |date=June 11, 1995}}</ref>
+| —
+|
+|-
+| [[Bellows Falls station|Bellows Falls]]
+| BLF
+| [[Bellows Falls, Vermont|Bellows Falls]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Vermonter}}
+| 1849, 1972, 1989
+| 1851, 1922-1923
+|
+|-
+| [[Benson station|Benson]]
+| BEN
+| [[Benson, Arizona|Benson]]
+| [[Arizona|AZ]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| —
+|
+|-
+| [[Berkeley station (California)|Berkeley]]
+| BKY
+| [[Berkeley, California|Berkeley]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 1913
+| 1986
+|
+|-
+| [[Berlin station (Connecticut)|Berlin]]
+| BER
+| [[Berlin, Connecticut|Berlin]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1839
+| 1848, 1893, 1896, 1900, 2014-2018(current station)
+| {{rint|hartford}} [[Hartford Line]]
+|-
+| [[Bingen–White Salmon station|Bingen–White Salmon]]
+| BNG
+| [[Bingen, Washington|Bingen]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1981<ref name="102581changes" />
+| 1992
+|
+|-
+| [[Birmingham station (Alabama)|Birmingham]]
+| BHM
+| [[Birmingham, Alabama|Birmingham]]
+| [[Alabama|AL]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1960<ref name="cox">{{Cox-Dixie}}</ref>
+| —
+|
+|-
+| [[Uptown Station|Bloomington–Normal]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| BNL
+| [[Normal, Illinois|Normal]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1990
+| 2012
+|
+|-
+| [[Back Bay station|Boston Back Bay]]
+| BBY
+| [[Boston, Massachusetts|Boston]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1860
+| 1987
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]<br /> {{rint|boston|subway}} [[MBTA subway]]
+|-
+| [[North Station|Boston North]]
+| BON
+| [[Boston, Massachusetts|Boston]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 1928
+| 1997
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]<br /> {{rint|boston|subway}} [[MBTA subway]]
+|-
+| [[South Station|Boston South]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| BOS
+| [[Boston, Massachusetts|Boston]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1899
+| 1985
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]<br /> {{rint|boston|subway}} [[MBTA subway]]
+|-
+| [[Brattleboro station|Brattleboro]]
+| BRA
+| [[Brattleboro, Vermont|Brattleboro]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Vermonter}}
+| 1915<ref name="GAS">{{cite web |url=http://www.greatamericanstations.com/Stations/BRA |title=Brattleboro, VT (BRA) |website=Great American Stations |publisher=Amtrak}}</ref>
+| —
+|
+|-
+| [[Bridgeport station (Connecticut)|Bridgeport]]
+| BRP
+| [[Bridgeport, Connecticut|Bridgeport]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1840, 1849
+| 1903–1905, 1973-1975
+| <br /> {{rint|newyork|mnr}} [[Metro-North Railroad]] <br /> {{rint|shoreline}} [[Shore Line East]]
+|-
+| [[Godbold Transportation Center|Brookhaven]]
+| BRH
+| [[Brookhaven, Mississippi|Brookhaven]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1907
+| 2011
+|
+|-
+| [[Browning station|Browning]]
+| BRO
+| [[Browning, Montana|Browning]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1973{{sfn|Sanders|2006|p=172}}
+| —
+|
+|-
+| [[Brunswick Maine Street Station|Brunswick]]
+| BRK
+| [[Brunswick, Maine|Brunswick]]
+| [[Maine|ME]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2012
+| —
+|
+|-
+| [[Bryan station (Ohio)|Bryan]]
+| BYN
+| [[Bryan, Ohio|Bryan]]
+| [[Ohio|OH]]
+| {{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| —
+| —
+|
+|-
+| [[Buffalo–Depew station|Buffalo–Depew]]
+| BUF
+| [[Depew, New York|Depew]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1979<ref>{{cite journal | title=New Buffalo Station | journal=Amtrak NEWS | volume=6 | number=12 |date=November 1979 | url=http://history.amtrak.com/archives/amtrak-news-november-1979 | pages=6–7 | access-date=August 9, 2013}}</ref>
+| —
+|
+|-
+| [[Buffalo–Exchange Street station|Buffalo–Exchange Street]]
+| BFX
+| [[Buffalo, New York|Buffalo]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1952
+| —
+|
+|-
+| [[Burbank Airport–South station|Burbank Airport]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| BUR
+| [[Burbank, California|Burbank]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1983
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Burke Centre station|Burke Centre]]
+| BCV
+| [[Burke, Virginia|Burke]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1992
+| 2008
+| {{rint|vre}} [[Virginia Railway Express]]
+|-
+| [[Burlington station (Iowa)|Burlington]]
+| BRL
+| [[Burlington, Iowa|Burlington]]
+| [[Iowa|IA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1944<ref name="1944openingburlington">{{cite news |title=New Union Station in Burlington |url=https://www.newspapers.com/clip/33416265/new_burlington_station_march_28_1944/ |access-date=July 1, 2019 |work=[[The Des Moines Tribune]] |date=March 28, 1944 |page=9|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Burlington station (North Carolina)|Burlington]]
+| BNC
+| [[Burlington, North Carolina|Burlington]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 2003
+| —
+|
+|-
+| [[Union Station (Burlington, Vermont)|Burlington]]
+| BTN
+| [[Burlington, Vermont|Burlington]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| July 29, 2022
+|-
+| [[BWI Rail Station|BWI Thurgood Marshall Airport]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| BWI
+| [[Linthicum, Maryland|Linthicum]]
+| [[Maryland|MD]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1980<ref name="bwistation">{{cite news |title=Amtrak Set to Open BWI Rail Station Linking Airport to D.C., Baltimore |url=https://www.newspapers.com/clip/25574737/bwi_station_october_19_1980/ |access-date=November 20, 2018 |work=The Baltimore Sun |date=October 19, 1980 |page=19|via=Newspapers.com}} {{open access}}</ref>
+| —
+| {{rint|baltimore|marc}} [[MARC Train]]
+|-
+| {{anchor|C}}[[Camarillo station|Camarillo]]
+| CML
+| [[Camarillo, California|Camarillo]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1995
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Camden station (South Carolina)|Camden]]
+| CAM
+| [[Camden, South Carolina|Camden]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1937
+| —
+|
+|-
+| [[Carbondale station|Carbondale]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| CDL
+| [[Carbondale, Illinois|Carbondale]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1988
+| —
+|
+|-
+| [[Carlinville station|Carlinville]]
+| CRV
+| [[Carlinville, Illinois|Carlinville]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| 2017
+|
+|-
+| [[Carpinteria station|Carpinteria]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| CPN
+| [[Carpinteria, California|Carpinteria]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1997
+| —
+|
+|-
+| [[Cary station (North Carolina)|Cary]]
+| CYN
+| [[Cary, North Carolina|Cary]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1995
+| 1996
+|
+|-
+| [[Castleton station (Vermont)|Castleton]]
+| CNV
+| [[Castleton, Vermont|Castleton]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| 2010<ref name="fairhavencastleton">{{cite press release |title=Amtrak Ethan Allen Express to Provide Service at Renovated Castleton, Vermont Depot |url=http://www.trainweb.org/usarail/Amtrak_ATK-09-109_Castleton_Depot_Opening.pdf |access-date=November 22, 2018 |publisher=Amtrak |date=December 29, 2009}}</ref>
+| —
+|
+|-
+| [[Centralia station (Illinois)|Centralia]]
+| CEN
+| [[Centralia, Illinois|Centralia]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| —
+| —
+|
+|-
+| [[Centralia station (Washington)|Centralia]]
+| CTL
+| [[Centralia, Washington|Centralia]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1912
+| 2002
+|
+|-
+| [[Illinois Terminal|Champaign–Urbana]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| CHM
+| [[Champaign, Illinois|Champaign]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1999
+| —
+|
+|-
+| [[North Charleston station|Charleston]]
+| CHS
+| [[North Charleston, South Carolina|North Charleston]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+| 2018
+|
+|
+|-
+| [[Charleston station (West Virginia)|Charleston]]
+| CHW
+| [[Charleston, West Virginia|Charleston]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1905
+| —
+|
+|-
+| [[Charlotte station (Amtrak)|Charlotte]]
+| CLT
+| [[Charlotte, North Carolina|Charlotte]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 1962
+| —
+|
+|-
+| [[Charlottesville Union Station|Charlottesville]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| CVS
+| [[Charlottesville, Virginia|Charlottesville]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1885
+| 1915
+|
+|-
+| [[Chatsworth station|Chatsworth]]
+| CWT
+| [[Chatsworth, California|Chatsworth]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1982
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Chemult station|Chemult]]
+| CMO
+| [[Chemult, Oregon|Chemult]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1980
+| 2010
+|
+|-
+| [[Chicago Union Station|Chicago Union]]
+| CHI
+| [[Chicago, Illinois|Chicago]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+{{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Empire Builder}}
+{{rail color box|system=Amtrak|line=Hiawatha Service}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+{{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Pere Marquette}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+{{rail color box|system=Amtrak|line=Wolverine}}
+| 1925
+| —
+| {{rint|chicago|metra}} [[Metra]]<br />{{rint|chicago|l}} [[Chicago "L"]]
+|-
+| [[Chico station|Chico]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| CIC
+| [[Chico, California|Chico]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1892
+| 1988
+|
+|-
+| [[Cincinnati Union Terminal|Cincinnati]]
+| CIN
+| [[Cincinnati, Ohio|Cincinnati]]
+| [[Ohio|OH]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1935<ref>{{cite news |title=Transportation World Watches New Cincinnati Union Terminal Opening |url=https://www.newspapers.com/clip/38039879/cincinnati_union_march_29_1933/ |access-date=October 28, 2019 |work=The Piqua Daily Call |date=March 29, 1933 |location=[[Piqua, Ohio]] |page=8|via=Newspapers.com}} {{open access}}</ref>
+| 1991<ref name="riverrd1991">{{cite news |title=Train Station Moving |url=https://www.newspapers.com/clip/3634675/19910713cinti_enquirerpage_12train/ |access-date=October 24, 2019 |work=The Cincinnati Enquirer |date=July 13, 1991 |page=12|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Claremont station (New Hampshire)|Claremont]]
+| CLA
+| [[Claremont, New Hampshire|Claremont]]
+| [[New Hampshire|NH]]
+| {{rail color box|system=Amtrak|line=Vermonter}}
+| 1920
+| —
+|
+|-
+| [[Cleburne Intermodal Transportation Depot|Cleburne]]
+| CBR
+| [[Cleburne, Texas|Cleburne]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1898
+| 1999
+|
+|-
+| [[Clemson station|Clemson]]
+| CSN
+| [[Clemson, South Carolina|Clemson]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1918
+| —
+|
+|-
+| [[Cleveland Lakefront Station|Cleveland]]
+| CLE
+| [[Cleveland, Ohio|Cleveland]]
+| [[Ohio|OH]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1975
+| 1977
+|
+|-
+| [[Clifton Forge station|Clifton Forge]]
+| CLF
+| [[Clifton Forge, Virginia|Clifton Forge]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| —
+| —
+|
+|-
+| [[Coatesville station|Coatesville]]
+| COT
+| [[Coatesville, Pennsylvania|Coatesville]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+| 1868
+| —
+|
+|-
+| [[Colfax station|Colfax]]
+| COX
+| [[Colfax, California|Colfax]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1905
+| {{circa|2000}}
+|
+|-
+| [[Columbia station (South Carolina)|Columbia]]
+| CLB
+| [[Columbia, South Carolina|Columbia]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1991
+| —
+|
+|-
+| [[Columbus station|Columbus]]
+| CBS
+| [[Columbus, Wisconsin|Columbus]]
+| [[Wisconsin|WI]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1906
+| —
+|
+|-
+| [[Connellsville station|Connellsville]]
+| COV
+| [[Connellsville, Pennsylvania|Connellsville]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+| 2011
+| 2011
+|
+|-
+| [[Connersville station|Connersville]]
+| COI
+| [[Connersville, Indiana|Connersville]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1990<ref name="connersville1990">{{cite news |title=Amtrak Adds Stop at Connersville |url=https://www.newspapers.com/clip/37782370/connersville_station_october_28_1990/ |access-date=October 24, 2019 |work=The Indianapolis Star |date=October 28, 1990 |page=93|via=Newspapers.com}} {{open access}}</ref>
+| 1914, 1990(Amtrak)
+|
+|-
+| [[Corcoran station|Corcoran]]
+| COC
+| [[Corcoran, California|Corcoran]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 1989
+| 1999
+|
+|-
+| [[Cornwells Heights station|Cornwells Heights]]
+| CWH
+| [[Cornwells Heights, Pennsylvania|Cornwells Heights]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| —
+| —
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Crawfordsville station|Crawfordsville]]
+| CRF
+| [[Crawfordsville, Indiana|Crawfordsville]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1980<ref name="crawfordsville1981">{{cite news |last1=Cullen |first1=Kevin |title=Crawfordsville's Back on the Passenger Rail |url=https://www.newspapers.com/clip/37781870/crawfordsville_september_30_1980/ |access-date=October 24, 2019 |work=Journal and Courier |date=September 30, 1981 |location=[[Lafayette, Indiana]] |page=6|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Creston station|Creston]]
+| CRN
+| [[Creston, Iowa|Creston]]
+| [[Iowa|IA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1899
+| 1969, 2019
+|
+|-
+| [[Croton-Harmon station|Croton–Harmon]]
+| CRT
+| [[Croton-on-Hudson, New York|Croton-on-Hudson]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| —
+| —
+| {{rint|newyork|mnr}} [[Metro-North Railroad]]
+|-
+| [[Culpeper station|Culpeper]]
+| CLP
+| [[Culpeper, Virginia|Culpeper]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| —
+| —
+|
+|-
+| [[Cumberland station (Maryland)|Cumberland]]
+| CUM
+| [[Cumberland, Maryland|Cumberland]]
+| [[Maryland|MD]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+| —
+| —
+|
+|-
+| [[Cut Bank station|Cut Bank]]
+| CUT
+| [[Cut Bank, Montana|Cut Bank]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1939<ref>{{cite news |title=New G.N. Depot at Cut Bank |url=https://www.newspapers.com/clip/41646925/cut_bank_station_december_17_1939/ |access-date=January 4, 2020 |work=The Great Falls Tribune |date=December 17, 1939 |page=3|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| {{anchor|D}}[[Dallas Union Station|Dallas]]
+| DAL
+| [[Dallas, Texas|Dallas]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1916
+| 1996, 2010
+| {{rint|dart}} [[Dallas Area Rapid Transit]] <br /> {{rint|dart|streetcar}} [[Dallas Streetcar]] <br /> {{rint|texas|tre}} [[Trinity Railway Express]]
+|-
+| [[Danville station|Danville]]
+| DAN
+| [[Danville, Virginia|Danville]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1899
+| 1922, 1995
+|
+|-
+| [[Davis station (California)|Davis]]
+| DAV
+| [[Davis, California|Davis]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1868
+| 1986
+|
+|-
+| [[John D. Dingell Transit Center|Dearborn]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| DER
+| [[Dearborn, Michigan|Dearborn]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 2014<ref name="dearborn14">{{cite news |last1=Lawrence |first1=Eric D. |title=First train pulls out of new Dearborn Amtrak station |url=https://www.freep.com/story/news/local/michigan/wayne/2014/12/10/amtrak-opens-new-train-station-dearborn/20195409/ |access-date=November 22, 2018 |work=[[The Detroit Free Press]] |date=December 10, 2014}}</ref>
+| —
+|
+|-
+| [[Deerfield Beach station|Deerfield Beach]]
+| DFB
+| [[Deerfield Beach, Florida|Deerfield Beach]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1926
+| 1990, 2010
+| {{rint|trirail}} [[Tri-Rail]]
+|-
+| [[Del Rio station|Del Rio]]
+| DRT
+| [[Del Rio, Texas|Del Rio]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1876
+| —
+|
+|-
+| [[DeLand station|DeLand]]
+| DLD
+| [[DeLand, Florida|DeLand]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1918
+| 1988
+|
+|-
+| [[Delray Beach station|Delray Beach]]
+| DLB
+| [[Delray Beach, Florida|Delray Beach]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1991
+| 2004-2006
+| {{rint|trirail}} [[Tri-Rail]]
+|-
+| [[Deming station|Deming]]
+| DEM
+| [[Deming, New Mexico|Deming]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1881
+| —
+|
+|-
+| [[Denmark station|Denmark]]
+| DNK
+| [[Denmark, South Carolina|Denmark]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1978<ref>{{cite web|url=http://history.amtrak.com/archives/i-amtrak-news-i-november-1978|title=Denmark Station Stop (''Amtrak NEWS'')|publisher=Amtrak History & Archives|date=November 1978|access-date=December 27, 2019}}</ref>
+| —
+|
+|-
+| [[Denver Union Station|Denver]]
+| DEN
+| [[Denver, Colorado|Denver]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Winter Park Express}}
+| 1881
+| 1914, 2010-2014
+| {{rint|denver|rtd}} [[RTD Bus & Rail]]
+|-
+| [[Detroit station|Detroit]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| DET
+| [[Detroit, Michigan|Detroit]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 1994<ref name="detroitmiamtrak">{{cite web |title=Detroit, MI (DET) |url=http://www.greatamericanstations.com/stations/detroit-mi-det/ |website=The Great American Stations |publisher=Amtrak |access-date=December 5, 2018}}</ref>
+| —
+| {{rint|detroit|QLine}} [[QLine]]
+|-
+| [[Detroit Lakes station|Detroit Lakes]]
+| DLK
+| [[Detroit Lakes, Minnesota|Detroit Lakes]]
+| [[Minnesota|MN]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1908
+| —
+|
+|-
+| [[Devils Lake station|Devils Lake]]
+| DVL
+| [[Devils Lake, North Dakota|Devils Lake]]
+| [[North Dakota|ND]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1907
+| —
+|
+|-
+| [[Dillon station|Dillon]]
+| DIL
+| [[Dillon, South Carolina|Dillon]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Palmetto}}
+| 1904
+| —
+|
+|-
+| [[Dodge City station|Dodge City]]
+| DDG
+| [[Dodge City, Kansas|Dodge City]]
+| [[Kansas|KS]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1896
+| —
+|
+|-
+| [[Dover Transportation Center|Dover]]
+| DOV
+| [[Dover, New Hampshire|Dover]]
+| [[New Hampshire|NH]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+|
+|-
+| [[Dowagiac station|Dowagiac]]
+| DOA
+| [[Dowagiac, Michigan|Dowagiac]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+{{rail color box|system=Amtrak|line=Wolverine}}
+| 1848
+| —
+|
+|-
+| [[Downingtown station|Downingtown]]
+| DOW
+| [[Downingtown, Pennsylvania|Downingtown]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+| 19th Century
+| 1990s
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Du Quoin station|Du Quoin]]
+| DQN
+| [[Du Quoin, Illinois|Du Quoin]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1989
+| —
+|
+|-
+| [[Dunsmuir station|Dunsmuir]]
+| DUN
+| [[Dunsmuir, California|Dunsmuir]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| —
+| —
+|
+|-
+| [[Durand Union Station|Durand]]
+| DRD
+| [[Durand, Michigan|Durand]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+| 1903
+| —
+|
+|-
+| [[Durham station (North Carolina)|Durham]]
+| DNC
+| [[Durham, North Carolina|Durham]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 1990
+| 2009
+|
+|-
+| [[Durham–UNH station|Durham–UNH]]
+| DHM
+| [[Durham, New Hampshire|Durham]]
+| [[New Hampshire|NH]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+|
+|-
+| [[Dwight station|Dwight]]
+| DWT
+| [[Dwight, Illinois|Dwight]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+| 2016
+| —
+|
+|-
+| [[Dyer station|Dyer]]
+| DYE
+| [[Dyer, Indiana|Dyer]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| —
+| 1986, 2014
+|
+|-
+| {{anchor|E}}[[East Glacier Park station|East Glacier Park]]
+| GPK
+| [[East Glacier Park, Montana|East Glacier Park]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1913
+| —
+|
+|-
+| [[Capital Area Multimodal Gateway|East Lansing]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| LNS
+| [[East Lansing, Michigan|East Lansing]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+| 1974
+| 2016
+|
+|-
+| [[Edmonds station (Washington)|Edmonds]]
+| EDM
+| [[Edmonds, Washington|Edmonds]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1957
+| 2010-2011
+| {{rint|seattle|sounder}} [[Sounder Commuter Rail]]
+|-
+| [[Effingham station|Effingham]]
+| EFG
+| [[Effingham, Illinois|Effingham]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| —
+| —
+|
+|-
+| [[Union Depot (El Paso)|El Paso]]
+| ELP
+| [[El Paso, Texas|El Paso]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1906
+| 1982
+|
+|-
+| [[Elkhart station|Elkhart]]
+| EKH
+| [[Elkhart, Indiana|Elkhart]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1900
+| —
+|
+|-
+| [[Elizabethtown station|Elizabethtown]]
+| ELT
+| [[Elizabethtown, Pennsylvania|Elizabethtown]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1915
+| 2009-2011
+|
+|-
+| [[Elko station|Elko]]
+| ELK
+| [[Elko, Nevada|Elko]]
+| [[Nevada|NV]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1984
+| —
+|
+|-
+| [[Elyria station|Elyria]]
+| ELY
+| [[Elyria, Ohio|Elyria]]
+| [[Ohio|OH]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| —
+| —
+|
+|-
+| [[Emeryville station|Emeryville]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| EMY
+| [[Emeryville, California|Emeryville]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1993{{sfn|Sanders|2006|pp=152–153}}
+| —
+|
+|-
+| [[Ephrata station|Ephrata]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| EPH
+| [[Ephrata, Washington|Ephrata]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| 1994
+|
+|-
+| [[Union Station (Erie, Pennsylvania)|Erie]]
+| ERI
+| [[Erie, Pennsylvania|Erie]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1927
+| 2003
+|
+|-
+| [[Essex station (Montana)|Essex]]
+| ESM
+| [[Essex, Montana|Essex]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1985<ref>{{cite news |title=Historic Inn to Receive Rail Service |url=https://www.newspapers.com/clip/37456349/amtrak_essex_march_10_1985/ |access-date=October 19, 2019 |work=The Spokesman-Review |date=March 10, 1985 |location=Spokane, Washington |page=35|via=Newspapers.com}} {{open access}}</ref><ref>{{cite news |title=Essex Inn Amtrak Flag Stop |url=https://www.newspapers.com/clip/37456176/amtrak_essex_november_12_1985/ |access-date=October 19, 2019 |work=The Independent-Record |date=November 12, 1985 |location=Helena, Montana |page=11|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Essex Junction station|Essex Junction]]
+| ESX
+| [[Essex Junction, Vermont|Essex Junction]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Vermonter}}
+| 1859
+| 1959<ref>{{cite news |title=First Ticket Sold in New CV Station in Essex Junction |url=https://www.newspapers.com/clip/33463266/essex_junction_august_12_1959/ |access-date=July 2, 2019 |work=The Burlington Free Press |date=August 12, 1959 |page=11|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Eugene–Springfield station|Eugene–Springfield]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| EUG
+| [[Eugene, Oregon|Eugene]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1908
+| 2004
+|
+|-
+| [[Everett Station|Everett]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| EVR
+| [[Everett, Washington|Everett]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Empire Builder}}
+| 2002
+| —
+| {{rint|seattle|sounder}} [[Sounder Commuter Rail]]
+|-
+| [[Exeter station (New Hampshire)|Exeter]]
+| EXR
+| [[Exeter, New Hampshire|Exeter]]
+| [[New Hampshire|NH]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+|
+|-
+| [[Exton station (Pennsylvania)|Exton]]
+| EXT
+| [[Exton, Pennsylvania|Exton]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1981
+| —
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| {{anchor|F}}[[Fairfield–Vacaville station|Fairfield–Vacaville]]
+| FFV
+| [[Fairfield, California|Fairfield]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 2017
+| —
+|
+|-
+| [[Fargo station|Fargo]]
+| FAR
+| [[Fargo, North Dakota|Fargo]]
+| [[North Dakota|ND]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1906
+| 1995
+|
+|-
+| [[Fayetteville station|Fayetteville]]
+| FAY
+| [[Fayetteville, North Carolina|Fayetteville]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+| 1911
+| 2005-2006
+|
+|-
+| [[Ferrisburgh–Vergennes station|Ferrisburgh–Vergennes]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| VRN
+| [[Ferrisburgh, Vermont|Ferrisburgh]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| July 29, 2022
+|-
+| [[Flagstaff station|Flagstaff]]
+| FLG
+| [[Flagstaff, Arizona|Flagstaff]]
+| [[Arizona|AZ]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1926
+| —
+|
+|-
+| [[Flint station (Michigan)|Flint]]
+| FLN
+| [[Flint, Michigan|Flint]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+| 1989
+| —
+|
+|-
+| [[Florence station (South Carolina)|Florence]]
+| FLO
+| [[Florence, South Carolina|Florence]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+| 1996
+| —
+|
+|-
+| [[Fort Edward station|Fort Edward]]
+| FED
+| [[Fort Edward, New York|Fort Edward]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| 1974<ref name="amtrakadirondack1974">{{cite news |title=Rail Bond Issue Campaign Begins |url=https://www.newspapers.com/clip/33185232/amtrak_adirondack_august_5_1974/ |access-date=June 23, 2019 |work=The Daily Messenger |date=August 5, 1974 |location=[[Canandaigua, New York]] |page=2|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Fort Lauderdale station|Fort Lauderdale]]
+| FTL
+| [[Fort Lauderdale, Florida|Fort Lauderdale]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1927
+| 1986
+| {{rint|trirail}} [[Tri-Rail]]
+|-
+| [[Atchison, Topeka and Santa Fe Passenger and Freight Complex Historic District|Fort Madison]]
+| FMD
+| [[Fort Madison, Iowa|Fort Madison]]
+| [[Iowa|IA]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 2021<ref name="2021closing">{{cite news |author1=[[Associated Press]] |title=Amtrak Service Returns to Historic Fort Madison Station |url=https://ktvo.com/news/local/amtrak-service-returns-to-historic-fort-madison-station |access-date=December 28, 2021 |work=[[KTVO-TV]] |date=December 14, 2021}}</ref>
+| —
+|
+|-
+| [[Fort Morgan station|Fort Morgan]]
+| FMG
+| [[Fort Morgan, Colorado|Fort Morgan]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| —
+| —
+|
+|-
+| [[Fort Worth Central Station|Fort Worth]]
+| FTW
+| [[Fort Worth, Texas|Fort Worth]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 2001
+| —
+| {{rint|texas|texrail}} [[TEXRail]]<br />{{rint|texas|tre}} [[Trinity Railway Express]]
+|-
+| [[Framingham station|Framingham]]
+| FRA
+| [[Framingham, Massachusetts|Framingham]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1834
+| 1848, 1885, 2001
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]
+|-
+| [[Fraser–Winter Park station|Fraser–Winter Park]]
+| WIP
+| [[Fraser, Colorado|Fraser]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1985<ref name="02171985changes">{{cite web |title=Amtrak Timetable - Effective February 17, 1985 |url=http://www.timetables.org/full.php?group=19850217sc&item=0004|website=timetables.org |publisher=Amtrak |access-date=November 21, 2018 |page=4 |date=February 17, 1985}}</ref>
+| —
+|
+|-
+| [[Fredericksburg station|Fredericksburg]]
+| FBG
+| [[Fredericksburg, Virginia|Fredericksburg]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+| 1910
+| 2010-2011
+| {{rint|vre}} [[Virginia Railway Express]]
+|-
+| [[Freeport station (Maine)|Freeport]]
+| FRE
+| [[Freeport, Maine|Freeport]]
+| [[Maine|ME]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2012
+| —
+|
+|-
+| [[Fremont station|Fremont]]
+| FMT
+| [[Fremont, California|Fremont]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 2017
+| —
+| {{rint|ace}} [[Altamont Commuter Express]]
+|-
+| [[Santa Fe Passenger Depot (Fresno, California)|Fresno]]
+| FNO
+| [[Fresno, California|Fresno]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquins}}
+| 1974
+| 2005
+|
+|-
+| [[Fullerton Transportation Center|Fullerton]]
+| FUL
+| [[Fullerton, California|Fullerton]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1930
+| 1993
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Fulton station|Fulton]]
+| FTN
+| [[Fulton, Kentucky|Fulton]]
+| [[Kentucky|KY]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| —
+| —
+|
+|-
+| {{anchor|G}}[[Gainesville station (Georgia)|Gainesville]]
+| GNS
+| [[Gainesville, Georgia|Gainesville]]
+| [[Georgia (U.S. state)|GA]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1910
+| —
+|
+|-
+| [[Gainesville station (Texas)|Gainesville]]
+| GLE
+| [[Gainesville, Texas|Gainesville]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+| 1902
+| —
+|
+|-
+| [[Galesburg station (Amtrak)|Galesburg]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| GBB
+| [[Galesburg, Illinois|Galesburg]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1984
+| —
+|
+|-
+| [[Gallup station|Gallup]]
+| GLP
+| [[Gallup, New Mexico|Gallup]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1918
+| —
+|
+|-
+| [[Garden City station (Kansas)|Garden City]]
+| GCK
+| [[Garden City, Kansas|Garden City]]
+| [[Kansas|KS]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1907
+| 1957, 2002
+|
+|-
+| [[Gastonia station|Gastonia]]
+| GAS
+| [[Gastonia, North Carolina|Gastonia]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1966
+| —
+|
+|-
+| [[Gilman station|Gilman]]
+| GLM
+| [[Gilman, Illinois|Gilman]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1986
+| —
+|
+|-
+| [[Glasgow station (Montana)|Glasgow]]
+| GGW
+| [[Glasgow, Montana|Glasgow]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Glendale Transportation Center|Glendale]]
+| GDL
+| [[Glendale, California|Glendale]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1923
+| 1999
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Glenview station|Glenview]]
+| GLN
+| [[Glenview, Illinois|Glenview]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+{{rail color box|system=Amtrak|line=Hiawatha}}
+| 1995
+| —
+| {{rint|chicago|metra}} [[Metra]]
+|-
+| [[Glenwood Springs station|Glenwood Springs]]
+| GSC
+| [[Glenwood Springs, Colorado|Glenwood Springs]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1904
+| —
+|
+|-
+| [[Goleta station|Goleta]]
+| GTA
+| [[Goleta, California|Goleta]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1998
+| —
+|
+|-
+| [[Granby station|Granby]]
+| GRA
+| [[Granby, Colorado|Granby]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| —
+| —
+|
+|-
+| [[Grand Forks station|Grand Forks]]
+| GFK
+| [[Grand Forks, North Dakota|Grand Forks]]
+| [[North Dakota|ND]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1982
+| —
+|
+|-
+| [[Grand Junction station|Grand Junction]]
+| GJT
+| [[Grand Junction, Colorado|Grand Junction]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| —
+| —
+|
+|-
+| [[Vernon J. Ehlers Station|Grand Rapids]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| GRR
+| [[Grand Rapids, Michigan|Grand Rapids]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Pere Marquette}}
+| 1984
+| 2014
+|
+|-
+| [[Green River station (Utah)|Green River]]
+| GRI
+| [[Green River, Utah|Green River]]
+| [[Utah|UT]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1997
+| —
+|
+|-
+| [[John W. Olver Transit Center|Greenfield]]
+| GFD
+| [[Greenfield, Massachusetts|Greenfield]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 2014
+| —
+|
+|-
+| [[J. Douglas Galyon Depot|Greensboro]]
+| GRO
+| [[Greensboro, North Carolina|Greensboro]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 1927
+| 2005
+|
+|-
+| [[Greensburg station|Greensburg]]
+| GNB
+| [[Greensburg, Pennsylvania|Greensburg]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1912
+| 1995
+|
+|-
+| [[Greenville station (South Carolina)|Greenville]]
+| GRV
+| [[Greenville, South Carolina|Greenville]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1988
+| —
+|
+|-
+| [[Greenwood station (Mississippi)|Greenwood]]
+| GWD
+| [[Greenwood, Mississippi|Greenwood]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1917
+| 1995<ref name="yazoogreenwood" />
+|
+|-
+| [[Grimsby railway station|Grimsby]]
+| GMS
+| [[Grimsby, Ontario|Grimsby]]
+| [[Ontario|ON]]
+| {{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1902
+| Late 1990s
+|
+|-
+| [[Grover Beach station|Grover Beach]]
+| GVB
+| [[Grover Beach, California|Grover Beach]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1996
+| —
+|
+|-
+| [[Guadalupe station|Guadalupe]]
+| GUA
+| [[Guadalupe, California|Guadalupe]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1998
+| —
+|
+|-
+| {{anchor|H}}[[Hamlet station|Hamlet]]
+| HAM
+| [[Hamlet, North Carolina|Hamlet]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1900
+| 2002-2004
+|
+|-
+| [[Hammond station (Louisiana)|Hammond]]
+| HMD
+| [[Hammond, Louisiana|Hammond]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| —
+| 1912
+|
+|-
+| [[Hammond/Whiting station|Hammond/Whiting]]
+| HMI
+| [[Hammond, Indiana|Hammond]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 1982
+| —
+|
+|-
+| [[Hanford station|Hanford]]
+| HNF
+| [[Hanford, California|Hanford]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 1897, 1974
+| 1991
+|
+|-
+| [[Harpers Ferry station|Harpers Ferry]]
+| HFY
+| [[Harpers Ferry, West Virginia|Harpers Ferry]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+| 1889
+| —
+| {{rint|baltimore|marc}} [[MARC Train]]
+|-
+| [[Harrisburg Transportation Center|Harrisburg]]
+| HAR
+| [[Harrisburg, Pennsylvania|Harrisburg]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1887
+| 1905, 1986
+|
+|-
+| [[Hartford Union Station|Hartford]]
+| HFD
+| [[Hartford, Connecticut|Hartford]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1889
+| 1914, 1987
+| {{rint|hartford}} [[Hartford Line]]
+|-
+| [[Hastings station (Nebraska)|Hastings]]
+| HAS
+| [[Hastings, Nebraska|Hastings]]
+| [[Nebraska|NE]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1902
+| 1966, 2000
+|
+|-
+| [[Hattiesburg station|Hattiesburg]]
+| HBG
+| [[Hattiesburg, Mississippi|Hattiesburg]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1910
+| 2007
+|
+|-
+| [[Haverhill station (Massachusetts)|Haverhill]]
+| HHL
+| [[Haverhill, Massachusetts|Haverhill]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 1979
+| —
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]
+|-
+| [[Havre station|Havre]]
+| HAV
+| [[Havre, Montana|Havre]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1907
+| 1953
+|
+|-
+| [[Hayward station (Amtrak)|Hayward]]
+| HAY
+| [[Hayward, California|Hayward]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 1997
+| —
+|
+|-
+| [[Hazlehurst station|Hazlehurst]]
+| HAZ
+| [[Hazlehurst, Mississippi|Hazlehurst]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1972{{sfn|Sanders|2006|p=105}}
+| 1974{{sfn|Sanders|2006|p=105}}
+|
+|-
+| [[Helper station|Helper]]
+| HER
+| [[Helper, Utah|Helper]]
+| [[Utah|UT]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1997
+| —
+|
+|-
+| [[Hermann station (Missouri)|Hermann]]
+| HEM
+| [[Hermann, Missouri|Hermann]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 1991
+| —
+|
+|-
+| [[High Point station|High Point]]
+| HPT
+| [[High Point, North Carolina|High Point]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 1907
+| 2002-2003
+|
+|-
+| [[Hinton station (West Virginia)|Hinton]]
+| HIN
+| [[Hinton, West Virginia|Hinton]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| —
+| —
+|
+|-
+| [[Holdrege station|Holdrege]]
+| HLD
+| [[Holdrege, Nebraska|Holdrege]]
+| [[Nebraska|NE]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1911<ref>{{cite news |title=Three New Depots |url=https://www.newspapers.com/clip/33416642/holdrege_station_february_19_1911/ |access-date=July 1, 2019 |work=[[The Nebraska State Journal]] |date=February 19, 1911 |location=Lincoln, Nebraska |page=8|via=Newspapers.com}} {{open access}}</ref>
+| 2020
+|
+|-
+| [[Holland station (Michigan)|Holland]]
+| HOM
+| [[Holland, Michigan|Holland]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Pere Marquette}}
+| 1926
+| 1991
+|
+|-
+| [[Hollywood station (Florida)|Hollywood]]
+| HOL
+| [[Hollywood, Florida|Hollywood]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1928
+| 2002
+| {{rint|trirail}} [[Tri-Rail]]
+|-
+| [[Holyoke station|Holyoke]]
+| HLK
+| [[Holyoke, Massachusetts|Holyoke]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 2015
+| —
+|
+|-
+| [[Homewood station|Homewood]]
+| HMW
+| [[Homewood, Illinois|Homewood]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1923
+| —
+| {{rint|chicago|metra}} [[Metra]]
+|-
+| [[Hope station (Arkansas)|Hope]]
+| HOP
+| [[Hope, Arkansas|Hope]]
+| [[Arkansas|AR]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 2013
+| —
+|
+|-
+| [[Houston station (Texas)|Houston]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| HOS
+| [[Houston, Texas|Houston]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+| 1959
+| —
+|
+|-
+| [[Hudson station (New York)|Hudson]]
+| HUD
+| [[Hudson, New York|Hudson]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1874
+| 1992
+|
+|-
+| [[Huntingdon station (Amtrak)|Huntingdon]]
+| HGD
+| [[Huntingdon, Pennsylvania|Huntingdon]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1872
+| —
+|
+|-
+| [[Huntington station (West Virginia)|Huntington]]
+| HUN
+| [[Huntington, West Virginia|Huntington]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1873
+| 1983
+|
+|-
+| [[Hutchinson station|Hutchinson]]
+| HUT
+| [[Hutchinson, Kansas|Hutchinson]]
+| [[Kansas|KS]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1897
+| 1950
+|
+|-
+| {{anchor|I}}[[Independence station|Independence]]
+| IDP
+| [[Independence, Missouri|Independence]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 1913
+| 1995
+|
+|-
+| [[Indianapolis Union Station|Indianapolis]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| IND
+| [[Indianapolis, Indiana|Indianapolis]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1853
+| 1888, 1984, 2002
+|
+|-
+| [[Irvine Transportation Center|Irvine]]
+| IRV
+| [[Irvine, California|Irvine]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1990
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| {{anchor|J}}[[Jackson station (Michigan)|Jackson]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| JXN
+| [[Jackson, Michigan|Jackson]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 1841
+| 1872, 1978
+|
+|-
+| [[Union Station (Jackson, Mississippi)|Jackson]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| JAN
+| [[Jackson, Mississippi|Jackson]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1927
+| 2003-2004
+|
+|-
+| [[Jacksonville station|Jacksonville]]
+| JAX
+| [[Jacksonville, Florida|Jacksonville]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1974
+| —
+|
+|-
+| [[Jefferson City station|Jefferson City]]
+| JEF
+| [[Jefferson City, Missouri|Jefferson City]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 1855
+| 1984
+|
+|-
+| [[Jesup station|Jesup]]
+| JSP
+| [[Jesup, Georgia|Jesup]]
+| [[Georgia (U.S. state)|GA]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+| —
+| —
+|
+|-
+| [[Johnstown station|Johnstown]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| JST
+| [[Johnstown, Pennsylvania|Johnstown]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1916
+| 1985
+|
+|-
+| [[Joliet Transportation Center|Joliet]]
+| JOL
+| [[Joliet, Illinois|Joliet]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 2014, 2018
+| —
+| {{rint|chicago|metra}} [[Metra]]
+|-
+| {{anchor|K}}[[Kalamazoo Transportation Center|Kalamazoo]]
+| KAL
+| [[Kalamazoo, Michigan|Kalamazoo]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+{{rail color box|system=Amtrak|line=Wolverine}}
+| 1886
+| —2006
+|
+|-
+| [[Kankakee station|Kankakee]]
+| KKI
+| [[Kankakee, Illinois|Kankakee]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1898
+| —
+|
+|-
+| [[Kannapolis station|Kannapolis]]
+| KAN
+| [[Kannapolis, North Carolina|Kannapolis]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 2004
+| —
+|
+|-
+| [[Kansas City Union Station|Kansas City]]
+| KCY
+| [[Kansas City, Missouri|Kansas City]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1914
+| 2002
+|
+|-
+| [[Kelso Multimodal Transportation Center|Kelso]]
+| KEL
+| [[Kelso, Washington|Kelso]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1912
+| 1995
+|
+|-
+| [[Kewanee station|Kewanee]]
+| KEE
+| [[Kewanee, Illinois|Kewanee]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+| 1986
+| 2012
+|
+|-
+| [[Kingman station|Kingman]]
+| KNG
+| [[Kingman, Arizona|Kingman]]
+| [[Arizona|AZ]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1907
+| —
+|
+|-
+| [[Kingston station (Rhode Island)|Kingston]]
+| KIN
+| [[Kingston, Rhode Island|Kingston]]
+| [[Rhode Island|RI]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1875
+| 1998, 2017
+|
+|-
+| [[Kingstree station|Kingstree]]
+| KTR
+| [[Kingstree, South Carolina|Kingstree]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+| 1909
+| —
+|
+|-
+| [[Kirkwood station (Missouri)|Kirkwood]]
+| KWD
+| [[Kirkwood, Missouri|Kirkwood]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 1893
+| —
+|
+|-
+| [[Kissimmee station|Kissimmee]]
+| KIS
+| [[Kissimmee, Florida|Kissimmee]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1975<ref name="kissimmee75">{{cite news |title=Amtrak Makes Initial Stop in Kissimmee |url=https://www.newspapers.com/clip/25454336/kissimmee_station_december_12_1975/ |access-date=November 16, 2018 |work=The Orlando Sentinel |date=December 12, 1975 |page=12|via=Newspapers.com}} {{open access}}</ref>
+| —
+| {{rint|sunrail}} [[SunRail]]
+|-
+| [[Klamath Falls station|Klamath Falls]]
+| KFS
+| [[Klamath Falls, Oregon|Klamath Falls]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1916
+| —
+|
+|-
+| {{anchor|L}}[[La Crosse station|La Crosse]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| LSE
+| [[La Crosse, Wisconsin|La Crosse]]
+| [[Wisconsin|WI]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1926
+| 1997
+|
+|-
+| [[La Grange Road station|La Grange Road]]
+| LAG
+| [[La Grange, Illinois|La Grange]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+| 1916
+| —
+| {{rint|chicago|metra}} [[Metra]]
+|-
+| [[La Junta station|La Junta]]
+| LAJ
+| [[La Junta, Colorado|La Junta]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1955
+| —
+|
+|-
+| [[La Plata station|La Plata]]
+| LAP
+| [[La Plata, Missouri|La Plata]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1945
+| 1996-2001
+|
+|-
+| [[Lafayette station (Indiana)|Lafayette]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| LAF
+| [[Lafayette, Indiana|Lafayette]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1902
+| 1994
+|
+|-
+| [[Lafayette station (Louisiana)|Lafayette]]
+| LFT
+| [[Lafayette, Louisiana|Lafayette]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+| 1911-1912
+| 2002
+|
+|-
+| [[Lake Charles station|Lake Charles]]
+| LCH
+| [[Lake Charles, Louisiana|Lake Charles]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+| 1992
+| —
+|
+|-
+| [[Lakeland station|Lakeland]]
+| LAK/LKL
+| [[Lakeland, Florida|Lakeland]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1998
+| —
+|
+|-
+| [[Lamar station (Amtrak)|Lamar]]
+| LMR
+| [[Lamar, Colorado|Lamar]]
+| [[Colorado|CO]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1907
+| —
+|
+|-
+| [[Lamy station|Lamy]]
+| LMY
+| [[Lamy, New Mexico|Lamy]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1909
+| —
+|
+|-
+| [[Lancaster station (Pennsylvania)|Lancaster]]
+| LNC
+| [[Lancaster, Pennsylvania|Lancaster]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1929
+| —
+|
+|-
+| [[Lapeer station|Lapeer]]
+| LPE
+| [[Lapeer, Michigan|Lapeer]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+| 1900
+| 1991, 2004
+|
+|-
+| [[Las Vegas station (New Mexico)|Las Vegas]]
+| LSV
+| [[Las Vegas, New Mexico|Las Vegas]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1899
+| —
+|
+|-
+| [[Latrobe station|Latrobe]]
+| LAB
+| [[Latrobe, Pennsylvania|Latrobe]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1850s
+| 1903
+|
+|-
+| [[Laurel station (Mississippi)|Laurel]]
+| LAU
+| [[Laurel, Mississippi|Laurel]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1913
+| —
+|
+|-
+| [[Lawrence station (Kansas)|Lawrence]]
+| LRC
+| [[Lawrence, Kansas|Lawrence]]
+| [[Kansas|KS]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1956
+| —
+|
+|-
+| [[Icicle Station|Leavenworth]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| LWA
+| [[Leavenworth, Washington|Leavenworth]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 2009
+| —
+|
+|-
+| [[Lee's Summit station|Lee's Summit]]
+| LEE
+| [[Lee's Summit, Missouri|Lee's Summit]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 2009
+| —
+|
+|-
+| [[Lewistown station|Lewistown]]
+| LEW
+| [[Lewistown, Pennsylvania|Lewistown]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1849
+| 1985-1999
+|
+|-
+| [[Lexington station (North Carolina)|Lexington]]
+| LEX
+| [[Lexington, North Carolina|Lexington]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| —
+| —
+|
+|-
+| [[Libby station|Libby]]
+| LIB
+| [[Libby, Montana|Libby]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| 1941<ref>{{cite news |title=Depot Work Starts |url=https://www.newspapers.com/clip/41646934/october_16_1940/ |access-date=January 4, 2020 |work=The Great Falls Tribune |date=October 16, 1940 |page=3|via=Newspapers.com}} {{open access}}</ref><ref>{{cite news |title=Great Northern's Libby Station is Open for Business |url=https://www.newspapers.com/clip/41646919/libby_station_january_26_1941/ |access-date=January 4, 2020 |work=The Great Falls Tribune |date=January 26, 1941 |page=36|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Lincoln station (Illinois)|Lincoln]]
+| LCN
+| [[Lincoln, Illinois|Lincoln]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1911
+| 2017
+|
+|-
+| [[Lincoln station (Nebraska)|Lincoln]]
+| LNK
+| [[Lincoln, Nebraska|Lincoln]]
+| [[Nebraska|NE]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 2012
+| —
+|
+|-
+| [[Little Rock Union Station|Little Rock]]
+| LRK
+| [[Little Rock, Arkansas|Little Rock]]
+| [[Arkansas|AR]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1921
+| 1992
+|
+|-
+| [[Lodi Transit Station|Lodi]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| LOD
+| [[Lodi, California|Lodi]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 2002
+| —
+|
+|-
+| [[Surf station|Lompoc–Surf]]
+| LPS
+| [[Surf, California|Surf]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 2000
+| —
+|
+|-
+| [[Longview station|Longview]]
+| LVW
+| [[Longview, Texas|Longview]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1940
+| —
+|
+|-
+| [[Lordsburg station|Lordsburg]]
+| LDB
+| [[Lordsburg, New Mexico|Lordsburg]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| —
+|
+|-
+| [[Lorton station|Lorton]]
+| LOR
+| [[Lorton, Virginia|Lorton]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Auto Train}}
+| 1971
+| 2000
+|
+|-
+| [[Union Station (Los Angeles)|Los Angeles Union]]
+| LAX
+| [[Los Angeles, California|Los Angeles]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+{{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1939
+| —
+|{{rint|losangeles|lacmta}} [[Los Angeles Metro Rail]]
+{{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Kemper Street station|Lynchburg–Kemper Street]]
+| LYH
+| [[Lynchburg, Virginia|Lynchburg]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1912
+| 2002
+|
+|-
+| {{anchor|M}}[[Macomb station|Macomb]]
+| MAC
+| [[Macomb, Illinois|Macomb]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+| 1913
+| —
+|
+|-
+| [[Madera station (Amtrak)|Madera]]
+| MAD
+| [[Madera, California|Madera]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 2010
+| —
+|
+|-
+| [[Malta station|Malta]]
+| MAL
+| [[Malta, Montana|Malta]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Malvern station (Arkansas)|Malvern]]
+| MVN
+| [[Malvern, Arkansas|Malvern]]
+| [[Arkansas|AR]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1916
+| —
+|
+|-
+| [[Manassas station|Manassas]]
+| MSS
+| [[Manassas, Virginia|Manassas]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1914
+| 1997
+|{{rint|vre}} [[Virginia Railway Express]]
+|-
+| [[Maricopa station|Maricopa]]
+| MRC
+| [[Maricopa, Arizona|Maricopa]]
+| [[Arizona|AZ]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1996
+| —
+|
+|-
+| [[Marks station|Marks]]
+| MKS
+| [[Marks, Mississippi|Marks]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 2018
+| —
+|
+|-
+| [[Marshall station (Texas)|Marshall]]
+| MHL
+| [[Marshall, Texas|Marshall]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1974<ref>{{cite news |title=Marshall Flag Stop Along Amtrak Route |url=https://www.newspapers.com/clip/37473238/marshall_amtrak_february_26_1974/ |access-date=October 19, 2019 |work=The Marshall News Messenger |date=February 26, 1974 |page=1|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Martinez station|Martinez]]
+| MTZ
+| [[Martinez, California|Martinez]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1877
+| 2001
+|
+|-
+| [[Martinsburg station|Martinsburg]]
+| MRB
+| [[Martinsburg, West Virginia|Martinsburg]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+| 1848
+| —
+|{{rint|baltimore|marc}} [[MARC Train]]
+|-
+| [[Mattoon station|Mattoon]]
+| MAT
+| [[Mattoon, Illinois|Mattoon]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Illini and Saluki}}
+| 1855
+| 1860, 1918
+|
+|-
+| [[Maysville station|Maysville]]
+| MAY
+| [[Maysville, Kentucky|Maysville]]
+| [[Kentucky|KY]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1918
+| 1977<ref name="maysville1977">{{cite news |last1=Hoskins |first1=Ken |title=The Train Starts Stopping Again in Maysville Today |url=https://www.newspapers.com/clip/38163581/maysville_station_june_12_1977_part_2/ |access-date=October 30, 2019 |work=The Courier-Journal |date=June 12, 1977 |pages=1-[https://www.newspapers.com/clip/38163564/maysville_station_june_12_1977/ 2]|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[McComb station|McComb]]
+| MCB
+| [[McComb, Mississippi|McComb]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1901
+| 1998, 2003
+|
+|-
+| [[McCook station|McCook]]
+| MCK
+| [[McCook, Nebraska|McCook]]
+| [[Nebraska|NE]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| —
+| 1926<ref name="1926openingmccook">{{cite news |title=McCook Station Opening Planned |url=https://www.newspapers.com/clip/33416698/mccook_station_april_2_1926/ |access-date=July 1, 2019 |work=The Lincoln Star |date=April 2, 1926 |page=5|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[McGregor station|McGregor]]
+| MCG
+| [[McGregor, Texas|McGregor]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1904
+| —
+|
+|-
+| [[Memphis Central Station|Memphis Central]]
+| MEM
+| [[Memphis, Tennessee|Memphis]]
+| [[Tennessee|TN]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1914
+| —
+|
+|-
+| [[Mendota station|Mendota]]
+| MDT
+| [[Mendota, Illinois|Mendota]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1888
+| —
+|
+|-
+| [[Merced station (Amtrak)|Merced]]
+| MCD
+| [[Merced, California|Merced]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 1896, 1974
+| 1917, 2000
+|
+|-
+| [[Meriden Transit Center|Meriden]]
+| MDN
+| [[Meriden, Connecticut|Meriden]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1839
+| 1882, 1942, 1970, 2014-2017
+|{{rint|hartford}} [[Hartford Line]]
+|-
+| [[Union Station (Meridian, Mississippi)|Meridian]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| MEI
+| [[Meridian, Mississippi|Meridian]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1906
+| 1997
+|
+|-
+| [[Metropark station|Metropark]]
+| MET
+| [[Iselin, New Jersey|Iselin]]
+| [[New Jersey|NJ]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1971
+| 2007-2010 (refurbishment)
+| {{rint|njt}} [[New Jersey Transit]]
+|-
+| [[Miami station (Amtrak)|Miami]]
+| MIA
+| [[Miami, Florida|Miami]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1978
+| —
+|
+|-
+| [[Middlebury station|Middlebury]]
+| MBY
+| [[Middlebury, Vermont|Middlebury]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| July 29, 2022
+|-
+| [[Middletown station (Pennsylvania)|Middletown]]
+| MID
+| [[Middletown, Dauphin County, Pennsylvania|Middletown]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+| 1990
+| —
+|
+|-
+| [[Milwaukee Intermodal Station|Milwaukee]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| MKE
+| [[Milwaukee, Wisconsin|Milwaukee]]
+| [[Wisconsin|WI]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+{{rail color box|system=Amtrak|line=Hiawatha Service}}
+| 1965
+| 2007
+| [[The Hop (streetcar)|The Hop]]
+|-
+| [[Milwaukee Airport Railroad Station|Milwaukee Airport]]
+| MKA
+| [[Milwaukee, Wisconsin|Milwaukee]]
+| [[Wisconsin|WI]]
+| {{rail color box|system=Amtrak|line=Hiawatha Service}}
+| 2005
+| —
+|
+|-
+| [[Mineola station (Texas)|Mineola]]
+| MIN
+| [[Mineola, Texas|Mineola]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1996<ref name="mineola">{{cite news |title=Texas Town Named New Amtrak Stop |url=https://www.newspapers.com/clip/25645150/amtrak_mineola_april_7_1996/ |access-date=November 23, 2018 |work=The El Paso Times |date=April 7, 1996 |page=50|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Minot station|Minot]]
+| MOT
+| [[Minot, North Dakota|Minot]]
+| [[North Dakota|ND]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1910
+| 1975, 2008-2010
+|
+|-
+| [[Modesto station|Modesto]]
+| MOD
+| [[Modesto, California|Modesto]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=San Joaquin}}
+| 1999
+| —
+|
+|-
+| [[Montgomery station (West Virginia)|Montgomery]]
+| MNG
+| [[Montgomery, West Virginia|Montgomery]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| —
+| 2020
+|
+|-
+| [[Montpelier station (Vermont)|Montpelier]]
+| MPR
+| [[Montpelier, Vermont|Montpelier]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Vermonter}}
+| 1943
+| 1960s
+|
+|-
+| [[Montreal Central Station|Montreal]]
+| MTR
+| [[Montreal, Quebec|Montreal]]
+| [[Quebec|QC]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+| —
+| —
+| {{rint|montreal|rail}} [[Exo (public transit)|Exo]] <br /> {{rint|ca|rail}} [[Via Rail]]
+|-
+| [[Moorpark station|Moorpark]]
+| MPK
+| [[Moorpark, California|Moorpark]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1992
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Mount Joy station (Pennsylvania)|Mount Joy]]
+| MJY
+| [[Mount Joy, Pennsylvania|Mount Joy]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+| —
+| 2019<ref>{{cite news |title=PennDOT, Federal Transit Administration celebrate opening of new Mount Joy Train Station |url=https://fox43.com/2019/10/21/penndot-federal-transit-administration-celebrate-opening-of-new-mount-joy-train-station/ |access-date=October 22, 2019 |work=[[WPMT]] |date=October 21, 1943 |location=York, Pennsylvania}}</ref>
+|
+|-
+| [[Mount Pleasant station (Iowa)|Mount Pleasant]]
+| MTP
+| [[Mount Pleasant, Iowa|Mount Pleasant]]
+| [[Iowa|IA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| —
+| —
+|
+|-
+| [[Skagit Station|Mount Vernon]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| MVW
+| [[Mount Vernon, Washington|Mount Vernon]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+| —
+| 1995<ref name="mtbakerintl" />
+|
+|-
+| [[Mystic station (Connecticut)|Mystic]]
+| MYS
+| [[Mystic, Connecticut|Mystic]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1858
+| 1866-1905
+|
+|-
+| {{anchor|N}}[[Naperville station|Naperville]]
+| NPV
+| [[Naperville, Illinois|Naperville]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1910
+| —
+| {{rint|chicago|metra}} [[Metra]]
+|-
+| [[Needles station|Needles]]
+| NDL
+| [[Needles, California|Needles]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1908
+| —
+|
+|-
+| [[New Brunswick station|New Brunswick]]
+| NBK
+| [[New Brunswick, New Jersey|New Brunswick]]
+| [[New Jersey|NJ]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+| 1838
+| 1903
+| {{rint|njt}} [[New Jersey Transit]]
+|-
+| [[New Buffalo station|New Buffalo]]
+| NBU
+| [[New Buffalo, Michigan|New Buffalo]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+{{rail color box|system=Amtrak|line=Wolverine}}
+| 2009
+| —
+|
+|-
+| [[New Carrollton station|New Carrollton]]
+| NCR
+| [[New Carrollton, Maryland|New Carrollton]]
+| [[Maryland|MD]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1983
+| —
+| {{rint|baltimore|marc}} [[MARC Train]]<br /> {{rint|washington|metro}} [[Washington Metro]]
+|-
+| [[Union Station (New Haven)|New Haven Union]]
+| NHV
+| [[New Haven, Connecticut|New Haven]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1920
+| —
+| {{rint|hartford}} [[Hartford Line]] <br /> {{rint|newyork|mnr}} [[Metro-North Railroad]] <br /> {{rint|shoreline}} [[Shore Line East]]
+|-
+| [[New Haven State Street station|New Haven State Street]]
+| STS
+| [[New Haven, Connecticut|New Haven]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+| 2002
+| 2018
+| {{rint|hartford}} [[Hartford Line]] <br /> {{rint|newyork|mnr}} [[Metro-North Railroad]] <br /> {{rint|shoreline}} [[Shore Line East]]
+|-
+| [[New Iberia station|New Iberia]]
+| NIB
+| [[New Iberia, Louisiana|New Iberia]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+| 1900
+| —
+|
+|-
+| [[New London Union Station|New London]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| NLC
+| [[New London, Connecticut|New London]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1848, 1852
+| 1861, 1864
+| {{rint|shoreline}} [[Shore Line East]]
+|-
+| [[New Orleans Union Passenger Terminal|New Orleans]]
+| NOL
+| [[New Orleans, Louisiana|New Orleans]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Sunset Limited}}
+| 1954
+| 2005
+|
+|-
+| [[New Rochelle station|New Rochelle]]
+| NRO
+| [[New Rochelle, New York|New Rochelle]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1987
+| —
+| {{rint|newyork|mnr}} [[Metro-North Railroad]]
+|-
+| [[Pennsylvania Station (New York City)|New York Penn]]
+| NYP
+| [[New York, New York|New York]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1910
+| 1964
+| {{rint|newyork|lirr}} [[Long Island Rail Road]] <br /> {{rint|njt}} [[New Jersey Transit]] <br />{{rint|newyork|subway}} [[New York City Subway]]
+|-
+| [[New York State Fair station|New York State Fair]]
+| NYF
+| [[Syracuse, New York|Syracuse]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 2002
+| —
+|
+|-
+| [[Newark station (Delaware)|Newark]]
+| NRK
+| [[Newark, Delaware|Newark]]
+| [[Delaware|DE]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1877
+| —
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Newark Liberty International Airport Station|Newark Liberty International Airport]]
+| EWR
+| [[Newark, New Jersey|Newark]]
+| [[New Jersey|NJ]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 2001
+| —
+| {{rint|airtrainewr}} [[AirTrain Newark]] <br /> {{rint|njt}} [[New Jersey Transit]]
+|-
+| [[Pennsylvania Station (Newark)|Newark Penn]]
+| NWK
+| [[Newark, New Jersey|Newark]]
+| [[New Jersey|NJ]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1935
+| —
+| {{rint|njt}} [[New Jersey Transit]] <br /> {{rint|path}} [[Port Authority Trans-Hudson]]
+|-
+| [[Newbern Depot|Newbern–Dyersburg]]
+| NBN
+| [[Newbern, Tennessee|Newbern]]
+| [[Tennessee|TN]]
+| {{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1992{{sfn|Sanders|2006|p=105}}
+| —
+|
+|-
+| [[Newport News station|Newport News]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| NPN
+| [[Newport News, Virginia|Newport News]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1981
+| —
+|
+|-
+| [[Newton station (Kansas)|Newton]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| NEW
+| [[Newton, Kansas|Newton]]
+| [[Kansas|KS]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1930
+| 2008
+|
+|-
+| [[Niagara Falls station (New York)|Niagara Falls]]
+| NFL
+| [[Niagara Falls, New York|Niagara Falls]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 2016<ref name="newniagarafalls">{{cite news |title=New Amtrak Train Station in Niagara Falls Set to Open |url=https://www.newspapers.com/clip/25730494/niagara_falls_station_december_6_2016/ |access-date=November 26, 2018 |work=The Journal News |date=December 6, 2016 |location=[[White Plains, New York]] |page=A9|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Niagara Falls station (Ontario)|Niagara Falls]]
+| NFS
+| [[Niagara Falls, Ontario|Niagara Falls]]
+| [[Ontario|ON]]
+| {{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1879
+| —
+| {{rint|gotransit}} [[Go Transit]] <br /> {{rint|ca|rail}} [[Via Rail]]
+|-
+| [[Niles station|Niles]]
+| NLS
+| [[Niles, Michigan|Niles]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+{{rail color box|system=Amtrak|line=Wolverine}}
+| 1892
+| 2003
+|
+|-
+| [[Norfolk station (Amtrak)|Norfolk]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| NFK
+| [[Norfolk, Virginia|Norfolk]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 2012
+| 2013
+| [[Tide Light Rail]]
+|-
+| [[Norman Depot|Norman]]
+| NOR
+| [[Norman, Oklahoma|Norman]]
+| [[Oklahoma|OK]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+| 1999
+| —
+|
+|-
+| [[North Carolina State Fair station|North Carolina State Fair]]
+| NSF
+| [[Raleigh, North Carolina|Raleigh]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+| —
+| —
+|
+|-
+| [[Union Station (Northampton, Massachusetts)|Northampton]]
+| NHT
+| [[Northampton, Massachusetts|Northampton]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 2014
+| —
+|
+|-
+| {{anchor|O}}[[Oakland Coliseum station|Oakland Coliseum]]
+| OAC
+| [[Oakland, California|Oakland]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 2005
+| —
+| {{rint|bart}} [[Bay Area Rapid Transit]]
+|-
+| [[Oakland – Jack London Square station|Oakland–Jack London Square]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| OKJ
+| [[Oakland, California|Oakland]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1995
+| —
+|
+|-
+| [[Oakville GO Station|Oakville]]
+| OKL
+| [[Oakville, Ontario|Oakville]]
+| [[Ontario|ON]]
+| {{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1967
+| 2012
+| {{rint|gotransit}} [[Go Transit]] <br /> {{rint|ca|rail}} [[Via Rail]]
+|-
+| [[Oceanside Transit Center|Oceanside]]
+| OSD
+| [[Oceanside, California|Oceanside]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1886
+| 1984
+| {{rint|sandiego|Coaster}} [[Coaster (commuter rail)|COASTER]] <br /> {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]] <br /> {{rint|sandiego|Sprinter}} [[Sprinter (light rail)|SPRINTER]]
+|-
+| [[Okeechobee station (Amtrak)|Okeechobee]]
+| OKE
+| [[Okeechobee, Florida|Okeechobee]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1986<ref>{{cite news |last1=Stemen |first1=John |title=400 Celebrate New Rail Stop in Okeechobee |url=https://www.newspapers.com/clip/37349514/okeechobee_station_october_26_1986/ |access-date=October 17, 2019 |work=The Palm Beach Post |date=October 26, 1986 |location=West Palm Beach, Florida |pages=1B, [https://www.newspapers.com/clip/37349553/okeechobee_station_october_26_1986/ 8B]|via=Newspapers.com}} {{open access}}</ref>
+| 2011
+|
+|-
+| [[Santa Fe Depot (Oklahoma City)|Oklahoma City]]
+| OKC
+| [[Oklahoma City, Oklahoma|Oklahoma City]]
+| [[Oklahoma|OK]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+| 1999
+| —
+|
+|-
+| [[Old Orchard Beach station|Old Orchard Beach]]
+| ORB
+| [[Old Orchard Beach, Maine|Old Orchard Beach]]
+| [[Maine|ME]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2003
+| —
+|
+|-
+| [[Old Saybrook station|Old Saybrook]]
+| OSB
+| [[Old Saybrook, Connecticut|Old Saybrook]]
+| [[Connecticut|CT]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1873
+| 2002
+| {{rint|shoreline}} [[Shore Line East]]
+|-
+| [[Centennial Station|Olympia–Lacey]]
+| OWL
+| [[Lacey, Washington|Lacey]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1993
+| —
+|
+|-
+| [[Omaha station|Omaha]]
+| OMA
+| [[Omaha, Nebraska|Omaha]]
+| [[Nebraska|NE]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1983
+| —
+|
+|-
+| [[Ontario station (Amtrak)|Ontario]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| ONA
+| [[Ontario, California|Ontario]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| —
+|
+|-
+| [[Oregon City station|Oregon City]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| ORC
+| [[Oregon City, Oregon|Oregon City]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+| 2004
+| —
+|
+|-
+| [[Orlando Health/Amtrak station|Orlando]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| ORL
+| [[Orlando, Florida|Orlando]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1926
+| —
+| {{rint|sunrail}} [[SunRail]]
+|-
+| [[Osceola station|Osceola]]
+| OSC
+| [[Osceola, Iowa|Osceola]]
+| [[Iowa|IA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1907
+| —
+|
+|-
+| [[Ottumwa station|Ottumwa]]
+| OTM
+| [[Ottumwa, Iowa|Ottumwa]]
+| [[Iowa|IA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| —
+| 1951<ref name="1951openingottumwa">{{cite news |title=Ottumwa Dedicates Railroad Station and City Park |url=https://www.newspapers.com/clip/33416342/ottumwa_station_may_27_1951/ |access-date=July 1, 2019 |work=[[The Des Moines Register]] |date=May 27, 1951 |page=25|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Oxnard Transit Center|Oxnard]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| OXN
+| [[Oxnard, California|Oxnard]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1987
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| {{anchor|P}}[[Palatka station|Palatka]]
+| PAK
+| [[Palatka, Florida|Palatka]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1909
+| —
+|
+|-
+| [[Palm Springs station|Palm Springs]]
+| PSN
+| [[Palm Springs, California|Palm Springs]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1997
+| —
+|
+|-
+| [[Paoli station|Paoli]]
+| PAO
+| [[Paoli, Pennsylvania|Paoli]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1893
+| 1953, 2019-Present (Phase 1 complete)
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Parkesburg station|Parkesburg]]
+| PAR
+| [[Parkesburg, Pennsylvania|Parkesburg]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+| —
+| —
+|
+|-
+| [[Pasco Intermodal Train Station|Pasco]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| PSC
+| [[Pasco, Washington|Pasco]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1998
+| —
+|
+|-
+| [[Paso Robles station|Paso Robles]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| PRB
+| [[Paso Robles, California|Paso Robles]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| —
+| —
+|
+|-
+| [[Petersburg station|Petersburg]]
+| PTB
+| [[Petersburg, Virginia|Petersburg]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1955
+| —
+|
+|-
+| [[Pauls Valley station|Pauls Valley]]
+| PVL
+| [[Pauls Valley, Oklahoma|Pauls Valley]]
+| [[Oklahoma|OK]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+| 1999
+| —
+|
+|-
+| [[30th Street Station|Philadelphia 30th Street]]
+| PHL
+| [[Philadelphia, Pennsylvania|Philadelphia]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1933
+| —
+| {{rint|njt}} [[New Jersey Transit]] <br /> {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[North Philadelphia station|Philadelphia North]]
+| PHN
+| [[Philadelphia, Pennsylvania|Philadelphia]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1870s
+| 1896–1901, 1912–1915, 1955, 1977, 1991
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Picayune station|Picayune]]
+| PIC
+| [[Picayune, Mississippi|Picayune]]
+| [[Mississippi|MS]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| —
+| 2008
+|
+|-
+| [[Union Station (Pittsburgh)|Pittsburgh]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| PGH
+| [[Pittsburgh, Pennsylvania|Pittsburgh]]
+| [[Pennsylvania|PA]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1903
+| 1954, 1988
+|
+|-
+| [[Joseph Scelsi Intermodal Transportation Center|Pittsfield]]
+| PIT
+| [[Pittsfield, Massachusetts|Pittsfield]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1975
+| 2004
+|
+|-
+| [[Plano station|Plano]]
+| PLO
+| [[Plano, Illinois|Plano]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+| 1913
+| —
+|
+|-
+| [[Plattsburgh station|Plattsburgh]]
+| PLB
+| [[Plattsburgh, New York|Plattsburgh]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+| 1886
+| —
+|
+|-
+| [[Pomona station (California)|Pomona]]
+| POS
+| [[Pomona, California|Pomona]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1940
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Pontiac station (Illinois)|Pontiac]]
+| PON
+| [[Pontiac, Illinois|Pontiac]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| 1901, 2017
+|
+|-
+| [[Pontiac Transportation Center|Pontiac]]
+| PNT
+| [[Pontiac, Michigan|Pontiac]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| 1983
+| 2011
+|
+|-
+| [[Poplar Bluff station|Poplar Bluff]]
+| PBF
+| [[Poplar Bluff, Missouri|Poplar Bluff]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1910
+| —
+|
+|-
+| [[Port Henry station|Port Henry]]
+| POH
+| [[Port Henry, New York|Port Henry]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+| 1888
+| —
+|
+|-
+| [[Port Huron station|Port Huron]]
+| PTH
+| [[Port Huron, Michigan|Port Huron]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Blue Water}}
+| 1979
+| —
+|
+|-
+| [[Port Kent station|Port Kent]]
+| PRK
+| [[Port Kent, New York|Port Kent]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+| 1977<ref>{{cite news |title=Amtrak Stop |url=https://www.newspapers.com/clip/37349176/port_kent_station_april_24_1977/ |access-date=October 17, 2019 |work=The Burlington Free Press |date=April 24, 1977 |page=21|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Portage station|Portage]]
+| POG
+| [[Portage, Wisconsin|Portage]]
+| [[Wisconsin|WI]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Portland Transportation Center|Portland]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| POR
+| [[Portland, Maine|Portland]]
+| [[Maine|ME]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+|
+|-
+| [[Portland Union Station|Portland]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| PDX
+| [[Portland, Oregon|Portland]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1896
+| 1996
+|
+|-
+| [[Poughkeepsie station|Poughkeepsie]]
+| POU
+| [[Poughkeepsie, New York|Poughkeepsie]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1918
+| 2009
+| {{rint|newyork|mnr}} [[Metro-North Railroad]]
+|-
+| [[Prince station|Prince]]
+| PRC
+| [[Prince, West Virginia|Prince]]
+| [[West Virginia|WV]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1886
+| 1946<ref>{{cite news |title=Prince Played a Large Part in Beckley Area Development |url=https://www.newspapers.com/clip/4192838/newsprince_viewrr1946may5/ |access-date=January 4, 2020 |work=The Raleigh Register |date=May 5, 1946 |location=[[Beckley, West Virginia]] |page=6|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Princeton station (Illinois)|Princeton]]
+| PCT
+| [[Princeton, Illinois|Princeton]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1911
+| 1998
+|
+|-
+| [[Princeton Junction station|Princeton Junction]]
+| PJC
+| [[West Windsor, New Jersey|West Windsor]]
+| [[New Jersey|NJ]]
+| {{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+| 1864
+| —
+| {{rint|njt}} [[New Jersey Transit]]
+|-
+| [[Providence station|Providence]]
+| PVD
+| [[Providence, Rhode Island|Providence]]
+| [[Rhode Island|RI]]
+| {{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1986
+| —
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]
+|-
+| [[Provo station (Amtrak)|Provo]]
+| PRO
+| [[Provo, Utah|Provo]]
+| [[Utah|UT]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 2002
+| —
+| {{rint|uta|frontrunner}} [[FrontRunner]]
+|-
+| [[Purcell station|Purcell]]
+| PUR
+| [[Purcell, Oklahoma|Purcell]]
+| [[Oklahoma|OK]]
+| {{rail color box|system=Amtrak|line=Heartland Flyer}}
+| 2001
+| —
+|
+|-
+| {{anchor|Q}}[[Quantico station|Quantico]]
+| QAN
+| [[Quantico, Virginia|Quantico]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1971
+| —
+| {{rint|vre}} [[Virginia Railway Express]]
+|-
+| [[Quincy station (Amtrak)|Quincy]]
+| QCY
+| [[Quincy, Illinois|Quincy]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illinois Zephyr and Carl Sandburg}}
+| 1985
+| —
+|
+|-
+| {{anchor|R}}[[Raleigh Union Station|Raleigh Union]]
+| RGH
+| [[Raleigh, North Carolina|Raleigh]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 2018
+| —
+|
+|-
+| [[Randolph station (Vermont)|Randolph]]
+| RPH
+| [[Randolph, Vermont|Randolph]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Vermonter}}
+| 1848, 1996
+| 1877
+|
+|-
+| [[Rantoul station|Rantoul]]
+| RTL
+| [[Rantoul, Illinois|Rantoul]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Illini and Saluki}}
+| —
+| —
+|
+|-
+| [[Raton station|Raton]]
+| RAT
+| [[Raton, New Mexico|Raton]]
+| [[New Mexico|NM]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1903
+| —
+|
+|-
+| [[Red Wing station|Red Wing]]
+| RDW
+| [[Red Wing, Minnesota|Red Wing]]
+| [[Minnesota|MN]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1905
+| 1990
+|
+|-
+| [[Redding station (California)|Redding]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| RDD
+| [[Redding, California|Redding]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1923
+| 2002
+|
+|-
+| [[Reno station|Reno]]
+| RNO
+| [[Reno, Nevada|Reno]]
+| [[Nevada|NV]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1926
+| 2007
+|
+|-
+| [[Rensselaer station|Rensselaer]]
+| REN
+| [[Rensselaer, Indiana|Rensselaer]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1981<ref name="rensselaer1981">{{cite news |title=New Stop for Amtrak |url=https://www.newspapers.com/clip/37328023/rensselaer_station_january_18_1981/ |access-date=October 17, 2019 |work=Vidette-Messenger of Porter County |date=January 17, 1981 |location=[[Valparaiso, Indiana]] |page=22|via=Newspapers.com}} {{open access}}</ref>
+| 2011-2013
+|
+|-
+| [[Rhinecliff–Kingston station|Rhinecliff–Kingston]]
+| RHI
+| [[Rhinecliff, New York|Rhinecliff]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1914
+| 2011
+|
+|-
+| [[Richmond station (California)|Richmond]]
+| RIC
+| [[Richmond, California|Richmond]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1978
+| 2007
+| {{rint|bart}} [[Bay Area Rapid Transit]]
+|-
+| [[Richmond Staples Mill Road station|Richmond Staples Mill Road]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| RVR
+| [[Dumbarton, Virginia|Dumbarton]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1975
+| —
+|
+|-
+| [[Richmond Main Street Station|Richmond Main Street]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| RVM
+| [[Richmond, Virginia|Richmond]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 2003
+| —
+|
+|-
+| [[Riverside–Downtown station|Riverside]]
+| RIV
+| [[Riverside, California|Riverside]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 2002
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Roanoke station (Virginia)|Roanoke]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| RNK
+| [[Roanoke, Virginia|Roanoke]]
+| [[Virginia|VA]]
+| {{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1975
+| 2017
+|
+|-
+| [[Louise M. Slaughter Rochester Station|Rochester]]
+| ROC
+| [[Rochester, New York|Rochester]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1914
+| 2017
+|
+|-
+| [[Rocklin station|Rocklin]]
+| RLN
+| [[Rocklin, California|Rocklin]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| —
+| 2006
+|
+|-
+| [[Rocky Mount station|Rocky Mount]]
+| RMT
+| [[Rocky Mount, North Carolina|Rocky Mount]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1893
+| 2000
+|
+|-
+| [[Rockville station|Rockville]]
+| RKV
+| [[Rockville, Maryland|Rockville]]
+| [[Maryland|MD]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+| 1984
+| —
+| {{rint|baltimore|marc}} [[MARC Train]] <br /> {{rint|washington|metro}} [[Washington Metro]]
+|-
+| [[Rome station (New York)|Rome]]
+| ROM
+| [[Rome, New York|Rome]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1914
+| 2017
+|
+|-
+| [[Roseville station (California)|Roseville]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| RSV
+| [[Roseville, California|Roseville]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 1994
+| —
+|
+|-
+| [[Rouses Point station|Rouses Point]]
+| RSP
+| [[Rouses Point, New York|Rouses Point]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+| 1889
+| 2014
+|
+|-
+| [[Royal Oak station (Michigan)|Royal Oak]]
+| ROY
+| [[Royal Oak, Michigan|Royal Oak]]
+| [[Michigan|MI]]
+| {{rail color box|system=Amtrak|line=Wolverine}}
+| —
+| —
+|
+|-
+| [[Rugby station (North Dakota)|Rugby]]
+| RUG
+| [[Rugby, North Dakota|Rugby]]
+| [[North Dakota|ND]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1907
+| —
+|
+|-
+| [[Rutland station|Rutland]]
+| RUD
+| [[Rutland (city), Vermont|Rutland]]
+| [[Vermont|VT]]
+| {{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| 1996
+| 1999
+|
+|-
+| {{anchor|S}}[[Saco Transportation Center|Saco–Biddeford]]
+| SAO
+| [[Saco, Maine|Saco]]
+| [[Maine|ME]]
+| {{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+|
+|-
+| [[Sacramento Valley Station|Sacramento]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SAC
+| [[Sacramento, California|Sacramento]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+{{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1926
+| —
+| {{rint|sacramento}} [[Sacramento RT Light Rail]]
+|-
+| [[Salem station (Oregon)|Salem]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SLM
+| [[Salem, Oregon|Salem]]
+| [[Oregon|OR]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1918
+| 2000
+|
+|-
+| [[Salinas station|Salinas]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SNS
+| [[Salinas, California|Salinas]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+| —
+| 1941
+|
+|-
+| [[Salisbury station (North Carolina)|Salisbury]]
+| SAL
+| [[Salisbury, North Carolina|Salisbury]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Piedmont}}
+| 1908
+| 1993–1996, 1999
+|
+|-
+| [[Salt Lake City Intermodal Hub|Salt Lake City]]
+| SLC
+| [[Salt Lake City, Utah|Salt Lake City]]
+| [[Utah|UT]]
+| {{rail color box|system=Amtrak|line=California Zephyr}}
+| 1999
+| —
+| {{rint|uta|frontrunner}} [[FrontRunner]] <br /> {{rint|uta|trax}} [[TRAX (light rail)|TRAX]]
+|-
+| [[San Antonio station (Texas)|San Antonio]]
+| SAS
+| [[San Antonio, Texas|San Antonio]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1998
+| —
+|
+|-
+| [[San Bernardino Santa Fe Depot|San Bernardino]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SNB
+| [[San Bernardino, California|San Bernardino]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1971
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[San Clemente Pier station|San Clemente Pier]]
+| SNP
+| [[San Clemente, California|San Clemente]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| —
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Old Town Transit Center|San Diego Old Town]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| OLT
+| [[San Diego, California|San Diego]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1994
+| —
+| {{rint|sandiego|Coaster}} [[Coaster (commuter rail)|COASTER]] <br /> {{rint|sandiego|Trolley}} [[San Diego Trolley]]
+|-
+| [[Santa Fe Depot (San Diego)|San Diego Santa Fe Depot]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SAN
+| [[San Diego, California|San Diego]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1971
+| —
+| {{rint|sandiego|Coaster}} [[Coaster (commuter rail)|COASTER]] <br /> {{rint|sandiego|Trolley}} [[San Diego Trolley]]
+|-
+| [[San Jose Diridon station|San Jose Diridon]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SJC
+| [[San Jose, California|San Jose]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 1935
+| —
+| {{rint|ace}} [[Altamont Commuter Express]] <br /> {{rint|caltrain}} [[Caltrain]]
+|-
+| [[San Juan Capistrano station|San Juan Capistrano]]
+| SNC
+| [[San Juan Capistrano, California|San Juan Capistrano]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1974
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[San Luis Obispo station|San Luis Obispo]]
+| SLO
+| [[San Luis Obispo, California|San Luis Obispo]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1943
+| —
+|
+|-
+| [[San Marcos station|San Marcos]]
+| SMC
+| [[San Marcos, Texas|San Marcos]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| 2001
+|
+|-
+| [[Sanderson station|Sanderson]]
+| SND
+| [[Sanderson, Texas|Sanderson]]
+| [[Texas|TX]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1882
+| —
+|
+|-
+| [[Sandpoint station|Sandpoint]]
+| SPT
+| [[Sandpoint, Idaho|Sandpoint]]
+| [[Idaho|ID]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| 1916
+|
+|-
+| [[Sandusky station|Sandusky]]
+| SKY
+| [[Sandusky, Ohio|Sandusky]]
+| [[Ohio|OH]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1892
+| —
+|
+|-
+| [[Sanford station (Amtrak)|Sanford]]
+| SFA
+| [[Sanford, Florida|Sanford]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Auto Train}}
+| 1983
+| 2010
+|
+|-
+| [[Santa Ana Regional Transportation Center|Santa Ana]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SNA
+| [[Santa Ana, California|Santa Ana]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1985
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Santa Barbara station|Santa Barbara]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SBA
+| [[Santa Barbara, California|Santa Barbara]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1902
+| 2000
+|
+|-
+| [[Santa Clara – Great America station|Santa Clara – Great America]]
+| GAC
+| [[Santa Clara, California|Santa Clara]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 1993
+| —
+| {{rint|ace}} [[Altamont Commuter Express]]
+|-
+| [[Santa Clara Transit Center|Santa Clara]]
+| SCC
+| [[Santa Clara, California|Santa Clara]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 2012
+| —
+| {{rint|ace}} [[Altamont Commuter Express]] <br /> {{rint|caltrain}} [[Caltrain]]
+|-
+| [[Saratoga Springs station|Saratoga Springs]]
+| SAR
+| [[Saratoga Springs, New York|Saratoga Springs]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+| 1959
+| 2004
+|
+|-
+| [[Savannah station (Amtrak)|Savannah]]
+| SAV
+| [[Savannah, Georgia|Savannah]]
+| [[Georgia (U.S. state)|GA]]
+| {{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1962
+| —
+|
+|-
+| [[Schenectady station|Schenectady]]
+| SDY
+| [[Schenectady, New York|Schenectady]]
+| [[New York (state)|NY]]
+| {{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1979
+| 2018
+|
+|-
+| [[Schriever station|Schriever]]
+| SCH
+| [[Schriever, Louisiana|Schriever]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=Sunset Limited}}
+| 1975<ref name="schreiver1976">{{cite news |title=Amtrak Schriever Stop to be Made Permanent |url=https://www.newspapers.com/clip/37474539/schriever_station_september_30_1976/ |access-date=October 19, 2019 |work=The Assumption Pioneer |date=September 30, 1976 |location=[[Napoleonville, Louisiana]] |page=2|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[King Street Station|Seattle King Street]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SEA
+| [[Seattle, Washington|Seattle]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1906
+| —
+| {{rint|seattle|sounder}} [[Sounder commuter rail|Sounder Commuter Rail]]
+|-
+| [[Sebring station|Sebring]]
+| SBG
+| [[Sebring, Florida|Sebring]]
+| [[Florida|FL]]
+| {{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1924
+| —
+|
+|-
+| [[Sedalia station|Sedalia]]
+| SED
+| [[Sedalia, Missouri|Sedalia]]
+| [[Missouri|MO]]
+| {{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 1886
+| —
+|
+|-
+| [[Selma Union Depot|Selma]]
+| SSM
+| [[Selma, North Carolina|Selma]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+| 1867
+| —
+|
+|-
+| [[Shelby station|Shelby]]
+| SBY
+| [[Shelby, Montana|Shelby]]
+| [[Montana|MT]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Simi Valley station|Simi Valley]]
+| SIM
+| [[Simi Valley, California|Simi Valley]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1986
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Slidell station|Slidell]]
+| SDL
+| [[Slidell, Louisiana|Slidell]]
+| [[Louisiana|LA]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1913
+| —
+|
+|-
+| [[Solana Beach station|Solana Beach]]
+| SOL
+| [[Solana Beach, California|Solana Beach]]
+| [[California|CA]]
+| {{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1994
+| —
+| {{rint|sandiego|Coaster}} [[Coaster (commuter rail)|COASTER]]
+|-
+| [[South Bend station|South Bend]]
+| SOB
+| [[South Bend, Indiana|South Bend]]
+| [[Indiana|IN]]
+| {{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1970<ref>{{cite news |last1=Gregg |first1=Ray |title=South Shore Plans Dedication Tuesday |url=https://www.newspapers.com/clip/35041138/south_bend_station_july_6_1970/ |access-date=August 18, 2019 |work=[[The South Bend Tribune]] |date=July 6, 1970 |page=11|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[South Portsmouth–South Shore station|South Portsmouth–South Shore]]
+| SPM
+| [[South Shore, Kentucky|South Shore]]
+| [[Kentucky|KY]]
+| {{rail color box|system=Amtrak|line=Cardinal}}
+| 1976
+| —
+|
+|-
+| [[Southern Pines station|Southern Pines]]
+| SOP
+| [[Southern Pines, North Carolina|Southern Pines]]
+| [[North Carolina|NC]]
+| {{rail color box|system=Amtrak|line=Silver Star}}
+| 1898
+| —
+|
+|-
+| [[Spartanburg station|Spartanburg]]
+| SPB
+| [[Spartanburg, South Carolina|Spartanburg]]
+| [[South Carolina|SC]]
+| {{rail color box|system=Amtrak|line=Crescent}}
+| 1904
+| —
+|
+|-
+| [[Spokane Intermodal Center|Spokane]]
+| SPK
+| [[Spokane, Washington|Spokane]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Empire Builder}}
+| 1891
+| 1994
+|
+|-
+| [[Springfield station (Illinois)|Springfield]]
+| SPI
+| [[Springfield, Illinois|Springfield]]
+| [[Illinois|IL]]
+| {{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1895
+| —
+|
+|-
+| [[Springfield Union Station (Massachusetts)|Springfield]]
+| SPG
+| [[Springfield, Massachusetts|Springfield]]
+| [[Massachusetts|MA]]
+| {{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1973, 1994
+| 2017
+| {{rint|hartford}} [[Hartford Line]]
+|-
+| [[St. Albans station (Vermont)|St. Albans]]
+| SAB
+| [[St. Albans (city), Vermont|St. Albans]]
+| [[Vermont|VT]]
+|{{rail color box|system=Amtrak|line=Vermonter}}
+| 1972
+| —
+|
+|-
+| [[St. Catharines railway station|St. Catharines]]
+| SCA
+| [[St. Catharines, Ontario|St. Catherines]]
+| [[Ontario|ON]]
+|{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1853
+| —
+| {{rint|gotransit}} [[Go Transit]]
+|-
+| [[St. Cloud station|St. Cloud]]
+| SCD
+| [[St. Cloud, Minnesota|St. Cloud]]
+| [[Minnesota|MN]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1909
+| —
+|
+|-
+| [[St. Joseph station|St. Joseph–Benton Harbor]]
+| SJM
+| [[St. Joseph, Michigan|St. Joseph]]
+| [[Michigan|MI]]
+|{{rail color box|system=Amtrak|line=Pere Marquette}}
+| 1913
+| —
+|
+|-
+| [[Saint-Lambert station|Saint-Lambert]]
+| SLQ
+| [[Saint-Lambert, Quebec|Saint-Lambert]]
+| [[Quebec|QC]]
+|{{rail color box|system=Amtrak|line=Adirondack}}
+| 2000
+| —
+| {{rint|montreal|rail}} [[Exo (public transit)|Exo]] <br /> {{rint|ca|rail}} [[Via Rail]]
+|-
+| [[Gateway Transportation Center|St. Louis Gateway]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| STL
+| [[St. Louis, Missouri|St. Louis]]
+| [[Missouri|MO]]
+|{{rail color box|system=Amtrak|line=Lincoln Service}}
+{{rail color box|system=Amtrak|line=Missouri River Runner}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 2008
+| —
+| [[MetroLink (St. Louis)|MetroLink]]
+|-
+| [[Saint Paul Union Depot|St. Paul - Minneapolis Union]]
+| MSP
+| [[St. Paul, Minnesota|St. Paul]]
+| [[Minnesota|MN]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 2011
+| —
+|
+|-
+| [[Stamford Transportation Center|Stamford]]
+| STM
+| [[Stamford, Connecticut|Stamford]]
+| [[Connecticut|CT]]
+|{{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1849
+| —
+| {{rint|newyork|mnr}} [[Metro-North Railroad]] <br /> {{rint|shoreline}} [[Shore Line East]]
+|-
+| [[Stanley station (North Dakota)|Stanley]]
+| STN
+| [[Stanley, North Dakota|Stanley]]
+| [[North Dakota|ND]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Stanwood station|Stanwood]]
+| STW
+| [[Stanwood, Washington|Stanwood]]
+| [[Washington (state)|WA]]
+|{{rail color box|system=Amtrak|line=Amtrak Cascades}}
+| 2009
+| —
+|
+|-
+| [[Staples station|Staples]]
+| SPL
+| [[Staples, Minnesota|Staples]]
+| [[Minnesota|MN]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1909
+| —
+|
+|-
+| [[Staunton station|Staunton]]
+| STA
+| [[Staunton, Virginia|Staunton]]
+| [[Virginia|VA]]
+|{{rail color box|system=Amtrak|line=Cardinal}}
+| —
+| —
+|
+|-
+| [[Robert J. Cabral Station|Stockton Downtown]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| SKT
+| [[Stockton, California|Stockton]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1930
+| 2005
+| {{rint|ace}} [[Altamont Commuter Express]]
+|-
+| [[San Joaquin Street station|Stockton San Joaquin Street]]
+| SKN
+| [[Stockton, California|Stockton]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1900
+| 2005
+|
+|-
+| [[Sturtevant station|Sturtevant]]
+| SVT
+| [[Sturtevant, Wisconsin|Sturtevant]]
+| [[Wisconsin|WI]]
+|{{rail color box|system=Amtrak|line=Hiawatha Service}}
+| 2006
+| —
+|
+|-
+| [[Suisun–Fairfield station|Suisun–Fairfield]]
+| SUI
+| [[Suisun City, California|Suisun City]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=Capitol Corridor}}
+| 1904
+| 1992
+|
+|-
+| [[Summit station (Illinois)|Summit]]
+| SMT
+| [[Summit, Illinois|Summit]]
+| [[Illinois|IL]]
+|{{rail color box|system=Amtrak|line=Lincoln Service}}
+| 2014
+| —
+| {{rint|chicago|metra}} [[Metra]]
+|-
+| [[William F. Walsh Regional Transportation Center|Syracuse]]
+| SYR
+| [[Syracuse, New York|Syracuse]]
+| [[New York (state)|NY]]
+|{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1998
+| 2017
+|
+|-
+| [[Tacoma Dome Station|Tacoma Dome]]
+| TAC
+| [[Tacoma, Washington|Tacoma]]
+| [[Washington (state)|WA]]
+| {{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+| 2021
+| —
+| {{rint|seattle|sounder}} [[Sounder Commuter Rail]]
+|-
+| {{anchor|T}}[[Tampa Union Station|Tampa]]
+| TPA
+| [[Tampa, Florida|Tampa]]
+| [[Florida|FL]]
+|{{rail color box|system=Amtrak|line=Silver Star}}
+| 1912
+| 1998
+|
+|-
+| [[Taylor station|Taylor]]
+| TAY
+| [[Taylor, Texas|Taylor]]
+| [[Texas|TX]]
+|{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| —
+|
+|-
+| [[Temple station (Texas)|Temple]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| TPL
+| [[Temple, Texas|Temple]]
+| [[Texas|TX]]
+|{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1911
+| 2000
+|
+|-
+| [[Texarkana Union Station|Texarkana]]
+| TXA
+| [[Texarkana, Arkansas|Texarkana]]
+| [[Arkansas|AR]]
+|{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1930
+| —
+|
+|-
+| [[Thurmond station|Thurmond]]
+| THN
+| [[Thurmond, West Virginia|Thurmond]]
+| [[West Virginia|WV]]
+|{{rail color box|system=Amtrak|line=Cardinal}}
+| 1905
+| 1995
+|
+|-
+| [[Ticonderoga station|Ticonderoga]]
+| FTC
+| [[Ticonderoga, New York|Ticonderoga]]
+| [[New York (state)|NY]]
+|{{rail color box|system=Amtrak|line=Adirondack}}
+| —
+| 1991
+|
+|-
+| [[Toccoa station|Toccoa]]
+| TCA
+| [[Toccoa, Georgia|Toccoa]]
+| [[Georgia (U.S. state)|GA]]
+|{{rail color box|system=Amtrak|line=Crescent}}
+| 1915
+| —
+|
+|-
+| [[Martin Luther King Jr. Plaza (Toledo)|Toledo]]
+| TOL
+| [[Toledo, Ohio|Toledo]]
+| [[Ohio|OH]]
+|{{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1950
+| 1996, 2016
+|
+|-
+| [[Tomah station|Tomah]]
+| TOH
+| [[Tomah, Wisconsin|Tomah]]
+| [[Wisconsin|WI]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Topeka station|Topeka]]
+| TOP
+| [[Topeka, Kansas|Topeka]]
+| [[Kansas|KS]]
+|{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1950
+| 2006
+|
+|-
+| [[Union Station (Toronto)|Toronto Union]]
+| TWO
+| [[Toronto, Ontario|Toronto]]
+| [[Ontario|ON]]
+|{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1927
+| —
+| {{rint|gotransit}} [[Go Transit]] <br /> [[Union Pearson Express]] <br /> {{rint|ca|rail}} [[Via Rail]]
+|-
+| [[Trenton Transit Center|Trenton]]
+| TRE
+| [[Trenton, New Jersey|Trenton]]
+| [[New Jersey|NJ]]
+|{{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Keystone Service}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Pennsylvanian}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1863
+| 1893, 1976, 2008
+| {{rint|njt}} [[New Jersey Transit]] <br /> {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Trinidad station (Colorado)|Trinidad]]
+| TRI
+| [[Trinidad, Colorado|Trinidad]]
+| [[Colorado|CO]]
+|{{rail color box|system=Amtrak|line=Southwest Chief}}
+| —
+| —
+|
+|-
+| [[Troy Transit Center|Troy]]
+| TRM
+| [[Troy, Michigan|Troy]]
+| [[Michigan|MI]]
+|{{rail color box|system=Amtrak|line=Wolverine}}
+| 2014<ref name="birmingham/troy">{{cite news |last1=Hall |first1=Christina |title=Troy Transit Center set to open Tuesday |url=https://www.freep.com/story/news/local/michigan/oakland/2014/10/13/troy-transit-center-birmingham-amtrak-train/17208417/ |access-date=November 23, 2018 |work=The Detroit Free Press |date=October 13, 2014}}</ref>
+| —
+|
+|-
+| [[Truckee station|Truckee]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| TRU
+| [[Truckee, California|Truckee]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=California Zephyr}}
+| 1891
+| —
+|
+|-
+| [[Tucson station|Tucson]]
+| TUS
+| [[Tucson, Arizona|Tucson]]
+| [[Arizona|AZ]]
+|{{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1907
+| 2004
+|
+|-
+| [[Tukwila station|Tukwila]]
+| TUK
+| [[Tukwila, Washington|Tukwila]]
+| [[Washington (state)|WA]]
+|{{rail color box|system=Amtrak|line=Amtrak Cascades}}
+| 2001
+| —
+| {{rint|seattle|sounder}} [[Sounder Commuter Rail]]
+|-
+| [[Turlock–Denair station|Turlock–Denair]]
+| TRK
+| [[Denair, California|Denair]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=San Joaquin}}
+| —
+| —
+|
+|-
+| [[Tuscaloosa station|Tuscaloosa]]
+| TCL
+| [[Tuscaloosa, Alabama|Tuscaloosa]]
+| [[Alabama|AL]]
+|{{rail color box|system=Amtrak|line=Crescent}}
+| 1911
+| —
+|
+|-
+| [[Tyrone station|Tyrone]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| TYR
+| [[Tyrone, Pennsylvania|Tyrone]]
+| [[Pennsylvania|PA]]
+|{{rail color box|system=Amtrak|line=Pennsylvanian}}
+| 1880
+| 2000
+|
+|-
+| {{anchor|U}}[[Union Station (Utica, New York)|Utica]]
+| UCA
+| [[Utica, New York|Utica]]
+| [[New York (state)|NY]]
+|{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| 1914
+| —
+|
+|-
+| {{anchor|V}}[[Van Nuys station|Van Nuys]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| VNC
+| [[Van Nuys, California|Van Nuys]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1982
+| —
+| {{rint|losangeles|metrolink}} [[Metrolink (California)|Metrolink]]
+|-
+| [[Pacific Central Station|Vancouver Pacific Central]]
+| VAC
+| [[Vancouver, British Columbia|Vancouver]]
+| [[British Columbia|BC]]
+|{{rail color box|system=Amtrak|line=Amtrak Cascades}}
+| 1906
+| —
+| {{rint|ca|rail}} [[Via Rail]]
+|-
+| [[Vancouver station (Washington)|Vancouver]]
+| VAN
+| [[Vancouver, Washington|Vancouver]]
+| [[Washington (state)|WA]]
+|{{rail color box|system=Amtrak|line=Amtrak Cascades}}
+{{rail color box|system=Amtrak|line=Coast Starlight}}
+{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1908
+| 1988, 2008
+|
+|-
+| [[Ventura station|Ventura]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| VEC
+| [[Ventura, California|Ventura]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=Pacific Surfliner}}
+| 1992
+| —
+|
+|-
+| [[Victor Valley Transportation Center|Victorville]]
+| VRV
+| [[Victorville, California|Victorville]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=Southwest Chief}}
+| —
+| —
+|
+|-
+| {{anchor|W}}[[Wallingford station (Connecticut)|Wallingford]]
+| WFD
+| [[Wallingford, Connecticut|Wallingford]]
+| [[Connecticut|CT]]
+|{{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+| 1871
+| 2014-2017
+| {{rint|hartford}} [[Hartford Line]]
+|-
+| [[Walnut Ridge station|Walnut Ridge]]
+| WNR
+| [[Walnut Ridge, Arkansas|Walnut Ridge]]
+| [[Arkansas|AR]]
+|{{rail color box|system=Amtrak|line=Texas Eagle}}
+| 1908, 1974
+| 1995
+|
+|-
+| [[Warrensburg station|Warrensburg]]
+| WAR
+| [[Warrensburg, Missouri|Warrensburg]]
+| [[Missouri|MO]]
+|{{rail color box|system=Amtrak|line=Missouri River Runner}}
+| 1890
+| —
+|
+|-
+| [[Wasco station|Wasco]]
+| WAC
+| [[Wasco, California|Wasco]]
+| [[California|CA]]
+|{{rail color box|system=Amtrak|line=San Joaquin}}
+| 1975
+| 2006
+|
+|-
+| [[Washington Union Station|Washington Union]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| WAS
+| [[Washington, D.C.|Washington]]
+| [[District of Columbia|DC]]
+|{{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1908
+| 1981-1989
+| {{rint|baltimore|marc}} [[MARC Train]] <br /> {{rint|vre}} [[Virginia Railway Express]] <br /> {{rint|washington|metro}} [[Washington Metro]]
+|-
+| [[Washington station (Missouri)|Washington]]
+| WAH
+| [[Washington, Missouri|Washington]]
+| [[Missouri|MO]]
+|{{rail color box|system=Amtrak|line=Missouri River Runner}}
+| Pre-1865
+| 1923
+|
+|-
+| [[Waterbury station (Vermont)|Waterbury–Stowe]]
+| WAB
+| [[Waterbury, Vermont|Waterbury]]
+| [[Vermont|VT]]
+|{{rail color box|system=Amtrak|line=Vermonter}}
+| 1875
+| 2006
+|
+|-
+| [[Waterloo station (Indiana)|Waterloo]]
+| WTI
+| [[Waterloo, Indiana|Waterloo]]
+| [[Indiana|IN]]
+|{{rail color box|system=Amtrak|line=Capitol Limited}}
+{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1990
+| —
+|
+|-
+| [[Wells Regional Transportation Center|Wells]]
+| WEM
+| [[Wells, Maine|Wells]]
+| [[Maine|ME]]
+|{{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+|
+|-
+| [[Columbia Station (Washington)|Wenatchee]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| WEN
+| [[Wenatchee, Washington|Wenatchee]]
+| [[Washington (state)|WA]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1981<ref name="102581changes">{{cite web |title=Amtrak Timetable Changes - Effective October 1, 1981 |url=http://timetables.org/full.php?group=19811001sc&item=0006 |website=timetables.org |publisher=Amtrak |access-date=November 22, 2018 |page=6 |date=October 1, 1981}}</ref>
+| 1997
+|
+|-
+| [[West Glacier station|West Glacier]]
+| WGL
+| [[West Glacier, Montana|West Glacier]]
+| [[Montana|MT]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1910, 1935
+| —
+|
+|-
+| [[West Palm Beach station|West Palm Beach]]
+| WPB
+| [[West Palm Beach, Florida|West Palm Beach]]
+| [[Florida|FL]]
+|{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1925
+| 1991
+| {{rint|trirail}} [[Tri-Rail]]
+|-
+| [[Westerly station|Westerly]]
+| WLY
+| [[Westerly, Rhode Island|Westerly]]
+| [[Rhode Island|RI]]
+|{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1837
+| 1872, 1912-1913
+|
+|-
+| [[Westport station (New York)|Westport]]
+| WSP
+| [[Westport, New York|Westport]]
+| [[New York (state)|NY]]
+|{{rail color box|system=Amtrak|line=Adirondack}}
+| 1876
+| 1891, 1908, 1974–1976, 1998
+|
+|-
+| [[Route 128 station|Westwood–Route 128]]
+| RTE
+| [[Westwood, Massachusetts|Westwood]]
+| [[Massachusetts|MA]]
+|{{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1953
+| 2000
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]
+|-
+| [[White River Junction station|White River Junction]]
+| WRJ
+| [[White River Junction, Vermont|White River Junction]]
+| [[Vermont|VT]]
+|{{rail color box|system=Amtrak|line=Vermonter}}
+| 1937
+| —
+|
+|-
+| [[White Sulphur Springs station|White Sulphur Springs]]
+| WSS
+| [[White Sulfur Springs, West Virginia|White Sulfur Springs]]
+| [[West Virginia|WV]]
+|{{rail color box|system=Amtrak|line=Cardinal}}
+| —
+| —
+|
+|-
+| [[Whitefish station|Whitefish]]
+| WFH
+| [[Whitefish, Montana|Whitefish]]
+| [[Montana|MT]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| 1928<ref name="whitefish91127">{{cite news |title=Excavatuib Starts on Whitefish Depot |url=https://www.newspapers.com/clip/41646486/whitefish_station_september_11_1927/ |access-date=January 4, 2020|work=The Great Falls Tribune |date=September 11, 1927 |page=4|via=Newspapers.com}} {{open access}}</ref><ref name="whitefishstation62328">{{cite news |title=$70,000 Whitefish Depot Opened by Great Northern |url=https://www.newspapers.com/clip/41646653/whitefish_station_june_23_1928/ |access-date=January 4, 2020 |work=The Great Falls Tribune |date=June 23, 1928 |page=5|via=Newspapers.com}} {{open access}}</ref>
+|
+|-
+| [[Whitehall station|Whitehall]]
+| WHL
+| [[Whitehall, New York|Whitehall]]
+| [[New York (state)|NY]]
+|{{rail color box|system=Amtrak|line=Adirondack}}
+| 1974<ref name="amtrakadirondack1974" />
+| 2017
+|
+|-
+| [[Williamsburg Transportation Center|Williamsburg]]
+| WBG
+| [[Williamsburg, Virginia|Williamsburg]]
+| [[Virginia|VA]]
+|{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1935
+| —
+|
+|-
+| [[Williston station|Williston]]
+| WTN
+| [[Williston, North Dakota|Williston]]
+| [[North Dakota|ND]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1910
+| 2010
+|
+|-
+| [[Wilmington station (Delaware)|Wilmington]]
+| WIL
+| [[Wilmington, Delaware|Wilmington]]
+| [[Delaware|DE]]
+|{{rail color box|system=Amtrak|line=Acela Express}}
+{{rail color box|system=Amtrak|line=Cardinal}}
+{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Crescent}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1908
+| 2011
+| {{rint|septa}} [[SEPTA Regional Rail]]
+|-
+| [[Wilson station (North Carolina)|Wilson]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| WLN
+| [[Wilson, North Carolina|Wilson]]
+| [[North Carolina|NC]]
+|{{rail color box|system=Amtrak|line=Carolinian}}
+{{rail color box|system=Amtrak|line=Palmetto}}
+| 1924
+| 1996-1998
+|
+|-
+| [[Windsor station (Connecticut)|Windsor]]
+| WND
+| [[Windsor, Connecticut|Windsor]]
+| [[Connecticut|CT]]
+|{{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+| 1870
+| 1988
+| {{rint|hartford}} [[Hartford Line]]
+|-
+| [[Windsor station (Vermont)|Windsor–Mt. Ascutney]]
+| WNM
+| [[Windsor, Vermont|Windsor]]
+| [[Vermont|VT]]
+|{{rail color box|system=Amtrak|line=Vermonter}}
+| 1901
+| 1970s
+|
+|-
+| [[Windsor Locks station|Windsor Locks]]
+| WNL
+| [[Windsor Locks, Connecticut|Windsor Locks]]
+| [[Connecticut|CT]]
+|{{rail color box|system=Amtrak|line=Hartford Line}}
+{{rail color box|system=Amtrak|line=Northeast Regional}}
+{{rail color box|system=Amtrak|line=Valley Flyer}}
+{{rail color box|system=Amtrak|line=Vermonter}}
+| 1831, 1875, 1981
+| —
+| {{rint|hartford}} [[Hartford Line]]
+|-
+| [[Winnemucca station|Winnemucca]]
+| WNN
+| [[Winnemucca, Nevada|Winnemucca]]
+| [[Nevada|NV]]
+|{{rail color box|system=Amtrak|line=California Zephyr}}
+| 1868
+| 1993, 2012
+|
+|-
+| [[Winona station|Winona]] {{bus icon|12px|Amtrak Thruway Motorcoach}}
+| WIN
+| [[Winona, Minnesota|Winona]]
+| [[Minnesota|MN]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1888
+| —
+|
+|-
+| [[Winslow station (Arizona)|Winslow]]
+| WLO
+| [[Winslow, Arizona|Winslow]]
+| [[Arizona|AZ]]
+|{{rail color box|system=Amtrak|line=Southwest Chief}}
+| 1929
+| —
+|
+|-
+| [[Winter Haven station|Winter Haven]]
+| WTH
+| [[Winter Haven, Florida|Winter Haven]]
+| [[Florida|FL]]
+|{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1925
+| 1947
+|
+|-
+| [[Winter Park Resort]]
+| WPR
+| [[Winter Park, Colorado|Winter Park]]
+| [[Colorado|CO]]
+|{{rail color box|system=Amtrak|line=Winter Park Express}}
+| —
+| —
+|
+|-
+| [[Winter Park station|Winter Park]]
+| WPK
+| [[Winter Park, Florida|Winter Park]]
+| [[Florida|FL]]
+|{{rail color box|system=Amtrak|line=Silver Meteor}}
+{{rail color box|system=Amtrak|line=Silver Star}}
+| 1882
+| 1913, 1962, 2014
+| {{rint|sunrail}} [[SunRail]]
+|-
+| [[Wisconsin Dells station|Wisconsin Dells]]
+| WDL
+| [[Wisconsin Dells, Wisconsin|Wisconsin Dells]]
+| [[Wisconsin|WI]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1989
+| —
+|
+|-
+| [[Wishram station|Wishram]]
+| WIH
+| [[Wishram, Washington|Wishram]]
+| [[Washington (state)|WA]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| 1907, 1981<ref name="102581changes" />
+| —
+|
+|-
+| [[Anderson Regional Transportation Center|Woburn–Anderson]]
+| WOB
+| [[Woburn, Massachusetts|Woburn]]
+| [[Massachusetts|MA]]
+|{{rail color box|system=Amtrak|line=Downeaster}}
+| 2001
+| —
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]
+|-
+| [[Wolf Point station|Wolf Point]]
+| WPT
+| [[Wolf Point, Montana|Wolf Point]]
+| [[Montana|MT]]
+|{{rail color box|system=Amtrak|line=Empire Builder}}
+| —
+| —
+|
+|-
+| [[Woodbridge station (Virginia)|Woodbridge]]
+| WDB
+| [[Woodbridge, Virginia|Woodbridge]]
+| [[Virginia|VA]]
+|{{rail color box|system=Amtrak|line=Northeast Regional}}
+| 1992
+| —
+| {{rint|vre}} [[Virginia Railway Express]]
+|-
+| [[Union Station (Worcester, Massachusetts)|Worcester]]
+| WOR
+| [[Worcester, Massachusetts|Worcester]]
+| [[Massachusetts|MA]]
+|{{rail color box|system=Amtrak|line=Lake Shore Limited}}
+| 1911
+| 2000
+| {{rint|boston|rail|icon}} [[MBTA Commuter Rail]]
+|-
+| {{anchor|Y}}[[Yazoo City station|Yazoo City]]
+| YAZ
+| [[Yazoo City, Mississippi|Yazoo City]]
+| [[Mississippi|MS]]
+|{{rail color box|system=Amtrak|line=City of New Orleans}}
+| 1995<ref name="yazoogreenwood">{{cite news |last=Zimmer|first=Josh |title=Back on Track in Yazoo City |url=https://www.newspapers.com/clip/25532627/amtrak_yazoo_city_september_12_1995/ |access-date=November 19, 2018 |work=The Clarion-Ledger |date=September 12, 1995 |location=[[Jackson, Mississippi]] |page=1|via=Newspapers.com}} {{open access}}</ref>
+| —
+|
+|-
+| [[Yemassee station|Yemassee]]
+| YEM
+| [[Yemassee, South Carolina|Yemassee]]
+| [[South Carolina|SC]]
+|{{rail color box|system=Amtrak|line=Palmetto}}
+{{rail color box|system=Amtrak|line=Silver Meteor}}
+| —
+| 1955, 2010–present
+|
+|-
+| [[Yonkers station|Yonkers]]
+| YNY
+| [[Yonkers, New York|Yonkers]]
+| [[New York (state)|NY]]
+|{{rail color box|system=Amtrak|line=Adirondack}}
+{{rail color box|system=Amtrak|line=Empire Service}}
+{{rail color box|system=Amtrak|line=Ethan Allen Express}}
+{{rail color box|system=Amtrak|line=Maple Leaf}}
+| —
+| 1912, 2004
+| {{rint|newyork|mnr}} [[Metro-North Railroad]]
+|-
+| [[Yuma station (Arizona)|Yuma]]
+| YUM
+| [[Yuma, Arizona|Yuma]]
+| [[Arizona|AZ]]
+|{{rail color box|system=Amtrak|line=Sunset Limited}}
+{{rail color box|system=Amtrak|line=Texas Eagle}}
+| —
+| —
+|
+|}

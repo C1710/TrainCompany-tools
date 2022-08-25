@@ -4,7 +4,7 @@ import csv
 import json
 import logging
 from abc import ABCMeta, abstractmethod
-from typing import TypeVar, Generic, List, Optional, Any
+from typing import TypeVar, Generic, List, Optional, Any, TextIO, Generator, Iterator
 
 T = TypeVar('T')
 
@@ -82,3 +82,38 @@ class JsonImporter(Importer[T], metaclass=ABCMeta):
             data = [entry for entry in data if entry is not None]
         return data
 
+
+class WikipediaImporter(Importer[T], metaclass=ABCMeta):
+    skip_first_entry: bool
+
+    @abstractmethod
+    def __init__(self,
+                 skip_first_entry: bool = True):
+        self.skip_first_entry = skip_first_entry
+
+    @abstractmethod
+    def deserialize(self, entry: List[str]) -> T | None:
+        pass
+
+    def import_data(self, file_name: str) -> List[T]:
+        with open(file_name, encoding="utf-8") as input_file:
+            entries = self.iter_table_entries(input_file)
+            # We might want to discard a table header
+            if self.skip_first_entry:
+                next(entries)
+            data = (self.deserialize(entry) for entry in entries)
+            data = [entry for entry in data if entry is not None]
+            return data
+
+    def iter_table_entries(self, input_file: TextIO) -> Generator[List[str], None, None]:
+        lines: Iterator[str] = iter(input_file)
+        # We will ignore the first |- line
+        next(lines)
+        entry = []
+        for line in lines:
+            if line.strip() != "|-" and line.strip() != "|}":
+                line = line.strip().lstrip("|").lstrip()
+                entry.append(line)
+            else:
+                yield entry
+                entry = []

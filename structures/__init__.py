@@ -184,6 +184,13 @@ class DataSet:
         return stations_uk
 
     @staticmethod
+    def load_station_data_us(data_directory: str = 'data') -> List[Station]:
+        from importers.us_stations import UsStationImporter
+        stations_us = UsStationImporter().import_data(os.path.join(data_directory, "us_stations.wiki"))
+
+        return stations_us
+
+    @staticmethod
     def load_station_data_trainline(data_directory: str = 'data') -> Optional[List[Station]]:
         from importers.trainline import TrainlineImporter
 
@@ -201,12 +208,24 @@ class DataSet:
         stations_ch = DataSet.load_station_data_ch(data_directory)
         stations_fr = DataSet.load_station_data_fr(data_directory)
         stations_uk = DataSet.load_station_data_uk(data_directory)
+        stations_us = DataSet.load_station_data_us(data_directory)
         stations_trainline = DataSet.load_station_data_trainline(data_directory)
 
         stations = merge_stations(stations, stations_trainline, 'name')
         stations = merge_stations(stations, stations_ch, 'number')
         stations = merge_stations(stations, stations_fr, 'number')
         stations = merge_stations(stations, stations_uk, 'number')
+
+        # US-stations are a special case as they are not in any of the other datasets.
+        # Trying to merge them would only result in chaos and tears.
+        # And it would be absolutely useless
+        names = {station.name for station in stations}
+        for index, station_us in enumerate(stations_us):
+            if station_us.name in names:
+                logging.debug(f"Konflikt beim US-Stationsnamen: {station_us.name}. Entferne")
+                stations_us.pop(index)
+
+        stations = stations + stations_us
 
         return stations
 

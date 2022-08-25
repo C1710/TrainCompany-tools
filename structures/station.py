@@ -5,6 +5,8 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Optional, List, Iterable, Generator, Tuple, Set, Any, Dict, FrozenSet
 
+import geopy
+
 from geo import Location, default_projection_version
 from structures.country import Country, country_for_station, country_for_code, split_country, CountryRepresentation, \
     strip_country
@@ -182,6 +184,13 @@ class Station:
     @cached_property
     def country(self) -> Country:
         return country_for_station(self)
+
+    @cached_property
+    def point(self) -> geopy.Point:
+        return geopy.Point(
+            latitude=self.location.latitude,
+            longitude=self.location.longitude
+        )
 
     def merge(self, new_station: Station, on: str) -> Station:
         result: Dict[str, Any] = self.__dict__.copy()
