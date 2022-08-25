@@ -113,7 +113,7 @@ def query_rail_around_gpx(distance: float,
 
 def query_stations_around_gpx(distance: float,
                               path: List[GPXTrackPoint]) -> str:
-    path = list(douglas_peucker(path, distance))
+    path = list(douglas_peucker(path, min(0.01, distance - 0.02)))
     around = query_around_gpx(distance, path)
     query = f'node["railway"="station"]{around}'
     return query

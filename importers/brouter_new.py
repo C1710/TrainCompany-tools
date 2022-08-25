@@ -8,6 +8,7 @@ from collections import Counter
 from functools import lru_cache
 
 import statistics
+from time import sleep
 from typing import List, Tuple, Dict, Any, Callable
 
 import geopy.distance
@@ -19,7 +20,8 @@ from networkx.utils import pairwise
 
 import geo
 from geo import Location, overpass
-from geo.overpass import query_rail_around_gpx, request_overpass, douglas_peucker, create_query
+from geo.overpass import query_rail_around_gpx, request_overpass, douglas_peucker, create_query, \
+    query_stations_around_gpx
 from geo.photon_advanced_reverse import PhotonAdvancedReverse
 from structures.country import countries
 from structures.route import TcPath, TrackKind, sinousity_to_twisting_factor
@@ -120,6 +122,21 @@ class BrouterImporterNew:
         assert path_segments
 
         return path_segments, stops
+
+    def collect_waypoints_from_trackpoints(self, points: List[GPXTrackPoint],
+                                           min_distance_between_station: float = 2.0) -> List[GPXWaypoint]:
+        query = query_stations_around_gpx(self.path_tolerance, points)
+        query = create_query(query, out="")
+        response = request_overpass(query)
+        waypoints = []
+        for node in response:
+            latitude = node["lat"]
+            longitude = node["lon"]
+            tags: Dict[str, Any] = node["tags"]
+            waypoints.append(GPXWaypoint(latitude=latitude, longitude=longitude,
+                                         name=tags.get("name", None)))
+        # TODO: Use the min_distance_between_stations for cleanup
+        return waypoints
 
     def collect_waypoint_stations(self, waypoints: List[GPXWaypoint],
                                   geocode_reverse) -> Dict[Location, Station]:
