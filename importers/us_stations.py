@@ -29,5 +29,5 @@ class UsStationImporter(WikipediaImporter[Station]):
 
         return Station(
             name=name,
-            codes=CodeTuple("US:" + code)
+            codes=CodeTuple("🇺🇸" + code, "US:" + code)
         )

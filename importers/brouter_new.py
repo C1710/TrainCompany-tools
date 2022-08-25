@@ -236,6 +236,10 @@ class BrouterImporterNew:
                     # Add this location if necessary
                     if station.location is None or station.group == -1 or self.use_waypoint_locations:
                         station_dict = station.__dict__
+                        station_dict.pop("country", None)
+                        station_dict.pop("point", None)
+                        station_dict.pop("platform_length", None)
+                        station_dict.pop("platform_count", None)
                         if station.location is None or self.use_waypoint_locations:
                             station_dict["location"] = Location(
                                 latitude=waypoint.latitude,
