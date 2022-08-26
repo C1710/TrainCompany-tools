@@ -75,6 +75,11 @@ class BrouterImporterNew:
         geolocator = PhotonAdvancedReverse()
         reverse = RateLimiter(geolocator.reverse, min_delay_seconds=0.5, max_retries=3)
 
+        if not gpx.waypoints:
+            gpx.waypoints = self.collect_waypoints_from_trackpoints(gpx.tracks[0].segments[0].points,
+                                                                    8)
+            sleep(10)
+
         waypoint_location_to_station_location = self.collect_waypoint_stations(gpx.waypoints, reverse)
 
         path_segments, stops = self.collect_path_segments(gpx.tracks[0].segments[0].points,
@@ -126,15 +131,15 @@ class BrouterImporterNew:
     def collect_waypoints_from_trackpoints(self, points: List[GPXTrackPoint],
                                            min_distance_between_station: float = 2.0) -> List[GPXWaypoint]:
         query = query_stations_around_gpx(self.path_tolerance, points)
-        query = create_query(query, out="")
+        query = create_query(query, out="skel")
+        logging.debug(f"Stations query: {query}")
         response = request_overpass(query)
         waypoints = []
         for node in response:
             latitude = node["lat"]
             longitude = node["lon"]
-            tags: Dict[str, Any] = node["tags"]
-            waypoints.append(GPXWaypoint(latitude=latitude, longitude=longitude,
-                                         name=tags.get("name", None)))
+            waypoints.append(GPXWaypoint(latitude=latitude, longitude=longitude))
+        logging.info(f"Found {len(waypoints)} stations")
         # TODO: Use the min_distance_between_stations for cleanup
         return waypoints
 

@@ -98,7 +98,7 @@ def create_query(query: str,
 def query_around_gpx(distance: float, path: List[GPXTrackPoint]) -> str:
     lat_lons = (f"{round(trackpoint.latitude, 4)},{round(trackpoint.longitude, 4)}" for trackpoint in path)
     lat_lons = ','.join(lat_lons)
-    return f"(around:{int(distance * 10)},{lat_lons})"
+    return f"(around:{int(distance * 1000)},{lat_lons})"
 
 
 def query_rail_around_gpx(distance: float,
