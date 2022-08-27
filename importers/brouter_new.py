@@ -75,15 +75,19 @@ class BrouterImporterNew:
         geolocator = PhotonAdvancedReverse()
         reverse = RateLimiter(geolocator.reverse, min_delay_seconds=0.5, max_retries=3)
 
+        max_distance_waypoint_to_track = 0.08
+
         if not gpx.waypoints:
             gpx.waypoints = self.collect_waypoints_from_trackpoints(gpx.tracks[0].segments[0].points,
                                                                     8)
+            max_distance_waypoint_to_track = self.path_tolerance
             sleep(10)
 
         waypoint_location_to_station_location = self.collect_waypoint_stations(gpx.waypoints, reverse)
 
         path_segments, stops = self.collect_path_segments(gpx.tracks[0].segments[0].points,
-                                                          waypoint_location_to_station_location)
+                                                          waypoint_location_to_station_location,
+                                                          max_distance_waypoint_to_track)
 
         if self.use_overpass:
             overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
@@ -97,7 +101,8 @@ class BrouterImporterNew:
 
     @staticmethod
     def collect_path_segments(points: List[GPXTrackPoint],
-                              waypoint_location_to_station_location: Dict[Location, Station]) \
+                              waypoint_location_to_station_location: Dict[Location, Station],
+                              max_distance: float = 0.08) \
             -> Tuple[List[Tuple[Station, List[GPXTrackPoint], Station]], List[Station]]:
         # Now we go through the trackpoints and add stations and segments
         path_segments: List[Tuple[Station, List[GPXTrackPoint], Station]] = []
@@ -113,7 +118,7 @@ class BrouterImporterNew:
             )
             # Check if this trackpoint is a stop
             for waypoint_location, stop in waypoint_location_to_station_location.items():
-                if waypoint_location.distance_float(location) < 0.08:
+                if waypoint_location.distance_float(location) < max_distance:
                     # We have a stop here, add it to the list
                     path_segments.append((last_stop, points[last_stop_index:index], stop))
                     last_stop_index = index
