@@ -200,9 +200,16 @@ countries: Dict[str, Country] = {country.iso_3166: country for country in (
                 dative="den USA",
                 accusative="die USA"
             )),
+    Country(iso_3166="CA", uic=14, name="Kanada"),
     Country(iso_3166="UN", uic=0, name=""),
     germany
 )}
+# Unused:
+# 11 12 15 16 17 18 19
+# 34 35 36 37 38 39
+# 43 45 46 47 48
+# 63 64
+# 89
 
 ril100_to_country: Dict[str, Country] = {country.db_ril100: country for country in countries.values()
                                          if country.db_ril100}
