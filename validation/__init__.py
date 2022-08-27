@@ -28,6 +28,9 @@ def print_path(path: Dict[str, Any]) -> str:
     return output
 
 
+low_density_countries = ("US", "RU", "CA")
+
+
 def validate(tc_directory: PathLike | str = '..',
              data_directory: PathLike | str = 'data',
              experimental: str = "false",
@@ -160,14 +163,29 @@ def validate(tc_directory: PathLike | str = '..',
 
         issues_score = 0
         # 2.3. Path length for Non-SFS
-        if path['group'] not in (2, 3) and path['length'] > 80:
+        # We distinguish between normal and low-density (from a railway perspective) countries
+        low_density = False
+        for equipment in path.get("neededEquipments", []):
+            if equipment in low_density_countries:
+                low_density = True
+                break
+        limit_long = 80 if not low_density else 160
+        limit_medium = 40 if not low_density else 80
+        low_density_info = " (Land mit geringer Stationsdichte)" if low_density else ""
+        if path['group'] not in (2, 3) and path['length'] > limit_long:
             issues_score = 45
             logging.warning(
-                "+{: <6} >80 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
-        elif path['group'] not in (2, 3) and path['length'] > 40:
+                "+{: <6} >{} km langer Streckenabschnitt auf Nicht-SFS{}: {}".format(issues_score,
+                                                                                     limit_long,
+                                                                                     low_density_info,
+                                                                                     print_path(path)))
+        elif path['group'] not in (2, 3) and path['length'] > limit_medium:
             issues_score = 5
             logging.warning(
-                "+{: <6} >40 km langer Streckenabschnitt auf Nicht-SFS: {}".format(issues_score, print_path(path)))
+                "+{: <6} >{} km langer Streckenabschnitt auf Nicht-SFS{}: {}".format(issues_score,
+                                                                                     limit_medium,
+                                                                                     low_density_info,
+                                                                                     print_path(path)))
         issues += issues_score
 
         # 2.4. realistic twistingFactor
