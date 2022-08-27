@@ -69,8 +69,8 @@ def query_multiple(queries: Iterator[str],
     query = header + (''.join(sub_queries))
 
     logging.debug(query)
-
-    assert len(query) < 100000
+    if len(query) > 100000:
+        logging.warning(f"Very long query: {len(query)}")
 
     response = request_overpass(query, overpass_api, sleep_time, max_num_retries)
     responses = []
