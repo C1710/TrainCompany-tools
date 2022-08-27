@@ -95,10 +95,10 @@ def create_query(query: str,
     return f"[out:json];{timeout}{maxsize}{query};out {out};"
 
 
-def query_around_gpx(distance: float, path: List[GPXTrackPoint]) -> str:
-    lat_lons = (f"{round(trackpoint.latitude, 4)},{round(trackpoint.longitude, 4)}" for trackpoint in path)
+def query_around_gpx(distance: float, path: List[GPXTrackPoint], ndigits=4) -> str:
+    lat_lons = (f"{round(trackpoint.latitude, ndigits)},{round(trackpoint.longitude, ndigits)}" for trackpoint in path)
     lat_lons = ','.join(lat_lons)
-    return f"(around:{int(distance * 10)},{lat_lons})"
+    return f"(around:{int(distance * 1000)},{lat_lons})"
 
 
 def query_rail_around_gpx(distance: float,
@@ -113,8 +113,8 @@ def query_rail_around_gpx(distance: float,
 
 def query_stations_around_gpx(distance: float,
                               path: List[GPXTrackPoint]) -> str:
-    path = list(douglas_peucker(path, distance))
-    around = query_around_gpx(distance, path)
+    path = list(douglas_peucker(path, min(0.01, distance - 0.03)))
+    around = query_around_gpx(distance, path, ndigits=5)
     query = f'node["railway"="station"]{around}'
     return query
 

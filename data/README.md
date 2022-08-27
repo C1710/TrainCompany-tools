@@ -41,13 +41,21 @@ License:
 - License: https://data.sncf.com/pages/licence/#A1
 - Source: https://ressources.data.sncf.com/explore/dataset/lexique-des-acronymes-sncf/information/
 
-
 ## UK
+
 - License: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+
 > Contains public sector information licensed under the Open Government Licence v3.0.
 
 `uk_stations`:
+
 - Source: https://datafeeds.networkrail.co.uk/ntrod/SupportingFileAuthenticate?type=CORPUS
 
 `uk_bplan.json`:
+
 - Source: https://wiki.openraildata.com/index.php?title=BPLAN_Geography_Data
+
+## US:
+
+- License: https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License
+- Source: https://en.wikipedia.org/wiki/List_of_Amtrak_stations

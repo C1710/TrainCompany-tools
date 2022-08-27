@@ -8,6 +8,7 @@ from collections import Counter
 from functools import lru_cache
 
 import statistics
+from time import sleep
 from typing import List, Tuple, Dict, Any, Callable
 
 import geopy.distance
@@ -19,7 +20,8 @@ from networkx.utils import pairwise
 
 import geo
 from geo import Location, overpass
-from geo.overpass import query_rail_around_gpx, request_overpass, douglas_peucker, create_query
+from geo.overpass import query_rail_around_gpx, request_overpass, douglas_peucker, create_query, \
+    query_stations_around_gpx
 from geo.photon_advanced_reverse import PhotonAdvancedReverse
 from structures.country import countries
 from structures.route import TcPath, TrackKind, sinousity_to_twisting_factor
@@ -38,6 +40,7 @@ class BrouterImporterNew:
     use_waypoint_locations: bool
     raw: bool
     prefix_raw: str
+    check_country: bool = True
 
     def __init__(self, station_data: List[Station],
                  language: str | bool = False,
@@ -48,7 +51,8 @@ class BrouterImporterNew:
                  get_platform_data: bool = True,
                  use_waypoint_locations: bool = True,
                  raw: bool = False,
-                 prefix_raw: str = "STATION"):
+                 prefix_raw: str = "STATION",
+                 check_country: bool = True):
         self.stations = station_data
         self.name_to_station = {normalize_name(station.name): station
                                 for station in station_data}
@@ -61,6 +65,7 @@ class BrouterImporterNew:
         self.use_waypoint_locations = use_waypoint_locations
         self.raw = raw
         self.prefix_raw = prefix_raw
+        self.check_country = check_country
 
     def import_data(self, file_name: str) -> Tuple[List[Station], List[TcPath]]:
         with open(file_name, encoding='utf-8') as input_file:
@@ -70,10 +75,19 @@ class BrouterImporterNew:
         geolocator = PhotonAdvancedReverse()
         reverse = RateLimiter(geolocator.reverse, min_delay_seconds=0.5, max_retries=3)
 
+        max_distance_waypoint_to_track = 0.08
+
+        if not gpx.waypoints:
+            gpx.waypoints = self.collect_waypoints_from_trackpoints(gpx.tracks[0].segments[0].points,
+                                                                    8)
+            max_distance_waypoint_to_track = self.path_tolerance
+            sleep(10)
+
         waypoint_location_to_station_location = self.collect_waypoint_stations(gpx.waypoints, reverse)
 
         path_segments, stops = self.collect_path_segments(gpx.tracks[0].segments[0].points,
-                                                          waypoint_location_to_station_location)
+                                                          waypoint_location_to_station_location,
+                                                          max_distance_waypoint_to_track)
 
         if self.use_overpass:
             overpass_queries = [query_rail_around_gpx(min(0.001, self.path_tolerance - 0.02), segment)
@@ -87,7 +101,8 @@ class BrouterImporterNew:
 
     @staticmethod
     def collect_path_segments(points: List[GPXTrackPoint],
-                              waypoint_location_to_station_location: Dict[Location, Station]) \
+                              waypoint_location_to_station_location: Dict[Location, Station],
+                              max_distance: float = 0.08) \
             -> Tuple[List[Tuple[Station, List[GPXTrackPoint], Station]], List[Station]]:
         # Now we go through the trackpoints and add stations and segments
         path_segments: List[Tuple[Station, List[GPXTrackPoint], Station]] = []
@@ -103,7 +118,7 @@ class BrouterImporterNew:
             )
             # Check if this trackpoint is a stop
             for waypoint_location, stop in waypoint_location_to_station_location.items():
-                if waypoint_location.distance_float(location) < 0.08:
+                if waypoint_location.distance_float(location) < max_distance:
                     # We have a stop here, add it to the list
                     path_segments.append((last_stop, points[last_stop_index:index], stop))
                     last_stop_index = index
@@ -117,6 +132,21 @@ class BrouterImporterNew:
         assert path_segments
 
         return path_segments, stops
+
+    def collect_waypoints_from_trackpoints(self, points: List[GPXTrackPoint],
+                                           min_distance_between_station: float = 2.0) -> List[GPXWaypoint]:
+        query = query_stations_around_gpx(self.path_tolerance, points)
+        query = create_query(query, out="skel")
+        logging.debug(f"Stations query: {query}")
+        response = request_overpass(query)
+        waypoints = []
+        for node in response:
+            latitude = node["lat"]
+            longitude = node["lon"]
+            waypoints.append(GPXWaypoint(latitude=latitude, longitude=longitude))
+        logging.info(f"Found {len(waypoints)} stations")
+        # TODO: Use the min_distance_between_stations for cleanup
+        return waypoints
 
     def collect_waypoint_stations(self, waypoints: List[GPXWaypoint],
                                   geocode_reverse) -> Dict[Location, Station]:
@@ -208,18 +238,35 @@ class BrouterImporterNew:
                 if 'name' not in possible_station.raw['properties']:
                     logging.info("Station ohne Namen: {}".format(possible_station.raw))
 
-            possible_station_names = (normalize_name(station.raw['properties']['name'])
+            possible_station_names = ((normalize_name(station.raw['properties']['name']),
+                                       station)
                                       for station in possible_stations if 'name' in station.raw['properties'])
             possible_station_groups = [group_from_photon_response(station.raw['properties']) for station in
                                        possible_stations]
             # Is one of these names in our data set?
-            for name in possible_station_names:
+            for name, possible_station in possible_station_names:
                 if name in self.name_to_station:
+                    station = self.name_to_station[name]
+                    countrycode = possible_station.raw["properties"].get("countrycode", None)
+                    # We might want to assert that the station we are associating here actually is in the right country
+                    if countrycode is not None and self.check_country:
+                        country = station.country
+                        if countrycode.upper() != country.iso_3166:
+                            # Wrong country
+                            continue
+                    # Check that the station is not too far from the waypoint
+                    if station.location is not None:
+                        if geopy.distance.geodesic(station.point, possible_station.point).km > 2.0:
+                            continue
                     # Remove it from the lookup table to prevent having the same station twice
-                    station = self.name_to_station.pop(name)
+                    self.name_to_station.pop(name)
                     # Add this location if necessary
                     if station.location is None or station.group == -1 or self.use_waypoint_locations:
                         station_dict = station.__dict__
+                        station_dict.pop("country", None)
+                        station_dict.pop("point", None)
+                        station_dict.pop("platform_length", None)
+                        station_dict.pop("platform_count", None)
                         if station.location is None or self.use_waypoint_locations:
                             station_dict["location"] = Location(
                                 latitude=waypoint.latitude,
