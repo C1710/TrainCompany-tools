@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import logging
-import tc_statistics
+import statistics
+
 from typing import List, Optional, Dict
 
 from importer import CsvImporter
@@ -58,9 +59,9 @@ def track_from_path(route_number: int,
         warning.append("    Kein letztes Streckensegment bekannt. Verwende Median der Gesamtstrecke")
         last_known_segment = Track(
             route_number=route_number,
-            electrified=tc_statistics.median_high((track.electrified for track in path_data[route_number].tracks)),
+            electrified=statistics.median_high((track.electrified for track in path_data[route_number].tracks)),
             length=0,
-            kind=tc_statistics.median_high((track.kind for track in path_data[route_number].tracks)),
+            kind=statistics.median_high((track.kind for track in path_data[route_number].tracks)),
             from_km=None,
             to_km=None
         )
