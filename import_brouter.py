@@ -24,7 +24,6 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        tc_directory: PathLike | str = '..',
                        data_directory: PathLike | str = 'data',
                        override_stations: bool = False,
-                       use_google: bool = False,
                        language: str | bool = False,
                        fallback_town: bool = False,
                        tolerance: float = 0.4,
@@ -47,7 +46,7 @@ def import_gpx_into_tc(gpx: PathLike | str,
     path_json = TcFile('Path', tc_directory)
 
     # Add location data, if necessary
-    add_location_data_to_list(stations, use_google=use_google)
+    add_location_data_to_list(stations)
 
     add_stations_to_file(stations, station_json, override_stations=override_stations)
 
@@ -69,8 +68,6 @@ if __name__ == '__main__':
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
-    parser.add_argument("--use-google", action='store_true',
-                        help="(VERALTET) Nutzt die Google Maps-API statt Komoot Photon für fehlende Standort-Daten (API-Key erforderlich)")
     parser.add_argument("--language", choices=['de', 'en', 'fr'],
                         help="Sprache für die Bahnhofsnamen")
     parser.add_argument("--towns", action="store_true",
