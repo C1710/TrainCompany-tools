@@ -116,6 +116,7 @@ If there are only small issues and the validation fails, it may be okay, especia
 
 ## Workflow to add a new international route
 This is an example on how you can create a new route outside of Germany with the help of these tools.
+**Outdated: `import_brouter` may be a better choice. An explanation can be found in `README_DE.md`**
 
 ### 1. Which route and which stations?
 First, you need to know, what route you want to add.
