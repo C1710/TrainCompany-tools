@@ -181,6 +181,14 @@ nacheinander ausgewählt werden. Es ist (derzeit) wichtig, dass alle zu berücks
 werden. Es ist auch möglich (wenn die Abstände zwischen den Stationen zu groß sind), Punkte auf der Strecke auszuwählen,
 die nah an einem Ort sind.
 
+#### Tipp
+
+Es ist möglich, Openrailwaymap als Overlay hinzuzufügen:
+Dazu rechts Ebenen (die "geschichteten" Quadrate) > Benutzerdefinierte Ebenen auswählen. Da kann dann als
+URL `http://{s}.tiles.openrailwaymap.org/maxspeed/{z}/{x}/{y}.png` eingegeben werden. Für Elektrifizierung, Spurweite
+muss `maxspeed` durch `electrification`, bzw. `gauge` ersetzt werden. Es kann dann als Overlay hinzugefügt und dann
+ausgewählt werden (immer nur eins gleichzeitig, weil die sich überlagern).
+
 ### 2. Strecke exportieren
 
 Ist das alles fertig, kann die Strecke exportiert werden. Wichtig ist, beim Export als Format `GPX` zu wählen und die
