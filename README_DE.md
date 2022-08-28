@@ -155,7 +155,7 @@ bitte bspw. bei OpenRailwayMap nachsehen.
 
 ### `plot.py`
 
-EIn einfaches Tool ohne Optionen (auch ohne `-h`), das die aktuelle Haltestellen/Strecken-Karte erstellt - `map_plot.py`
+Ein einfaches Tool ohne Optionen (auch ohne `-h`), das die aktuelle Haltestellen/Strecken-Karte erstellt - `map_plot.py`
 . Die kann in Inkscape oder vielleicht auch einem Webbrowser geöffnet werden und dient als Hilfe um z.B. fehlerhafte
 Koordinaten zu finden oder Haltestellen zu entklumpen.
 
@@ -164,32 +164,62 @@ Koordinaten zu finden oder Haltestellen zu entklumpen.
 Prüft die Datensätze auf Probleme, wie zu lange Streckenabschnitte, Haltestellen ohne Anschluss ans Netz usw. Manche
 Probleme bringen mehr oder weniger "Punkte". Ist eine bestimmte Schwelle (derzeit standardmäßig 700) überschritten,
 schlägt es fehl. Meist liegt das an einzelnen großen Problemen, etwa noch vorhandenen langen Namen. Steigt dieser
-Punktestand nur leicht gegenüber der existierenden Version an, wird das wahrscheinlich okay sein,
-auch wenn der Punktestand dann so gerade über den Schwellwert kommt.
+Punktestand nur leicht gegenüber der existierenden Version an, wird das wahrscheinlich okay sein, auch wenn der
+Punktestand dann so gerade über den Schwellwert kommt.
 
 ## Wie eine neue (internationale) Strecke hinzugefügt werden kann
+
 Hier gehen wir ein Beispiel durch, wie eine neue Strecke außerhalb Deutschlands ins Spiel importiert werden kann.
 
 [Noch nicht fertig]
 
-### 1. Strecke und Haltestellen (r)aussuchen
-![Overview of the route](lgv_ie.png)
-(CC-BY-SA-3.0 Wikipedia – Die freie Enzyklopädie)
+### 1. Strecke zusammenstellen
 
-### 2. Haltestellen importieren
+Auf https://brouter.de/brouter-web/ (oder auch https://brouter.m11n.de) wird die Strecke erstellt. Dazu sollte oben
+links "Eisenbahn" ausgewählt werden. Dann können die Stationen (erkennbar an den blauen Quadraten bei den Strecken)
+nacheinander ausgewählt werden. Es ist (derzeit) wichtig, dass alle zu berücksichtigenden Zwischenstops ausgewählt
+werden. Es ist auch möglich (wenn die Abstände zwischen den Stationen zu groß sind), Punkte auf der Strecke auszuwählen,
+die nah an einem Ort sind.
 
+#### Tipp
 
-### 3. Fehler korrigieren und fehlende Stationsdaten hinzufügen
+Es ist möglich, Openrailwaymap als Overlay hinzuzufügen:
+Dazu rechts Ebenen (die "geschichteten" Quadrate) > Benutzerdefinierte Ebenen auswählen. Da kann dann als
+URL `http://{s}.tiles.openrailwaymap.org/maxspeed/{z}/{x}/{y}.png` eingegeben werden. Für Elektrifizierung, Spurweite
+muss `maxspeed` durch `electrification`, bzw. `gauge` ersetzt werden. Es kann dann als Overlay hinzugefügt und dann
+ausgewählt werden (immer nur eins gleichzeitig, weil die sich überlagern).
 
+### 2. Strecke exportieren
 
-### 4. Streckenlängen finden und Strecken importieren
+Ist das alles fertig, kann die Strecke exportiert werden. Wichtig ist, beim Export als Format `GPX` zu wählen und die
+Wegpunkte mit zu exportieren.
 
+### 3. Import
 
-### 5. Höchstgeschwindigkeit, Kurvigkeit und weitere Streckeninformationen hinzufügen
+Der Import erfolgt nun über das `import_brouter`-Tool. Das benötigt die Datei als Eingabe-Parameter. Sollen zusätzlich
+Orte als "Stationen" genutzt werden, wird der `--towns`-Parameter benötigt. Bei längeren Strecken empfiehlt es sich,
+den `--tolerance`-Parameter zu erhöhen, etwa auf `0.08` oder `0.1`. Das sorgt dafür, dass die Strecke, für die via
+Overpass nach relevanten Segmenten gesucht wird, etwas stärker vereinfacht wird. Genauer beschreibt `--tolerance` die
+maximale Abweichung von der Strecke in km.
 
+Der Import wird nun eine Weile dauern, auch bei einer schnellen Internetverbindung oder einer kurzen Strecke können das
+einige Sekunden sein (weil es immer ein bisschen wartet, um eine Überlastung der Server zu verhindern). Es kann dabei
+vorkommen, dass einzelne Halte nicht gefunden/ignoriert werden. Das ist meistens nicht schlimm, kann aber zu längeren
+Streckensegmenten führen. U.u. fehlt auch schlicht der `--towns`-Parameter.
 
-### 6. Aufräumen, validieren
+### 4. Korrekturen
 
+Wenn nun alles erfolgreich importiert ist, kann es trotzdem noch Fehler o.Ä. geben:
+
+- Es kann sein, dass manche Stationen nicht richtig erkannt worden sind und daher `O1234567`-Codes haben, obwohl es
+  bessere gibt. Das sollte in `Station` und `Path` angepasst werden.
+- Durch den gleichen Fehler kann es sein, dass manche Haltestellen doppelt (mit anderen Codes) vorhanden sind.
+- Die `group` der Haltestellen stimmt oftmals nicht. Die sollten daher komplett überprüft werden (etwa, indem brouter.de
+  noch daneben geöffnet ist)
+- Ist keine Höchstgeschwindigkeit für einen Streckenabschnitt bekannt, wird `-1` eingesetzt. Darüber hinaus kann es
+  vorkommen, dass die Höchstgeschwindigket falsch ist. Sie sollte daher kurz auf Plausibilität überprüft werden.
+- Der `twistingFactor` kann bei größeren Kurven schon mal sehr hoch werden. Werte >0.4 sollten verringert werden.
 
 # Lizenzen der Datensätze
+
 Vgl. `data/README.md`

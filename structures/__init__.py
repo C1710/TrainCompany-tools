@@ -223,7 +223,7 @@ class DataSet:
         for index, station_us in enumerate(stations_us):
             if station_us.name in names:
                 logging.debug(f"Konflikt beim US-Stationsnamen: {station_us.name}. Entferne")
-                stations_us.pop(index)
+                # stations_us.pop(index)
 
         stations = stations + stations_us
 

@@ -3,20 +3,16 @@
 from __future__ import annotations
 
 import argparse
-import os.path
 from os import PathLike
 from typing import Tuple
 
-from cleanup import remove_annotations_from_path
 from cli_utils import check_files, add_default_cli_args, use_default_cli_args
 from geo.location_data import add_location_data_to_list
-from importers.brouter import BrouterImporter
 from importers.brouter_new import BrouterImporterNew
-from importers.db_trassenfinder import DbTrassenfinderImporter, convert_waypoints_to_route
 from structures import DataSet
-from structures.route import TcRoute, TcPath
+from structures.route import TcPath
 from tc_utils import TcFile
-from tc_utils.paths import add_route_to_files, add_path_to_file
+from tc_utils.paths import add_path_to_file
 from tc_utils.stations import add_stations_to_file
 
 
@@ -24,7 +20,6 @@ def import_gpx_into_tc(gpx: PathLike | str,
                        tc_directory: PathLike | str = '..',
                        data_directory: PathLike | str = 'data',
                        override_stations: bool = False,
-                       use_google: bool = False,
                        language: str | bool = False,
                        fallback_town: bool = False,
                        tolerance: float = 0.4,
@@ -47,7 +42,7 @@ def import_gpx_into_tc(gpx: PathLike | str,
     path_json = TcFile('Path', tc_directory)
 
     # Add location data, if necessary
-    add_location_data_to_list(stations, use_google=use_google)
+    add_location_data_to_list(stations)
 
     add_stations_to_file(stations, station_json, override_stations=override_stations)
 
@@ -69,8 +64,6 @@ if __name__ == '__main__':
     parser.add_argument('--stations_only', action='store_true', help="Fügt nur Stationen ein")
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
-    parser.add_argument("--use-google", action='store_true',
-                        help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
     parser.add_argument("--language", choices=['de', 'en', 'fr'],
                         help="Sprache für die Bahnhofsnamen")
     parser.add_argument("--towns", action="store_true",

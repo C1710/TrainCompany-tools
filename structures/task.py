@@ -14,7 +14,7 @@ from validation.shortest_paths import without_trivial_nodes, get_shortest_path
 @dataclass(frozen=True)
 class TcNeededCapacity:
     name: str
-    value: int
+    value: int | None = field(default=None)
 
     @staticmethod
     def from_dict(needed_capacity: Dict[str, Any]) -> TcNeededCapacity:
@@ -47,7 +47,8 @@ class Task:
     def to_dict(self, add_suggestion: bool = False) -> Dict[str, Any]:
         task = self.__dict__
         task['neededCapacity'] = [
-            needed_capacity.__dict__ for needed_capacity in self.neededCapacity
+            {name: value for name, value in needed_capacity.__dict__.items() if value} for needed_capacity in
+            self.neededCapacity
         ]
         if not add_suggestion:
             task.pop('pathSuggestion', None)
@@ -81,23 +82,25 @@ class GattungTask(Task):
     gattung_long: str = ''
     pronouns: Pronouns
     service: ServiceLevel = ServiceLevel.SPECIAL
+    needed_capacity: List[TcNeededCapacity] = [
+        TcNeededCapacity(
+            name='passengers',
+            value=0
+        )
+    ]
 
     def __init__(self,
                  line: str,
                  line_name: Optional[str] = None,
                  name_pronouns: Optional[Pronouns] = None,
+                 needed_capacities: List[TcNeededCapacity] | None = None,
                  *args, **kwargs):
         super().__init__(
             name="{} von %s nach %s".format(line_name) if line_name
-                 else "{} {} von %s nach %s".format(self.__class__.gattung, line) if line
-                 else "{} von %s nach %s".format(self.__class__.gattung),
+            else "{} {} von %s nach %s".format(self.__class__.gattung, line) if line
+            else "{} von %s nach %s".format(self.__class__.gattung),
             descriptions=self._generate_descriptions(line, line_name, name_pronouns),
-            neededCapacity=[
-                TcNeededCapacity(
-                    name='passengers',
-                    value=0
-                )
-            ],
+            neededCapacity=needed_capacities if needed_capacities is not None else self.__class__.needed_capacity,
             service=self.__class__.service.value,
             *args, **kwargs
         )
@@ -225,6 +228,26 @@ class EceTask(IceTask):
     gattung = 'ECE'
     gattung_long = 'Eurocity-Express'
     pronouns = ErIhmPronouns()
+
+
+class NjTask(IcTask):
+    gattung = "NJ"
+    gattung_long = "Nightjet"
+    pronouns = ErIhmPronouns()
+    needed_capacity = [
+        TcNeededCapacity(
+            name="passengers"
+        ),
+        TcNeededCapacity(
+            name="beds"
+        )
+    ]
+
+
+class AmtrakTask(NjTask):
+    gattung = "AT"
+    gattung_long = "Amtrak"
+    needed_capacity = NjTask.needed_capacity + [TcNeededCapacity(name="bistroseats")]
 
 
 # Not optimal algorithm to merge multiple tasks into less tasks

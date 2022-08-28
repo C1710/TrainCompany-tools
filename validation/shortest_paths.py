@@ -24,7 +24,7 @@ def get_shortest_path(graph: nx.Graph,
         accept_non_electrified = config.non_electrified
         avoid_equipments = config.avoid_equipments
 
-    if len(stations) >= 2:
+    if len(stations) >= 2 and None not in stations:
         if avoid_equipments is None:
             avoid_equipments = set()
         # Only use the track's maxSpeed if there is no train

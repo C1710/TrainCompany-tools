@@ -314,7 +314,7 @@ def validate(tc_directory: PathLike | str = '..',
         # 5.1. All stations exist
         if 'stations' in task:
             for station in task['stations']:
-                if station not in selected_codes:
+                if station is not None and station not in selected_codes:
                     issues_score = 10000
                     logging.error("+{: <6} Nicht existierender Haltepunkt: {}".format(issues_score, station))
                     issues += issues_score
