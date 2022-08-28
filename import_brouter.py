@@ -70,7 +70,7 @@ if __name__ == '__main__':
     parser.add_argument('--override_stations', action='store_true',
                         help="Überschreibt Haltestellen, bzw. fügt spezifischere hinzu")
     parser.add_argument("--use-google", action='store_true',
-                        help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
+                        help="(VERALTET) Nutzt die Google Maps-API statt Komoot Photon für fehlende Standort-Daten (API-Key erforderlich)")
     parser.add_argument("--language", choices=['de', 'en', 'fr'],
                         help="Sprache für die Bahnhofsnamen")
     parser.add_argument("--towns", action="store_true",

@@ -62,7 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('--annotate', action='store_true',
                         help="Fügt die vollen Stationsnamen hinzu. Die müssen später wieder gelöscht werden!")
     parser.add_argument("--use-google", action='store_true',
-                        help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
+                        help="(VERALTET) Nutzt die Google Maps-API statt Komoot Photon für fehlende Standort-Daten (API-Key erforderlich)")
     args = parser.parse_args()
     use_default_cli_args(args)
 

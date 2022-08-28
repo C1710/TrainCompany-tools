@@ -143,7 +143,7 @@ if __name__ == '__main__':
     parser.add_argument('--gpx', action='store_true',
                         help="Legt eine GPX-Datei mit Wegpunkten an, die bspw. auf brouter.de importiert werden kann.")
     parser.add_argument("--use-google", action='store_true',
-                        help="Nutzt die Google Maps-API für fehlende Standort-Daten (API-Key erforderlich)")
+                        help="(VERALTET) Nutzt die Google Maps-API statt Komoot Photon für fehlende Standort-Daten (API-Key erforderlich)")
     args = parser.parse_args()
     use_default_cli_args(args)
 
