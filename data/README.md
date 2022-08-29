@@ -1,5 +1,6 @@
 # Licenses and sources
-
+Only licenses for the files in this repository are added here. The submodules already contain their license information
+and _are_ their source.
 ## DE
 License:
 > © 2016 Deutsche Bahn AG. Dieser Datensatz wird bereitgestellt unter der Lizenz Creative Commons Attribution 4.0 International (CC BY 4.0). Source:

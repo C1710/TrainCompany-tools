@@ -1,3 +1,6 @@
 [submodule "data/trainline"]
 	path = data/trainline
 	url = https://github.com/trainline-eu/stations
+[submodule "data/ds100bot"]
+	path = data/ds100bot
+	url = https://github.com/baeuchle/ds100bot
