@@ -7,7 +7,7 @@ from os import PathLike
 from cli_utils import add_default_cli_args, use_default_cli_args
 from structures.task import *
 from tc_utils import TcFile
-from validation.graph import graph_from_files, path_suggestion_configs, fixed_path_suggestion
+from validation.graph import graph_from_files, path_suggestion_configs, fixed_path_suggestion, PathSuggestionConfigs
 
 
 def update_path_suggestions(tc_directory: PathLike | str,
@@ -65,7 +65,7 @@ def update_path_suggestion(task: Dict[str, Any],
                 if config.auto_service:
                     logging.debug("Using automatic pathSuggestion config")
                     if service is not None:
-                        config_ = path_suggestion_configs[service]
+                        config_ = path_suggestion_configs.get(service, PathSuggestionConfigs.SPECIAL)
                     else:
                         logging.warning("Task enthält kein \"service\": {}".format(task))
                         config_ = config
