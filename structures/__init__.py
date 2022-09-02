@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import List, Tuple, Optional, Set, Iterable
 
+from structures.country import Country, countries
 from structures.route import Track, Path, merge_tracks
 from structures.station import Station, merge_stations, assert_unique_first_code, merge_stations_on_first_code, \
     CodeTuple, iter_stations_by_codes_reverse, _merge_station_dicts_inplace
@@ -191,6 +192,13 @@ class DataSet:
         return stations_us
 
     @staticmethod
+    def load_station_data_ds100(country: Country, ort_file: str, data_directory: str = 'data') -> List[Station]:
+        from importers.ds_100_bot import Ds100Importer
+        stations_ds100 = Ds100Importer(country).import_data(os.path.join(
+            data_directory, "ds100bot", "sources", f"orte_{ort_file}.csv"))
+        return stations_ds100
+
+    @staticmethod
     def load_station_data_trainline(data_directory: str = 'data') -> Optional[List[Station]]:
         from importers.trainline import TrainlineImporter
 
@@ -209,22 +217,18 @@ class DataSet:
         stations_fr = DataSet.load_station_data_fr(data_directory)
         stations_uk = DataSet.load_station_data_uk(data_directory)
         stations_us = DataSet.load_station_data_us(data_directory)
+        stations_ca = DataSet.load_station_data_ds100(countries["CA"], "ca_via", data_directory)
         stations_trainline = DataSet.load_station_data_trainline(data_directory)
 
         stations = merge_stations(stations, stations_trainline, 'name')
         stations = merge_stations(stations, stations_ch, 'number')
         stations = merge_stations(stations, stations_fr, 'number')
         stations = merge_stations(stations, stations_uk, 'number')
-
         # US-stations are a special case as they are not in any of the other datasets.
         # Trying to merge them would only result in chaos and tears.
-        # And it would be absolutely useless
-        names = {station.name for station in stations}
-        for index, station_us in enumerate(stations_us):
-            if station_us.name in names:
-                logging.debug(f"Konflikt beim US-Stationsnamen: {station_us.name}. Entferne")
-                # stations_us.pop(index)
-
+        stations = stations + stations_ca
+        # Yes, the US datasets and Canadian datasets may have some overlap (e.g., Toronto).
+        # But filtering out stations with the same name would cause even more problems
         stations = stations + stations_us
 
         return stations

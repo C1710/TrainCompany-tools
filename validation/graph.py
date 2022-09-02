@@ -82,7 +82,7 @@ class PathSuggestionConfig:
         else:
             # Use the default suggestion config for the given service level
             # TODO: Allow to override stuff
-            base_suggestion = path_suggestion_configs[args.path_suggestion_service]
+            base_suggestion = path_suggestion_configs.get(args.path_suggestion_service, PathSuggestionConfigs.SPECIAL)
             return base_suggestion
 
 
@@ -120,6 +120,7 @@ path_suggestion_configs: Dict[int, PathSuggestionConfig] = {
     2: PathSuggestionConfigs.REGIO.value,
     3: PathSuggestionConfigs.REGIO_SHORT.value,
     4: PathSuggestionConfigs.SPECIAL.value,
+    5: PathSuggestionConfigs.REGIO.value,
     10: PathSuggestionConfigs.FREIGHT_IMPORTANT.value,
     11: PathSuggestionConfigs.FREIGHT.value
 }
