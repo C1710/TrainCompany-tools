@@ -499,7 +499,12 @@ def tc_path_from_gpx(start: Station, segment: List[GPXTrackPoint], end: Station,
         needed_equipments.add(end_country)
 
     direct_distance = start.location.distance(end.location)
-    sinuosity = round(length / direct_distance, ndigits=3)
+
+    # use a sane default if distance is too short
+    if direct_distance > 0.0:
+        sinuosity = round(length / direct_distance, ndigits=3)
+    else:
+        sinuosity = 1.2
     twisting_factor = round(sinousity_to_twisting_factor(sinuosity), ndigits=2)
 
     return TcPath(
