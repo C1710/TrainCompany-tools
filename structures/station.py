@@ -143,6 +143,7 @@ class Station:
     kind: Optional[str] = field(default=None)
     platforms: Tuple[Platform] = field(default_factory=tuple)
     station_category: Optional[int] = field(default=None)
+    state: Optional[str] = field(default=None)
     _group: Optional[int] = field(default=None)
     _platform_length: Optional[int] = field(default=None)
 
