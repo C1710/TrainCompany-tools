@@ -26,6 +26,7 @@ class UsStationImporter(WikipediaImporter[Station]):
         link = name.group("link")
         label = name.group("label")
         name = label if label is not None else link
+        state = self.link_label_re.search(state).group("label")
 
         return Station(
             name=name,

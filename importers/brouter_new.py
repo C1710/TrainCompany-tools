@@ -258,7 +258,7 @@ class BrouterImporterNew:
                     if state is not None:
                         if len(state) != 2:
                             logging.warning(f"Ausgeschriebener Sub-Staat: {state}")
-                        elif station.state and state.upper() != station.state:
+                        elif station.state and state.upper() != station.state.upper():
                             # Wrong state (if applicable
                             continue
                     # Check that the station is not too far from the waypoint
