@@ -402,6 +402,7 @@ def with_osm_platform_data(station: Station) -> Station:
             station_dict.pop("platform_count", 0)
             station_dict.pop("group", 0)
             station_dict.pop("country", None)
+            station_dict.pop("point", None)
             if not station_dict["platforms"]:
                 station_dict["platforms"] = station_platforms
             else:
