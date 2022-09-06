@@ -248,11 +248,18 @@ class BrouterImporterNew:
                 if name in self.name_to_station:
                     station = self.name_to_station[name]
                     countrycode = possible_station.raw["properties"].get("countrycode", None)
+                    state = possible_station.raw["properties"].get("state", None)
                     # We might want to assert that the station we are associating here actually is in the right country
                     if countrycode is not None and self.check_country:
                         country = station.country
                         if countrycode.upper() != country.iso_3166:
                             # Wrong country
+                            continue
+                    if state is not None:
+                        if len(state) != 2:
+                            logging.warning(f"Ausgeschriebener Sub-Staat: {state}")
+                        elif station.state and state.upper() != station.state.upper():
+                            # Wrong state (if applicable
                             continue
                     # Check that the station is not too far from the waypoint
                     if station.location is not None:
@@ -395,6 +402,7 @@ def with_osm_platform_data(station: Station) -> Station:
             station_dict.pop("platform_count", 0)
             station_dict.pop("group", 0)
             station_dict.pop("country", None)
+            station_dict.pop("point", None)
             if not station_dict["platforms"]:
                 station_dict["platforms"] = station_platforms
             else:
