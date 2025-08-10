@@ -1,6 +1,6 @@
 FROM python:3.13
 
-RUN apt-get -y update && apt-get install -y git dos2unix less sudo fonts-roboto && rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update && apt-get install -y git dos2unix less sudo fonts-roboto zsh fish && rm -rf /var/lib/apt/lists/*
 
 COPY . /tools
 RUN dos2unix /tools/*.py
