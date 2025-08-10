@@ -1,4 +1,4 @@
-FROM python:3.13
+FROM python:3.9
 
 RUN apt-get -y update && apt-get install -y git dos2unix less sudo fonts-roboto && rm -rf /var/lib/apt/lists/*
 
