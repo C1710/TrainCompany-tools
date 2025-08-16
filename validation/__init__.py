@@ -113,8 +113,24 @@ def validate(tc_directory: PathLike | str = '..',
                                     .format(issues_score, station['ril100']))
                     issues += issues_score
 
-        # 1.3. group - Not used at the moment
-        pass
+        # 1.3. group
+        if "group" in station:
+            if station["group"] in [4, 6] and ("platformLength" in station or "platforms" in station):
+                issues_score = 1000
+                logging.warning("+{: <6} Haltepunkt {} ist eine Abzweigstelle oder ein Wegpunkt, aber hat Bahnsteige."
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
+
+    # 1.4. duplicate ril100
+    existing_stations = set()
+    for code in selected_codes:
+        if code in existing_stations:
+            issues_score = 1000
+            logging.warning("#{: <6} Haltepunkt {} existiert mehrfach.".format(issues_score, code))
+            issues += issues_score
+        else:
+            existing_stations.add(code)
+
 
     # Step 2: Paths
     logging.info(" --- Path.json --- ")
@@ -131,6 +147,8 @@ def validate(tc_directory: PathLike | str = '..',
 
     train_equipments = [sub_equipment['idString'] for train_equipment in train_equipment_json.data for sub_equipment in
                         tc_utils.expand_objects(train_equipment)]
+
+    seen_paths = set()
 
     for path in paths:
         # Add default values if necessary
@@ -234,6 +252,17 @@ def validate(tc_directory: PathLike | str = '..',
                     logging.error("+{: <6} Strecke {} hat nicht existierendes Equipment: {}"
                                   .format(issues_score, print_path(path), used_equipment))
                     issues += issues_score
+
+        # 2.9 Duplicate paths
+        start_alpha, end_alpha = sorted([path["start"], path["end"]])
+        if (start_alpha, end_alpha) in seen_paths:
+            issues_score = 1000
+            logging.warning("#{: <6} Pfad {} existiert mehrfach.".format(issues_score, print_path(path)))
+            issues += issues_score
+        else:
+            seen_paths.add((start_alpha, end_alpha))
+
+    
 
     # Step 3: graph-based validation
     logging.info(" --- Routing --- ")
@@ -346,6 +375,7 @@ def validate(tc_directory: PathLike | str = '..',
                             format_list_double_quotes(task['pathSuggestion'])
                         ))
                     issues += issues_score
+
             if enable_experimental:
                 # 5.2.2. Check that all pathSuggestions have direct paths between their nodes
                 issues_score = 70
@@ -358,5 +388,32 @@ def validate(tc_directory: PathLike | str = '..',
                             )
                         )
                         issues += issues_score
+
+            # 5.2.3 Check that pathSuggestions does not exist for random stops and tasks that stop everywhere
+            if ("stations" in task and len(task["stations"]) < 2) or "station" not in task:
+                issues_score = 1000
+                logging.warning("{: <6} Die Aufgabe {} enthält eine pathSuggestion, obwohl die zufällige Haltepunkte anfährt."
+                                .format(issues_score, task["name"]))
+                issues += issues_score
+
+            if "stopsEverywhere" in task:
+                issues_score = 1000
+                logging.warning("{: <6} Die Aufgabe {} enthält eine pathSuggestion, obwohl alle Zwischenhalte angefahren werden."
+                                .format(issues_score, task["name"]))
+                issues += issues_score
+
+            # 5.2.4 Check that the pathSuggestion contains all stops in the right order
+            stops = task["stations"]
+            path_suggestion_iter = iter(task["pathSuggestion"])
+            for stop in stops:
+                try:
+                    while next(path_suggestion_iter) != stop:
+                        pass
+                except StopIteration:
+                    # We reached the end of the pathSuggestion without finding the next stop
+                    issues_score = 1000
+                    logging.warning("{: <6} Die pathSuggestion der Aufgabe {} enthält nicht den Haltepunkte {}"
+                                    .format(issues_score, task["name"], stop))
+                    issues += issues_score
 
     return issues
