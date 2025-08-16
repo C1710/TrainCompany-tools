@@ -406,7 +406,7 @@ def validate(tc_directory: PathLike | str = '..',
                                 .format(issues_score, task["name"]))
                 issues += issues_score
 
-            if "stopsEverywhere" in task:
+            if "stopsEverywhere" in task and task["stopsEverywhere"] == True:
                 issues_score = 1000
                 logging.warning("{: <6} Die Aufgabe {} enthält eine pathSuggestion, obwohl alle Zwischenhalte angefahren werden."
                                 .format(issues_score, task["name"]))
