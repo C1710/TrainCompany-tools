@@ -290,7 +290,7 @@ def validate(tc_directory: PathLike | str = '..',
     for station in flatten_objects(station_json.data):
         if station['group'] in (5, 6):
             if graph.degree(station['ril100']) != 2:
-                issues_score = 100
+                issues_score = 1000
                 logging.error("+{: <6} Nicht dargestellte Haltestelle mit Abzweig/Ende: {}".format(issues_score,
                                                                                                    station['ril100']))
                 issues += issues_score
