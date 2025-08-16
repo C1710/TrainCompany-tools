@@ -98,11 +98,11 @@ class Location:
             latitude=latitude
         )
 
-    def to_projection(self, version: int = default_projection_version) -> Tuple[int, int]:
+    def to_projection(self, version: int = default_projection_version) -> Tuple[int|float, int|float]:
         assert -180.0 <= self.longitude <= 180.0
         assert -90.0 <= self.latitude <= 90.0
         if version == -1:
-            return int(self.longitude), int(self.latitude)
+            return self.longitude, self.latitude
         elif version == 0:
             return self.to_tc()
         else:
