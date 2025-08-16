@@ -209,11 +209,20 @@ def validate(tc_directory: PathLike | str = '..',
         # 2.4. realistic twistingFactor
         if path['twistingFactor'] > 0.5:
             issues_score = 5
-            logging.info("+{: <6} twistingFactor > 0.5: {}".format(
+            logging.warning("+{: <6} twistingFactor > 0.5: {}".format(
                 issues_score,
                 print_path(path)
             ))
             issues += issues_score
+
+        if path["twistingFactor"] > 0.8:
+            issues_score = 1000
+            logging.warning("+{: <6} twistingFactor > 0.8: {}".format(
+                issues_score,
+                print_path(path)
+            ))
+            issues += issues_score
+
 
         # 2.5. Only cover existing stations
         if path['start'] not in selected_codes:
@@ -261,7 +270,6 @@ def validate(tc_directory: PathLike | str = '..',
             issues += issues_score
         else:
             seen_paths.add((start_alpha, end_alpha))
-
     
 
     # Step 3: graph-based validation
@@ -339,6 +347,8 @@ def validate(tc_directory: PathLike | str = '..',
     from validation.graph import PathSuggestionConfig
     from validation.shortest_paths import has_direct_path
 
+    station_groups = {station["ril100"]: station["group"] for station in station_json.data}
+
     for task in tasks:
         # 5.1. All stations exist
         if 'stations' in task:
@@ -390,9 +400,9 @@ def validate(tc_directory: PathLike | str = '..',
                         issues += issues_score
 
             # 5.2.3 Check that pathSuggestions does not exist for random stops and tasks that stop everywhere
-            if ("stations" in task and len(task["stations"]) < 2) or "station" not in task:
+            if ("stations" in task and len(task["stations"]) < 2) or "stations" not in task:
                 issues_score = 1000
-                logging.warning("{: <6} Die Aufgabe {} enthält eine pathSuggestion, obwohl die zufällige Haltepunkte anfährt."
+                logging.warning("{: <6} Die Aufgabe {} enthält eine pathSuggestion, obwohl zufällige Haltepunkte angefahren werden."
                                 .format(issues_score, task["name"]))
                 issues += issues_score
 
@@ -415,5 +425,23 @@ def validate(tc_directory: PathLike | str = '..',
                     logging.warning("{: <6} Die pathSuggestion der Aufgabe {} enthält nicht den Haltepunkte {}"
                                     .format(issues_score, task["name"], stop))
                     issues += issues_score
+        
+        # 5.3 Check that the first and last stop are rendered
+        if "stations" in task:
+            start = task["stations"][0]
+            end = task["stations"][-1]
+            start = station_groups[start] if start in station_groups else -1
+            end = station_groups[end] if end in station_groups else -1
+            if start in [5, 6]:
+                issues_score = 1000
+                logging.warning("{: <6} Der erste Haltepunkt der Aufgabe {} ist nicht sichtbar: {}"
+                                .format(issues_score, task["name"], start))
+                issues += issues_score
+            if end in [5, 6]:
+                issues_score = 1000
+                logging.warning("{: <6} Der letzte Haltepunkt der Aufgabe {} ist nicht sichtbar: {}"
+                                .format(issues_score, task["name"], end))
+                issues += issues_score
+
 
     return issues
