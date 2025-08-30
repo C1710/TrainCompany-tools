@@ -94,7 +94,7 @@ def plot_map(tc_directory: os.PathLike | str = '..',
     point_data = [(station['x'], station['y'],
                    station_sizes[station['group']],
                    flag_to_colon(station['ril100']),
-                   'maroon' if highlight_path and station['ril100'] in highlight_path else '#1f77b4') for station in
+                   'maroon' if highlight_path and station['ril100'].upper() in highlight_path else '#1f77b4') for station in
                   station_json.data]
 
     # Rescale map
