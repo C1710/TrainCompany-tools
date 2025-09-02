@@ -167,11 +167,34 @@ def validate(tc_directory: PathLike | str = '..',
             logging.warning("+{: <6} Pfad hat keine Länge: {}".format(issues_score, print_path(path)))
             issues += issues_score
 
-        # 2.1. Speed - group
+        # 2.1.1 Speed to slow
+        if 'maxSpeed' in path and path['maxSpeed'] < 10:
+            issues_score = 1000
+            logging.warning("+{: <6} Strecke mit < 10 khm/h {}".format(issues_score, print_path(path)))
+            issues += issues_score
+
+        # 2.1.2 Speed to fast
+        if 'maxSpeed' in path and path['maxSpeed'] > 360:
+            issues_score = 1000
+            logging.warning("+{: <6} Strecke mit > 360 khm/h {}".format(issues_score, print_path(path)))
+            issues += issues_score
+
+        # 2.1.3 Speed - group
         if 'maxSpeed' in path and path['maxSpeed'] >= 250 and path['group'] != 2:
             issues_score = 50
             logging.warning("+{: <6} Nicht-SFS mit >= 250 km/h: {}".format(issues_score, print_path(path)))
             issues += issues_score
+
+        # 2.1.4 Speed - SFS
+        if 'maxSpeed' in path and path['group'] == 2:
+            if path['maxSpeed'] < 150:
+                issues_score = 1000
+                logging.warning("+{: <6} SFS mit < 150 km/h: {}".format(issues_score, print_path(path)))
+                issues += issues_score
+            elif path['maxSpeed'] < 200:
+                issues_score = 5
+                logging.warning("+{: <6} SFS mit < 200 km/h: {}".format(issues_score, print_path(path)))
+                issues += issues_score
 
         # 2.2. SFS - electrified
         if path['group'] == 2 and not path['electrified']:
