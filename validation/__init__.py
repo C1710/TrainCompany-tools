@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from os import PathLike
 from typing import Dict, Any
+from collections import Counter
 
 import networkx as nx
 from networkx import is_connected
@@ -425,6 +426,15 @@ def validate(tc_directory: PathLike | str = '..',
                     logging.warning("{: <6} Die pathSuggestion der Aufgabe {} enthält nicht den Haltepunkte {}"
                                     .format(issues_score, task["name"], stop))
                     issues += issues_score
+
+            # 5.2.5 Check for duplicate in pathSuggestions
+            num_occurences = Counter(task["pathSuggestion"])
+            for (station, num) in num_occurences.items():
+                if num != 1:
+                    issues_score = 1000
+                    logging.warning("{: <6} Aufgabe {} enthält Duplikate in pathSuggestion: {}"
+                                    .format(issues_score, task["name"], station))
+                    issues += issues_score
         
         # 5.3 Check that the first and last stop are rendered
         if "stations" in task:
@@ -443,5 +453,13 @@ def validate(tc_directory: PathLike | str = '..',
                                 .format(issues_score, task["name"], end))
                 issues += issues_score
 
+            # 5.4 Check for duplicate in stations
+            num_occurences = Counter(task["stations"])
+            for (station, num) in num_occurences.items():
+                if num != 1:
+                    issues_score = 1000
+                    logging.warning("{: <6} Aufgabe {} enthält doppelte Haltestellen: {}"
+                                    .format(issues_score, task["name"], station))
+                    issues += issues_score
 
     return issues
