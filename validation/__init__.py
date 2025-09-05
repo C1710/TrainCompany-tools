@@ -131,7 +131,11 @@ def validate(tc_directory: PathLike | str = '..',
             issues += issues_score
         else:
             existing_stations.add(code)
-
+        # 1.5 check for invalid ril100
+        if ":" in code:
+            issues_score = 1000
+            logging.warning("+{: <6} Ungültige ril100 mit ':' {}".format(issues_score, code))
+            issues += issues_score
 
     # Step 2: Paths
     logging.info(" --- Path.json --- ")
