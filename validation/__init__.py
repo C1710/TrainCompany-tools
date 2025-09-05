@@ -60,6 +60,19 @@ def validate(tc_directory: PathLike | str = '..',
 
     for station, station_obj in selected_stations:
         project_coordinate_for_station(station)
+
+        # 1.0. check station name exists and is not empty
+        if not "name" in station:
+            issues_score = 1000
+            logging.warning("+{: <6} {} hat keinen Namen"
+                .format(issues_score, station["ril100"]))
+            issues += issues_score
+        elif not station["name"].strip():
+                issues_score = 1000
+                logging.warning("+{: <6} {} hat einen leeren Namen"
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
+
         if station_obj is None:
             country = country_for_code(station['ril100'])
             if country in known_countries:
