@@ -175,7 +175,7 @@ def validate(tc_directory: PathLike | str = '..',
         if 'electrified' not in path:
             path['electrified'] = True
 
-        # 2.0. has speed and length
+        # 2.0. has speed and int lenght > 1
         if 'maxSpeed' not in path:
             issues_score = 10000
             logging.warning("+{: <6} Pfad hat keine vMax: {}".format(issues_score, print_path(path)))
@@ -183,6 +183,10 @@ def validate(tc_directory: PathLike | str = '..',
         if 'length' not in path:
             issues_score = 10000
             logging.warning("+{: <6} Pfad hat keine Länge: {}".format(issues_score, print_path(path)))
+            issues += issues_score
+        elif not isinstance(path['length'],int) or path['length'] < 1:
+            issues_score = 10000
+            logging.warning("+{: <6} Pfad hat unültige Länge: {}".format(issues_score, print_path(path)))
             issues += issues_score
 
         # 2.1. Speed - group
