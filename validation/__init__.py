@@ -485,9 +485,9 @@ def validate(tc_directory: PathLike | str = '..',
 
                 # 5.5 Check for stations without platform
                 group = station_groups[station] if station in station_groups else -1
-                if group in [4]:
+                if group in [4, 6]:
                     issues_score = 1000
-                    logging.warning("{: <6} Aufgabe {} enthält eine Abzweigstelle als Halt: {}"
+                    logging.warning("{: <6} Aufgabe {} enthält einen Wegpunkt/Abzweig als Halt: {}"
                                     .format(issues_score, task["name"], station))
                     issues += issues_score
 
