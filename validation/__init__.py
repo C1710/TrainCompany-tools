@@ -73,6 +73,14 @@ def validate(tc_directory: PathLike | str = '..',
                                 .format(issues_score, station["ril100"]))
                 issues += issues_score
 
+        # 1.3. group
+        if "group" in station:
+            if station["group"] in [4, 6] and ("platformLength" in station or "platforms" in station):
+                issues_score = 1000
+                logging.warning("+{: <6} Haltepunkt {} ist eine Abzweigstelle oder ein Wegpunkt, aber hat Bahnsteige."
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
+
         if station_obj is None:
             country = country_for_code(station['ril100'])
             if country in known_countries:
@@ -82,6 +90,7 @@ def validate(tc_directory: PathLike | str = '..',
             else:
                 logging.debug("+{: <6} Betriebsstelle in unbekanntem Land: {}".format(0, station['ril100']))
             continue
+
         # 1.1. location check
         # Currently not done because the new coordinates are not yet supported
         real_location = station_obj.location
@@ -126,14 +135,6 @@ def validate(tc_directory: PathLike | str = '..',
                     logging.warning("+{: <6} Haltepunkt {} hat eine falsche Bahnsteiganzahl. Soll: {} - Ist: {}"
                                     .format(issues_score, station['ril100']))
                     issues += issues_score
-
-        # 1.3. group
-        if "group" in station:
-            if station["group"] in [4, 6] and ("platformLength" in station or "platforms" in station):
-                issues_score = 1000
-                logging.warning("+{: <6} Haltepunkt {} ist eine Abzweigstelle oder ein Wegpunkt, aber hat Bahnsteige."
-                                .format(issues_score, station["ril100"]))
-                issues += issues_score
 
     # 1.4. duplicate ril100
     existing_stations = set()
