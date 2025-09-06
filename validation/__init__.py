@@ -80,6 +80,11 @@ def validate(tc_directory: PathLike | str = '..',
                 logging.warning("+{: <6} Haltepunkt {} ist eine Abzweigstelle oder ein Wegpunkt, aber hat Bahnsteige."
                                 .format(issues_score, station["ril100"]))
                 issues += issues_score
+            if station["group"] not in range(7):
+                issues_score = 1000
+                logging.warning("+{: <6} Haltepunkt {} hat eine ungültige group"
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
 
         if station_obj is None:
             country = country_for_code(station['ril100'])
