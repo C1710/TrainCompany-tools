@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from os import PathLike
 from typing import Dict, Any
+from collections import Counter
 
 import networkx as nx
 from networkx import is_connected
@@ -59,6 +60,32 @@ def validate(tc_directory: PathLike | str = '..',
 
     for station, station_obj in selected_stations:
         project_coordinate_for_station(station)
+
+        # 1.0. check station name exists and is not empty
+        if not "name" in station:
+            issues_score = 1000
+            logging.warning("+{: <6} {} hat keinen Namen"
+                .format(issues_score, station["ril100"]))
+            issues += issues_score
+        elif not station["name"].strip():
+                issues_score = 1000
+                logging.warning("+{: <6} {} hat einen leeren Namen"
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
+
+        # 1.3. group
+        if "group" in station:
+            if station["group"] in [4, 6] and ("platformLength" in station or "platforms" in station):
+                issues_score = 1000
+                logging.warning("+{: <6} Haltepunkt {} ist eine Abzweigstelle oder ein Wegpunkt, aber hat Bahnsteige."
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
+            if station["group"] not in range(7):
+                issues_score = 1000
+                logging.warning("+{: <6} Haltepunkt {} hat eine ungültige group"
+                                .format(issues_score, station["ril100"]))
+                issues += issues_score
+
         if station_obj is None:
             country = country_for_code(station['ril100'])
             if country in known_countries:
@@ -68,6 +95,7 @@ def validate(tc_directory: PathLike | str = '..',
             else:
                 logging.debug("+{: <6} Betriebsstelle in unbekanntem Land: {}".format(0, station['ril100']))
             continue
+
         # 1.1. location check
         # Currently not done because the new coordinates are not yet supported
         real_location = station_obj.location
@@ -113,14 +141,6 @@ def validate(tc_directory: PathLike | str = '..',
                                     .format(issues_score, station['ril100']))
                     issues += issues_score
 
-        # 1.3. group
-        if "group" in station:
-            if station["group"] in [4, 6] and ("platformLength" in station or "platforms" in station):
-                issues_score = 1000
-                logging.warning("+{: <6} Haltepunkt {} ist eine Abzweigstelle oder ein Wegpunkt, aber hat Bahnsteige."
-                                .format(issues_score, station["ril100"]))
-                issues += issues_score
-
     # 1.4. duplicate ril100
     existing_stations = set()
     for code in selected_codes:
@@ -130,7 +150,11 @@ def validate(tc_directory: PathLike | str = '..',
             issues += issues_score
         else:
             existing_stations.add(code)
-
+        # 1.5 check for invalid ril100
+        if ":" in code:
+            issues_score = 1000
+            logging.warning("+{: <6} Ungültige ril100 mit ':' {}".format(issues_score, code))
+            issues += issues_score
 
     # Step 2: Paths
     logging.info(" --- Path.json --- ")
@@ -157,7 +181,7 @@ def validate(tc_directory: PathLike | str = '..',
         if 'electrified' not in path:
             path['electrified'] = True
 
-        # 2.0. has speed and length
+        # 2.0. has speed and int lenght > 1
         if 'maxSpeed' not in path:
             issues_score = 10000
             logging.warning("+{: <6} Pfad hat keine vMax: {}".format(issues_score, print_path(path)))
@@ -165,6 +189,10 @@ def validate(tc_directory: PathLike | str = '..',
         if 'length' not in path:
             issues_score = 10000
             logging.warning("+{: <6} Pfad hat keine Länge: {}".format(issues_score, print_path(path)))
+            issues += issues_score
+        elif not isinstance(path['length'],int) or path['length'] < 1:
+            issues_score = 10000
+            logging.warning("+{: <6} Pfad hat unültige Länge: {}".format(issues_score, print_path(path)))
             issues += issues_score
 
         # 2.1. Speed - group
@@ -425,6 +453,15 @@ def validate(tc_directory: PathLike | str = '..',
                     logging.warning("{: <6} Die pathSuggestion der Aufgabe {} enthält nicht den Haltepunkte {}"
                                     .format(issues_score, task["name"], stop))
                     issues += issues_score
+
+            # 5.2.5 Check for duplicate in pathSuggestions
+            num_occurences = Counter(task["pathSuggestion"])
+            for (station, num) in num_occurences.items():
+                if num != 1:
+                    issues_score = 1000
+                    logging.warning("{: <6} Aufgabe {} enthält Duplikate in pathSuggestion: {}"
+                                    .format(issues_score, task["name"], station))
+                    issues += issues_score
         
         # 5.3 Check that the first and last stop are rendered
         if "stations" in task:
@@ -443,5 +480,13 @@ def validate(tc_directory: PathLike | str = '..',
                                 .format(issues_score, task["name"], end))
                 issues += issues_score
 
+            # 5.4 Check for duplicate in stations
+            num_occurences = Counter(task["stations"])
+            for (station, num) in num_occurences.items():
+                if num != 1:
+                    issues_score = 1000
+                    logging.warning("{: <6} Aufgabe {} enthält doppelte Haltestellen: {}"
+                                    .format(issues_score, task["name"], station))
+                    issues += issues_score
 
     return issues
