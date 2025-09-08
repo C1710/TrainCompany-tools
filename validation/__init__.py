@@ -357,7 +357,7 @@ def validate(tc_directory: PathLike | str = '..',
                     issues_score = 10000
                     logging.error("+{: <6} Nicht existierender Haltepunkt: {}".format(issues_score, station))
                     issues += issues_score
-            # 5.1.1 All tasks which at least 2 stations should have a valid path
+            # 5.1.1 All tasks which have at least 2 stations should have a valid path
             # Experimental because this is very time consuming and propably ok to run on demand
             if len(task['stations']) > 1 and enable_experimental:
                 try:
