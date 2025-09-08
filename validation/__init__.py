@@ -357,6 +357,23 @@ def validate(tc_directory: PathLike | str = '..',
                     issues_score = 10000
                     logging.error("+{: <6} Nicht existierender Haltepunkt: {}".format(issues_score, station))
                     issues += issues_score
+            # 5.1.1 All tasks which at least 2 stations should have a valid path
+            # Experimental because this is very time consuming and propably ok to run on demand
+            if len(task['stations']) > 1 and enable_experimental:
+                try:
+                    config = PathSuggestionConfig(distance=True)
+                    path = get_shortest_path(graph=graph, stations=task['stations'], config=config, log=False)
+                except nx.exception.NetworkXNoPath as e:
+                    # Error if no path could not be found
+                    issues_score = 10000
+                    logging.warning(
+                        "+{: <6} Konnte keinen Pfad finden. {}\n Pfad: {}".format(
+                        issues_score,
+                        e.args[0],
+                        format_list_double_quotes(task['stations'])
+                    ))
+                    issues += issues_score
+
         # 5.2. pathSuggestions
         if 'pathSuggestion' in task:
             if enable_experimental:
