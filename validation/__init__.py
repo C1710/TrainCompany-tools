@@ -140,6 +140,10 @@ def validate(tc_directory: PathLike | str = '..',
         if 'objects' not in path:
             paths.append(path)
         else:
+            if "start" in path or "end" in path:
+                issues_score = 1000
+                logging.warning("+{: <6} geschachelte Pfad-Definition {} ".format(issues_score, print_path(path)))
+                issues += issues_score
             for sub_task in path.pop('objects'):
                 new_task = path.copy()
                 new_task.update(sub_task)
