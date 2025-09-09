@@ -140,6 +140,10 @@ def validate(tc_directory: PathLike | str = '..',
         if 'objects' not in path:
             paths.append(path)
         else:
+            if "start" in path or "end" in path:
+                issues_score = 1000
+                logging.warning("+{: <6} geschachelte Pfad-Definition {} ".format(issues_score, print_path(path)))
+                issues += issues_score
             for sub_task in path.pop('objects'):
                 new_task = path.copy()
                 new_task.update(sub_task)
@@ -357,6 +361,23 @@ def validate(tc_directory: PathLike | str = '..',
                     issues_score = 10000
                     logging.error("+{: <6} Nicht existierender Haltepunkt: {}".format(issues_score, station))
                     issues += issues_score
+            # 5.1.1 All tasks which have at least 2 stations should have a valid path
+            # Experimental because this is very time consuming and propably ok to run on demand
+            if len(task['stations']) > 1 and enable_experimental:
+                try:
+                    config = PathSuggestionConfig(distance=True)
+                    path = get_shortest_path(graph=graph, stations=task['stations'], config=config, log=False)
+                except nx.exception.NetworkXNoPath as e:
+                    # Error if no path could not be found
+                    issues_score = 10000
+                    logging.warning(
+                        "+{: <6} Konnte keinen Pfad finden. {}\n Pfad: {}".format(
+                        issues_score,
+                        e.args[0],
+                        format_list_double_quotes(task['stations'])
+                    ))
+                    issues += issues_score
+
         # 5.2. pathSuggestions
         if 'pathSuggestion' in task:
             if enable_experimental:
